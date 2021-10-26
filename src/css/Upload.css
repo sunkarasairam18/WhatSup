@@ -1,0 +1,67 @@
+.upload{
+    width: 500px;
+    height: 475px;
+    background-color: rgb(224, 222, 222);
+    border-radius: 5px;
+    position: absolute;
+    z-index: 5;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+.upload_header{
+    background-color: rgb(168, 164, 164);
+    height: 50px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding-left: 20px;
+}
+.upload_pic{
+    height: 350px;
+    background-color: rgb(168, 164, 164);
+    display: grid;
+    place-items: center;
+}
+.upload_done{
+    background-color: orangered;
+    position: relative;
+}
+.upload_done_icon{
+    background-color: rgb(7, 218, 7);
+    height: 66px;
+    width: 66px;
+    border-radius: 33px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    position: absolute;
+    right: 40px;
+    top: -33px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+}
+
+.upload_transition-enter{
+    transform: scale(0.3);
+    opacity: 0;
+}
+.upload_transition-enter-active{
+    transform: scale(1);
+    opacity: 1;
+    transition: all 200ms;
+}
+.upload_transition-enter-done{
+    transform: scale(1);
+    opacity: 1;
+}
+.upload_transition-exit{
+    transform: scale(1);
+    opacity: 1;
+
+}
+.upload_transition-exit-active{
+    transform: scale(0.3);
+    opacity: 0;
+    transition: all 200ms;
+}
+.upload_transition-exit-done{
+    transform: scale(0);
+    opacity: 0;
+}

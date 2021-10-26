@@ -1,0 +1,174 @@
+.chat_container{
+    flex: 0.7;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+.chat{
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+}
+.chat_in{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    
+}
+.chat_header{
+    padding-right: 20px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid lightgray;
+}
+
+.chat_header_content{
+    padding-left: 19px;
+    padding-top: 14px;
+    padding-right: 19px;
+    padding-bottom: 14px;
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+}
+.chat_headerInfo{
+    flex: 1;
+    padding-left: 10px;
+}
+
+.chat_headerInfo > h3{
+    margin-bottom: 3px;
+    font-weight: 500;
+}
+
+.chat_headerInfo > p{
+    color: gray;
+    font-size: 0.8em;
+}
+
+.chat_name{
+    position: absolute;
+    top: -18px;
+    font-weight: 800;
+    font-size: small;
+}
+
+.chat_headerRight{
+    display: flex;
+    justify-content: space-between;
+    min-width: 100px;
+}
+
+.chat_body{
+    flex: 1;
+    background-image: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png");
+    background-repeat: repeat;
+    background-position: center;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    padding-right: 40px;
+    padding-left: 40px;
+    overflow: scroll;
+}
+
+.chat_footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-top: 1px solid lightgray;
+}
+
+.chat_footer > form{
+    flex: 1;
+    display: flex;
+}
+.chat_footer > form > input{
+    flex: 1;
+    border-radius: 35px;
+    border: none;
+    font-size: 15px;
+    padding: 10px;
+}
+.chat_footer > form > input:focus{
+    outline: none;
+}
+.chat_footer > form > button{
+    display: none;
+}
+.chat_footer > .MuiSvgIcon-root{
+    padding: 10px;
+    color: gray;
+}
+.chat_emoji_footer{
+    flex: 1;
+    background-color: blue;
+}
+.frindinfobox{
+    width: 200px;
+    right:35%;
+}
+
+.chatTransition-enter{
+    width: 100%;
+
+}
+.chatTransition-enter-active{
+    width: 57%;
+    transition: width 50ms;
+}
+.chatTransition-enter-done{
+    width: 57%;
+}
+.chatTransition-exit{
+    width: 57%;
+
+}
+.chatTransition-exit-active{
+    width: 100%;
+    transition: width 300ms;
+
+}
+.chatTransition-exit-done{
+    width: 100%;
+
+}
+.friendinfobar-enter{
+    width: 43%;
+    position: absolute;
+    right: -43%;
+    
+}
+.friendinfobar-enter-active{
+    width: 43%;
+    position: absolute;
+    right: 0%;
+    transition: right 100ms;
+}
+.friendinfobar-enter-done{
+    width: 43%;
+    position: absolute;
+    right: 0%;
+}
+.friendinfobar-exit{
+    width: 43%;
+    position: absolute;
+    right: 0%;
+    
+}
+.friendinfobar-exit-active{
+    width: 43%;
+    right: -43%;
+    position: absolute;
+    transition: right 200ms;
+
+}
+.friendinfobar-exit-done{
+    width: 43%;
+    right: -43%;
+    position: absolute;
+
+}
+
+  

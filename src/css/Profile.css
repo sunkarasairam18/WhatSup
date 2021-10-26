@@ -1,0 +1,115 @@
+.profile{
+    flex: 1;
+    height: 100vh;
+    background-color:rgb(224, 222, 222);
+
+}
+.profile_header{
+    height: 113px;
+    background-color: rgb(168, 164, 164);
+    position: relative;
+}
+.profile_header_content{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    left: 20px;
+    bottom: 5px;
+    margin-bottom: 10px;
+}
+.profile_header_back_btn{
+    color: white;
+    height: 20px;
+    width: 20px;
+    margin-right: 25px;
+    cursor: pointer;
+}
+.profile_header_title{
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+}
+.profile_pic{
+    height: 280px;
+    display: grid;
+    place-items: center;
+    background-color: rgb(224, 222, 222);
+}
+.profile_pic_box{
+    position: relative;
+    cursor: pointer;
+    width: 200px;
+    height: 200px;
+    border-radius: 100px;    
+}
+
+.profile_pic_hover{
+    position: absolute;
+    top: 0px;
+}
+.profile_pic_org{
+    height: 200px;
+    width: 200px;
+    border-radius: 100px;
+}
+.profile_name{
+    height: 100px;
+    background-color: #f6f6f6;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.0px 1.0px 2.0px;
+    display: flex;
+    align-items: center;
+
+}
+.profile_name_content{
+    padding-left: 30px;
+    flex: 1;
+}
+.profile_name_title{
+    color: grey;
+    font-size: 15px;
+}
+
+.profile_user{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    margin-top: 20px;
+}
+.profile_user_name_edit{
+    position: absolute;
+    right: 25px;
+    color: rgb(156, 152, 152);
+    cursor: pointer;
+
+}
+
+.about_name{
+    height: 13%;
+    background-color: #f6f6f6;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.0px 1.0px 2.0px;
+    display: flex;
+    align-items: center;
+}
+.about_name_content{
+    padding-left: 30px;
+    flex: 1;
+}
+.about_name_title{
+    color: grey;
+    font-size: 15px;
+}
+.about_user{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    margin-top: 20px;
+}
+/* .about_user_text{
+
+} */
+.about_user_text_edit{
+    position: absolute;
+    right: 25px;
+    color: rgb(156, 152, 152);
+    cursor: pointer;
+}
