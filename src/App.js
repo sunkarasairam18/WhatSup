@@ -15,6 +15,7 @@ import Upload from './components/Upload';
 import JustLogin from './components/JustLogin';
 import Chat from './components/Chat';
 import Login from './components/Login';
+import Transition from './components/Transition';
 
 function App(props) {
   const [{user},dispatch] = useStateValue();
@@ -78,7 +79,7 @@ function App(props) {
 
   return (
 
-    <div className="app">   
+    <div className="">   
         <Upload showUpload={showUpload} setShowUpload={setShowUpload} imageUrl={uploadFile.url} uploadImage={uploadImage} /> 
         {!user?(
           <Login/>
@@ -99,6 +100,7 @@ function App(props) {
             </div>
           </PageVisibility>
         )}
+        {/* <Transition/> */}
     </div>
   );
 }

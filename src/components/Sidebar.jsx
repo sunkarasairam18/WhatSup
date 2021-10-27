@@ -2,6 +2,7 @@ import React, {useState,useEffect } from 'react';
 import { Avatar,IconButton } from '@material-ui/core';
 import DonutLargeIcon from '@mui/icons-material/DonutLarge';
 import ChatIcon from '@mui/icons-material/Chat';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {doc,getDoc,onSnapshot,query,collection,orderBy} from 'firebase/firestore';
 import { SearchOutlined } from '@mui/icons-material';
@@ -23,6 +24,8 @@ const Sidebar = ({showUpload,setShowUpload,setUploadFile}) => {
     const [friendsList,setFriendsList] = useState([]);
     const [about,SetAbout] = useState("");
     const [photoUrl,SetPhotoUrl] = useState("");
+    const [truth,setTruth] = useState(false);
+    const [search,setSearch] = useState();
 
 
     useEffect(()=>{
@@ -51,6 +54,14 @@ const Sidebar = ({showUpload,setShowUpload,setUploadFile}) => {
         });        
     },[]);
 
+    function getIcon(){
+        if(truth){
+            return <ArrowBackIcon/>;                                   
+        }else{
+            return <SearchOutlined/>;
+        }
+    }
+
 
     return ( 
 
@@ -70,10 +81,21 @@ const Sidebar = ({showUpload,setShowUpload,setUploadFile}) => {
                         </IconButton>
                     </div>
                 </div>
-                <div className="sidebar_search">
+                <div className={`sidebar_search ${truth?`sidebar_Search_focus`:`sidebar_Search_blur`}`}>
                     <div className="sidebar_searchContainer">
-                        <SearchOutlined/>
-                        <input placeholder="Search or start new chat" type="text"/>
+                        <div className="icons">                                             
+                            <CSSTransition in={truth} timeout={500} classNames="arrow">
+                                <div>
+                                    {getIcon()}
+                                </div>
+                            </CSSTransition> 
+                        </div>    
+                        <input 
+                            placeholder="Search friend" 
+                            type="text"
+                            onFocus={()=>setTruth(!truth)}
+                            onBlur={()=>setTruth(!truth)}
+                            onChange={e=>setSearch(e.target.value)}/>
                     </div>                    
                 </div>
               

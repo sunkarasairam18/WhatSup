@@ -198,7 +198,6 @@ const Chat = () => {
                     <div className="chat_headerInfo">
                         <h3>{friend.displayName}</h3>
                         <p>{friend?.onlineStatus?`online`:`last seen ${lastSeen}`}</p>
-
                     </div>
                 </div>
                 <div className="chat_headerRight">
