@@ -3,8 +3,6 @@ import {getFirestore,doc,setDoc,getDoc,addDoc,updateDoc,query,collection,onSnaps
 import { getAuth,GoogleAuthProvider,RecaptchaVerifier,signInWithPhoneNumber } from "firebase/auth";
 import {getStorage,ref} from 'firebase/storage';
 
-
-
 const firebaseConfig = initializeApp({
     apiKey: "AIzaSyDkGt4NguOBGsSVAlXFZHSmGZ50-GWU_pY",
     authDomain: "whatsup-a809f.firebaseapp.com",

@@ -7,12 +7,10 @@ import {firestore,newName} from '../services/firebase';
 import '../css/SidebarChat.css';
 import {getObjectfromDate} from './Chat';
 
-const SidebarChat = ({friendId,name,addNewChat,containerId,selected,onSelect,friendInfoDocId}) => {
+const SidebarChat = ({friendId,name,containerId,selected,onSelect,friendInfoDocId}) => {
     const [lastmessage,setLastmessage] = useState("");
     const [timeTag,setTimetag] = useState("");
     const [url,setUrl] = useState("");
-   
-    
 
     var lastMsgRef = React.createRef(); 
 
@@ -53,14 +51,6 @@ const SidebarChat = ({friendId,name,addNewChat,containerId,selected,onSelect,fri
    
     
 
-    const createChat = () =>{
-        const roomName = prompt("Please enter name for new chat");
-        if(roomName){
-            newName(roomName);
-            
-        }
-    };
-
     const shortMsg = (msg) =>{
         if(msg){
             if(msg.length>38) return msg.substring(0,38)+"...";
@@ -68,27 +58,21 @@ const SidebarChat = ({friendId,name,addNewChat,containerId,selected,onSelect,fri
         }
         
     }
-    return !addNewChat?(
+    return (
         <Link to={`/${friendId}/${containerId}/${friendInfoDocId}`} onClick={()=>onSelect(friendId)}>
             <div className={selected?"sidebarChatSelected":"sidebarChat"}>
-                <Avatar src={`${url}`}/>
+                <Avatar src={`${url}`} style={{width:"50px",height:"50px"}}/>
                 <div className="sidebarChat_info">
                     <div className="sidebarChat_info_main">
                         <div className="sidebarChat_info_name">{name}</div>
                         <span>{timeTag}</span>
-                    </div>
-                   
+                    </div>                   
                     <div className="sidebarChat_info_last_content">
                         <p ref={lastMsgRef} className="lastmsgcontext">{shortMsg(lastmessage.message)}</p>                        
                     </div>
                 </div>               
             </div>
         </Link>
-    ):(
-        <div onClick={createChat}
-        className="sidebarChat">
-            <h2>Add new Chat</h2>
-        </div>
     );
 }
 

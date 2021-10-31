@@ -19,9 +19,8 @@ import FriendInfo from './FriendInfo';
 import ChatBubble from './ChatBubble';
 import '../css/Chat.css';
 
-const Chat = () => {
+const Chat = ({setSearch,setTruth}) => {
     const [input,setInput] = useState("");
-    const [seed,setSeed] = useState("");
     const {friendId,containerId,friendInfoDocId} = useParams();
     const [userInfoDocId,setUserInfoDocId] = useState(null);
     const [friend, setFriend] = useState({});
@@ -90,60 +89,42 @@ const Chat = () => {
 
  
 
-    useEffect(()=>{
-        setSeed(Math.floor(Math.random()*5000));
-    },[containerId]);
+   
 
-    async function sendMessage(msg){
+    async function sendMessage(msg){        
         msg.preventDefault();
+        setSearch("");
+        setTruth("");
         const chatCollection = collection(firestore,`ChatContainers/${containerId}/messages`);
         const temporarymessage = input;
         setInput("");
-        var readBy = {};
-        readBy[user.uid] = true;
-        readBy[friendId] = false;
-        const msgObj = {
-            message: temporarymessage,
-            readBy: {...readBy},
-            sender: user.uid,
-            timestamp: new Date(),
-        };
-        const newMessage = await addDoc(chatCollection,msgObj);
-
-        // if(!userInfoDocId){
-        //     const friendQuery = query(collection(firestore,`Accounts/${friendId}/Friends`),where('friendId','==',user.uid));
-        //     onSnapshot(friendQuery,snapshot =>{
-        //         console.log("Docs : ",snapshot.docs);
-        //         snapshot.docs.map(e => (setUserInfoDocId({id : e.id})));
-        //     });
+        // var readBy = {};
+        // readBy[user.uid] = true;
+        // readBy[friendId] = false;
+        // const msgObj = {
+        //     message: temporarymessage,
+        //     readBy: {...readBy},
+        //     sender: user.uid,
+        //     timestamp: new Date(),
+        // };
+        // const newMessage = await addDoc(chatCollection,msgObj);        
+        // console.log("User Info : ",userInfoDocId);
+        // const sameUpdate = {
+        //     lastsent: msgObj.timestamp,
+        // };
+        // const userDoc = doc(firestore,`Accounts/${user.uid}/Friends/${friendInfoDocId}`);
+        // const friendDoc = doc(firestore,`Accounts/${friendId}/Friends/${userInfoDocId}`);            
+        // const newLastMsg = doc(firestore,`ChatContainers/${containerId}`);
+        // const newDoc = {
+        //     lastMessageId: newMessage["_key"]["path"]["segments"][3],
         // }
-        console.log("User Info : ",userInfoDocId);
-        const sameUpdate = {
-            lastsent: msgObj.timestamp,
-        };
-        const userDoc = doc(firestore,`Accounts/${user.uid}/Friends/${friendInfoDocId}`);
-        // if(userInfoDocId){
-        //     const friendDoc = doc(firestore,`Accounts/${friendId}/Friends/${userInfoDocId}`);
-        //     updateDoc(friendDoc,sameUpdate).then(e=>{
-        //         console.log(e);
-        //     }).catch(error=>{
-        //         console.log("Error : ",error);
-        //     });
-
-        // }
-
-        const friendDoc = doc(firestore,`Accounts/${friendId}/Friends/${userInfoDocId}`);            
-        const newLastMsg = doc(firestore,`ChatContainers/${containerId}`);
-        const newDoc = {
-            lastMessageId: newMessage["_key"]["path"]["segments"][3],
-        }
-        updateDoc(newLastMsg,newDoc);
-        updateDoc(userDoc,sameUpdate);
-        updateDoc(friendDoc,sameUpdate,{merge:true}).then(e=>{
-            console.log(e);
-        }).catch(error=>{
-            console.log("Error : ",error);
-        });
+        // updateDoc(newLastMsg,newDoc);
+        // updateDoc(userDoc,sameUpdate);
+        // updateDoc(friendDoc,sameUpdate,{merge:true}).then(e=>{
+        //     console.log(e);
+        // }).catch(error=>{
+        //     console.log("Error : ",error);
+        // });
     };
 
     function correctCss(sender,accountId,pastSenderId){

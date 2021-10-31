@@ -15,6 +15,7 @@ const Transition = () => {
             return <SearchOutlined/>;
         }
     }
+    
 
     return (
         <div className="content">

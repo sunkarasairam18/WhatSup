@@ -1,10 +1,10 @@
 import React, {useState,useEffect } from 'react';
 import { Avatar,IconButton } from '@material-ui/core';
-import DonutLargeIcon from '@mui/icons-material/DonutLarge';
+import PeopleIcon from '@mui/icons-material/People';
 import ChatIcon from '@mui/icons-material/Chat';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {doc,getDoc,onSnapshot,query,collection,orderBy} from 'firebase/firestore';
+import {doc,onSnapshot,query,collection,orderBy} from 'firebase/firestore';
 import { SearchOutlined } from '@mui/icons-material';
 import { CSSTransition } from 'react-transition-group';
 
@@ -17,16 +17,22 @@ import { useStateValue } from '../services/StateProvider';
 import { actionTypes } from '../services/reducer';
 
 
-const Sidebar = ({showUpload,setShowUpload,setUploadFile}) => {
+const Sidebar = ({
+                    showUpload,
+                    search,
+                    truth,
+                    setTruth,
+                    setSearch,
+                    setShowUpload,
+                    setUploadFile}) => {
     const [{user},dispatch] = useStateValue();
     const [select,setSelect] = useState("");
     const [show,setShow] = useState(false);
     const [friendsList,setFriendsList] = useState([]);
     const [about,SetAbout] = useState("");
     const [photoUrl,SetPhotoUrl] = useState("");
-    const [truth,setTruth] = useState(false);
-    const [search,setSearch] = useState();
 
+    const searchRef = React.createRef();
 
     useEffect(()=>{
         const userDoc = doc(firestore,`Accounts/${user.uid}`);
@@ -49,19 +55,43 @@ const Sidebar = ({showUpload,setShowUpload,setUploadFile}) => {
         onSnapshot(friendQuery,(querySnapshot)=>{
             setFriendsList(querySnapshot.docs.map(e => ({
                 id: e.id,
-                ...e.data()
+                ...e.data(),
             })));
         });        
     },[]);
 
+   
+
     function getIcon(){
         if(truth){
-            return <ArrowBackIcon/>;                                   
+            return (
+                <div onClick={()=>{
+                    setSearch("");
+                    setTruth(false);
+                }}>
+                    <ArrowBackIcon/>
+                </div>
+            );                                   
         }else{
-            return <SearchOutlined/>;
+            return (
+                <div onClick={()=>{
+                    searchRef.current?.focus();
+                    
+                }}>
+                    <SearchOutlined/>
+                </div>
+            );
         }
     }
 
+    function getList(){
+        if(search){            
+            var list = friendsList.filter(friend => friend.friendName.trim().toLowerCase().includes(search.trim().toLowerCase()));
+            return list;
+        }else{
+            return friendsList;
+        }
+    }
 
     return ( 
 
@@ -71,7 +101,7 @@ const Sidebar = ({showUpload,setShowUpload,setUploadFile}) => {
                     <Avatar src={photoUrl} className="profilepic" onClick={setShow}/>
                     <div className="sidebar_headerRight">
                         <IconButton>
-                        <DonutLargeIcon/>
+                        <PeopleIcon style={{width:"28px",height:"28px"}}/>
                         </IconButton>
                         <IconButton>
                         <ChatIcon/>
@@ -85,23 +115,24 @@ const Sidebar = ({showUpload,setShowUpload,setUploadFile}) => {
                     <div className="sidebar_searchContainer">
                         <div className="icons">                                             
                             <CSSTransition in={truth} timeout={500} classNames="arrow">
-                                <div>
-                                    {getIcon()}
-                                </div>
+                                {getIcon()}
                             </CSSTransition> 
                         </div>    
                         <input 
                             placeholder="Search friend" 
                             type="text"
-                            onFocus={()=>setTruth(!truth)}
-                            onBlur={()=>setTruth(!truth)}
+                            ref={searchRef}
+                            value={search}
+                            onFocus={()=>setTruth(true)}
+                            onBlur={()=>{
+                                setTruth(search || false);
+                            }}
                             onChange={e=>setSearch(e.target.value)}/>
                     </div>                    
                 </div>
               
                  <div className="sidebar_chats">
-                    <SidebarChat addNewChat/>
-                    {friendsList.map(friend => (
+                    {getList()?.map(friend => (
                         <SidebarChat 
                         key={friend.friendId} 
                         friendId={friend.friendId} 
@@ -111,6 +142,16 @@ const Sidebar = ({showUpload,setShowUpload,setUploadFile}) => {
                         selected={select === friend.friendId} 
                         onSelect={setSelect}/>
                     ))}
+                    {/* {searchList.map(friend=>(
+                        <SidebarChat 
+                        key={friend.friendId} 
+                        friendId={friend.friendId} 
+                        friendInfoDocId={friend.id} 
+                        name={friend.friendName} 
+                        containerId={friend.container} 
+                        selected={select === friend.friendId} 
+                        onSelect={setSelect}/>
+                    ))} */}
                 </div>
             </div>
             <CSSTransition in={show} timeout={450} unmountOnExit classNames="profileSlidercontent">
