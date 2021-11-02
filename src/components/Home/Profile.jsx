@@ -4,9 +4,9 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CreateIcon from '@mui/icons-material/Create';
 
 
-import CameraHover from './CameraHover';
-import '../css/Profile.css';
-import Upload from './Upload';
+// import CameraHover from './CameraHover';
+import '../../css/Home/Profile.css';
+// import Upload from './Home/Upload';
 
 const Profile = ({photo,name,about,show,setUploadFile,onBack,setShowUpload}) => {
     const [hovershow,SetHoverShow] = useState(false);

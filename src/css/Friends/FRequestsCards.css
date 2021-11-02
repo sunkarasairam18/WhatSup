@@ -1,0 +1,28 @@
+.FRCShow{
+    background-color: #e7e5e5;
+    display: flex;
+    flex: 0.7;
+    height: 100vh;
+    min-width: 500px;
+    overflow: scroll;
+
+
+}
+.FRCSContent{
+    padding: 30px;
+    width: 100%;
+    /* height: 100%; */
+    /* background-color: cadetblue; */
+}
+.FRCSCTitle{
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.FRSCSDRow{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+    width: 90%;
+}

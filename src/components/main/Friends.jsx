@@ -1,14 +1,19 @@
 import React from 'react';
 
-import "../css/Friends.css";
+import FRequestsCards from '../Friends/FRequestsCards';
+import "../../css/maincss/Friends.css";
+
+import FSidebar from '../Friends/FSidebar';
 
 const Friends = () => {
     return (
-        <div className="friends">
-            <div className="friends_app">
-                
-
+        <div className="f">
+            <div className="f_app">
+                <FSidebar/>
+                <FRequestsCards/>
             </div>
+
+
         </div>
     );
 }

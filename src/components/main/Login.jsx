@@ -1,13 +1,13 @@
 import React from 'react';
 import {Button} from "@material-ui/core";
-import '../css/Login.css';
-import {auth,provider} from '../services/firebase';
+import '../../css/maincss/Login.css';
+import {auth,provider} from '../../services/firebase';
 import {signInWithPopup} from 'firebase/auth';
-import { useStateValue } from '../services/StateProvider';
-import { actionTypes } from '../services/reducer';
-import { addAccount } from '../services/firebase';
+import { useStateValue } from '../../services/StateProvider';
+import { actionTypes } from '../../services/reducer';
+import { addAccount } from '../../services/firebase';
 
-import Icon from './aa3.jpeg';
+import chit from '../chit.jpeg';
 
 const Login = () => {
     const [{},dispatch] = useStateValue();
@@ -31,9 +31,9 @@ const Login = () => {
     return (
         <div className="login">
             <div className="login_container">
-                <img src={Icon} alt="" />
+                <img src={chit} alt="" />
                 <div className="login_text">
-                    <h1>Sign in</h1>
+                    WhatSup
                 </div>
                 <Button onClick={signIn}>
                     Sign in with Google

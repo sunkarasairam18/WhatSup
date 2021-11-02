@@ -3,9 +3,8 @@ import ClearIcon from '@mui/icons-material/Clear';
 import DoneIcon from '@mui/icons-material/Done';
 import { CSSTransition } from 'react-transition-group';
 
-import '../css/Upload.css';
-import ben from './s3.jpeg';
-import { height } from '@mui/system';
+
+import '../../css/Home/Upload.css';
 
 const Upload = ({showUpload,setShowUpload,imageUrl,uploadImage}) => {
     const imgRef = React.createRef();

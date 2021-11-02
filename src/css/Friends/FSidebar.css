@@ -1,0 +1,52 @@
+.fsidebar{
+    display: flex;
+    flex-direction: column;
+    flex: 0.3;
+    position: relative;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    background-color: #ededed;
+    min-width: 300px;
+
+}
+
+.fsidebarcontent{
+    height: 100vh;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+}
+.fsidebar_header{
+    display: flex;
+    justify-content: space-between;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    /* border-right: 1px solid lightgray; */
+    border-bottom: 1px solid lightgray;
+
+}
+.fsidebar_header>.img{
+    margin-top: 6px;
+}
+.fsidebar_headerRight{
+    display: flex;
+    align-items: center;
+    min-width: 6vw;
+}
+
+.app_icon{
+    height: 35px;
+    width: 35px;
+}
+.fsidebar_title{
+    font-size: 30px;
+    font-weight: bold;
+    padding-left: 12px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.fsidebar_requests{
+    padding-left: 10px;
+    padding-right: 10px;
+}

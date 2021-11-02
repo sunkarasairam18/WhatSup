@@ -1,0 +1,44 @@
+.FSidebarBox{
+    border-radius: 8px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+    cursor: pointer;
+}
+.FSidebarBoxHover:hover{
+    background-color: rgb(209, 203, 203);
+}
+.FSidebarBoxHoverfix{
+    background-color: rgb(209, 203, 203);
+}
+.FSidebarIcon{
+    border-radius: 25px;
+    background-color: rgb(197, 192, 192);
+    display: grid;
+    place-items: center;
+    padding: 4px;
+    
+}
+.FSidebarIcon > .MuiSvgIcon-root{
+    height: 25px;
+    width: 25px;
+    /* background-color: burlywood; */
+    /* border-radius: 15px; */
+    color: black;
+    
+    padding: 4px;
+
+}
+.FSidebarTitle{
+    font-size: 18px;
+    margin-left: 10px;
+    /* font-weight: 600; */
+}
+.FSidebarArrow{
+    align-items: center;
+    flex: 1;
+    text-align: right;
+
+    padding-right: 10px;
+}

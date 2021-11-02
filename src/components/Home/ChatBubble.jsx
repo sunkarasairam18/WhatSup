@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react';
 
-import "../css/ChatBubble.css";
+
+import '../../css/Home/ChatBubble.css';
 
 const ChatBubble = ({fullClass,message,timestamp}) => {   
     const [overflow,setOverflow] = useState(false);

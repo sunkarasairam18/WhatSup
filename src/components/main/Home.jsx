@@ -9,13 +9,11 @@ import {firestore} from '../../services/firebase';
 
 import '../../css/maincss/Home.css';
 
-import Sidebar from '../Sidebar';
-import Upload from '../Upload';
-import JustLogin from '../JustLogin';
-import Chat from '../Chat';
-import Login from '../Login';
-import Friends from './Friends';
-import Transition from '../Transition';
+import Sidebar from '../Home/Sidebar';
+import Upload from '../Home/Upload';
+import JustLogin from '../Home/JustLogin';
+import Chat from '../Home/Chat';
+
 
 function Home(props) {
   const [{user},dispatch] = useStateValue();

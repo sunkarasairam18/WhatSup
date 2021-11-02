@@ -7,14 +7,15 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {doc,onSnapshot,query,collection,orderBy} from 'firebase/firestore';
 import { SearchOutlined } from '@mui/icons-material';
 import { CSSTransition } from 'react-transition-group';
+import { Switch,Link } from 'react-router-dom';
 
 
 import Profile from './Profile';
-import '../css/Sidebar.css';
+import '../../css/Home/Sidebar.css';
 import SidebarChat from './SidebarChat';
-import { firestore } from '../services/firebase';
-import { useStateValue } from '../services/StateProvider';
-import { actionTypes } from '../services/reducer';
+import { firestore } from '../../services/firebase';
+import { useStateValue } from '../../services/StateProvider';
+import { actionTypes } from '../../services/reducer';
 
 
 const Sidebar = ({
@@ -36,7 +37,6 @@ const Sidebar = ({
 
     useEffect(()=>{
         const userDoc = doc(firestore,`Accounts/${user.uid}`);
-        console.log('Again');
         onSnapshot(userDoc,userUpdate=>{
             if(userUpdate.exists()){
                 const userData = userUpdate.data();   
@@ -100,14 +100,13 @@ const Sidebar = ({
                 <div className="sidebar_header">
                     <Avatar src={photoUrl} className="profilepic" onClick={setShow}/>
                     <div className="sidebar_headerRight">
+                        <Link to="/friends">
+                            <IconButton>
+                                <PeopleIcon style={{width:"28px",height:"28px"}}/>
+                            </IconButton>
+                        </Link>                        
                         <IconButton>
-                        <PeopleIcon style={{width:"28px",height:"28px"}}/>
-                        </IconButton>
-                        <IconButton>
-                        <ChatIcon/>
-                        </IconButton>
-                        <IconButton>
-                        <MoreVertIcon/>
+                            <MoreVertIcon/>
                         </IconButton>
                     </div>
                 </div>

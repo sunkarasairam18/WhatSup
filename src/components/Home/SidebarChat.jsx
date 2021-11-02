@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { doc,onSnapshot,getDoc } from '@firebase/firestore';
 
-import {firestore,newName} from '../services/firebase';
-import '../css/SidebarChat.css';
+import {firestore,newName} from '../../services/firebase';
+import '../../css/Home/SidebarChat.css';
 import {getObjectfromDate} from './Chat';
 
 const SidebarChat = ({friendId,name,containerId,selected,onSelect,friendInfoDocId}) => {

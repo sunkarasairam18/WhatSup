@@ -2,12 +2,13 @@ import React, { useState,useEffect } from 'react';
 import { Switch,Route } from 'react-router-dom';
 import PageVisibility from 'react-page-visibility';
 
+
 import {updateLastSeenOnlineStatus,updateOnlineStatus} from './services/firebase';
 import { useStateValue } from "./services/StateProvider";
 
 import './App.css';
 import Home from './components/main/Home';
-import Login from './components/Login';
+import Login from './components/main/Login';
 import Friends from './components/main/Friends';
 
 function App(props) {

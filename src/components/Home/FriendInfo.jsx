@@ -3,7 +3,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Avatar } from '@mui/material';
 
 
-import '../css/FriendInfo.css';
+import '../../css/Home/FriendInfo.css';
 
 const FriendInfo = ({name,about,email,photo,onCross}) => {
     return (

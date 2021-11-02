@@ -12,12 +12,12 @@ import { CSSTransition } from 'react-transition-group';
 
 
 
-import { useStateValue } from '../services/StateProvider';
-import { firestore } from '../services/firebase';
+import { useStateValue } from '../../services/StateProvider';
+import { firestore } from '../../services/firebase';
 
 import FriendInfo from './FriendInfo';
 import ChatBubble from './ChatBubble';
-import '../css/Chat.css';
+import '../../css/Home/Chat.css';
 
 const Chat = ({setSearch,setTruth}) => {
     const [input,setInput] = useState("");
