@@ -141,6 +141,16 @@ const Sidebar = ({
                         selected={select === friend.friendId} 
                         onSelect={setSelect}/>
                     ))}
+                    
+                    <SidebarChat />
+                    <SidebarChat />
+                    <SidebarChat />
+                    <SidebarChat />
+                    <SidebarChat />
+                    <SidebarChat />
+                    <SidebarChat />
+
+
                     {/* {searchList.map(friend=>(
                         <SidebarChat 
                         key={friend.friendId} 

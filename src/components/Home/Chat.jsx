@@ -98,33 +98,33 @@ const Chat = ({setSearch,setTruth}) => {
         const chatCollection = collection(firestore,`ChatContainers/${containerId}/messages`);
         const temporarymessage = input;
         setInput("");
-        // var readBy = {};
-        // readBy[user.uid] = true;
-        // readBy[friendId] = false;
-        // const msgObj = {
-        //     message: temporarymessage,
-        //     readBy: {...readBy},
-        //     sender: user.uid,
-        //     timestamp: new Date(),
-        // };
-        // const newMessage = await addDoc(chatCollection,msgObj);        
-        // console.log("User Info : ",userInfoDocId);
-        // const sameUpdate = {
-        //     lastsent: msgObj.timestamp,
-        // };
-        // const userDoc = doc(firestore,`Accounts/${user.uid}/Friends/${friendInfoDocId}`);
-        // const friendDoc = doc(firestore,`Accounts/${friendId}/Friends/${userInfoDocId}`);            
-        // const newLastMsg = doc(firestore,`ChatContainers/${containerId}`);
-        // const newDoc = {
-        //     lastMessageId: newMessage["_key"]["path"]["segments"][3],
-        // }
-        // updateDoc(newLastMsg,newDoc);
-        // updateDoc(userDoc,sameUpdate);
-        // updateDoc(friendDoc,sameUpdate,{merge:true}).then(e=>{
-        //     console.log(e);
-        // }).catch(error=>{
-        //     console.log("Error : ",error);
-        // });
+        var readBy = {};
+        readBy[user.uid] = true;
+        readBy[friendId] = false;
+        const msgObj = {
+            message: temporarymessage,
+            readBy: {...readBy},
+            sender: user.uid,
+            timestamp: new Date(),
+        };
+        const newMessage = await addDoc(chatCollection,msgObj);        
+        console.log("User Info : ",userInfoDocId);
+        const sameUpdate = {
+            lastsent: msgObj.timestamp,
+        };
+        const userDoc = doc(firestore,`Accounts/${user.uid}/Friends/${friendInfoDocId}`);
+        const friendDoc = doc(firestore,`Accounts/${friendId}/Friends/${userInfoDocId}`);            
+        const newLastMsg = doc(firestore,`ChatContainers/${containerId}`);
+        const newDoc = {
+            lastMessageId: newMessage["_key"]["path"]["segments"][3],
+        }
+        updateDoc(newLastMsg,newDoc);
+        updateDoc(userDoc,sameUpdate);
+        updateDoc(friendDoc,sameUpdate,{merge:true}).then(e=>{
+            console.log(e);
+        }).catch(error=>{
+            console.log("Error : ",error);
+        });
     };
 
     function correctCss(sender,accountId,pastSenderId){

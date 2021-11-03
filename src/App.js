@@ -10,6 +10,7 @@ import './App.css';
 import Home from './components/main/Home';
 import Login from './components/main/Login';
 import Friends from './components/main/Friends';
+import AllFriends from './components/main/AllFriends';
 
 function App(props) {
   const [{user},dispatch] = useStateValue();
@@ -30,6 +31,9 @@ function App(props) {
   return (
     <div className="app">    
       <Switch>
+        <Route path="/friends/list">
+          <AllFriends/>
+        </Route>
         <Route path="/friends">
           <Friends/>
         </Route>

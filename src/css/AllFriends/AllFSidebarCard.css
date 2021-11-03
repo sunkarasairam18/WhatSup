@@ -1,0 +1,18 @@
+.AFSCard{
+    height: 90px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.ASFCcontent{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    background-color: lightgrey;
+    border-radius: 10px;
+    padding-left: 10px;
+}
+.ASFCCPname{
+    font-size: 20px;
+    font-weight: 600;
+    margin-left: 10px;
+}

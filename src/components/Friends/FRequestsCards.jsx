@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import { doc,onSnapshot } from 'firebase/firestore';
+import { doc,onSnapshot,updateDoc } from 'firebase/firestore';
 
 
 import "../../css/Friends/FRequestsCards.css"
@@ -31,29 +31,28 @@ const FRequestsCards = () => {
         ));
     }
 
-    const populateRequests = (names) =>{
+    const delRequest = (id) =>{
+        const userDoc = doc(firestore,`Accounts/${user.uid}`);
+        var list = requests.filter(request => request != id);
+        const newRequests = {
+            Requests : list,
+        }
+        updateDoc(userDoc,newRequests).then(e=>{
+            console.log(e);
+        }).catch(error=>{
+            console.log("Error : ",error);
+        });;
+        
+    }
 
-        // const l = names.length;
-        // var start = 0;
-        // var end = l>4?3:l;
-        // var i = 0;
-        // while(i < l){
-        //     subNames.push([i,i+3<l?i+3:l-1]);
-        //     i += 4;
-        // }
-       
-        // return ( 
-        //     subNames.map(sub =>(
-        //         <div className="FRSCSDRow">
-        //             {populateFour(names,sub[0],sub[1])}
-        //         </div>
-        //     ))
-        // );
+    const populateRequests = (names) =>{
+      
         return (
             requests.map(request =>(
-                <Grid lg={3}  md={4} sm={6}>
-                    <FRequestCard id={request} />
-                </Grid>
+                // <Grid lg={3}  md={4} sm={6} key={request}>
+                //     <FRequestCard id={request} delRequest={delRequest}/>
+                // </Grid>
+                <FRequestCard id={request} key={request} delRequest={delRequest}/>
             ))
         );
     } 
@@ -65,13 +64,7 @@ const FRequestsCards = () => {
                     Friend requests
                 </div>
                 <div className="FRCSDisplay">
-                    {/* <div className="FRSCSDRow">
-                        <FRequestCard name="Sai Ram"/>
-                        <FRequestCard name="Sai Ram"/>
-                        <FRequestCard name="Sai Ram"/>
-
-                    </div> */}
-                    
+                   
                     <Grid container >
                         {populateRequests(names)}
                     </Grid>

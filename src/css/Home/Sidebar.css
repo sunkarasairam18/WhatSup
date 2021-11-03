@@ -2,16 +2,17 @@
     display: flex;
     flex-direction: column;
     flex: 0.3;
+    min-width: 400px;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-
     position: relative;
 }
 
 .sidebarcontent{
-    height: 100vh;
     position: absolute;
+    height: 100vh;
     width: 100%;
     z-index: 1;
+    overflow: hidden;
 }
 
 .profileSlidercontent-enter{
@@ -62,12 +63,12 @@
 }
 
 .sidebar_search{
+    height: 4vh;
+    min-height: 30px;
     display: flex;
     align-items: center;
     background-color: #f6f6f6;
-    height: 39px;
     padding: 10px;
-    
 }
 
 .sidebar_searchContainer{
@@ -152,8 +153,8 @@
     justify-content: space-between;
     padding-left: 15px;
     padding-right: 15px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    height: 8vh;
+    align-items: center;
     border-right: 1px solid lightgray;
     /* border-bottom: 1px solid lightgray; */
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -178,8 +179,8 @@
 } */
 
 .sidebar_chats{
-    flex: 1;
-    background-color: white;
-    overflow: scroll;
     
+    background-color: white;
+    height: 84vh;    
+    overflow: scroll;
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import { Avatar,IconButton } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
 import PeopleIcon from '@mui/icons-material/People';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import GroupSharpIcon from '@mui/icons-material/GroupSharp';
@@ -24,10 +24,12 @@ const FSidebar = () => {
                         </Link>
                     </div>
                     <div className="fsidebar_headerRight">
-                        <IconButton>
-                            <PeopleIcon style={{width:"28px",height:"28px"}}/>
-                            {/* <img src="https://cdn-icons-png.flaticon.com/512/880/880594.png" style={{width:"28px",height:"28px",color:"grey"}}/> */}
-                        </IconButton>                        
+                        <Link to="/friends">
+                            <IconButton>
+                                <PeopleIcon style={{width:"28px",height:"28px"}}/>
+                                {/* <img src="https://cdn-icons-png.flaticon.com/512/880/880594.png" style={{width:"28px",height:"28px",color:"grey"}}/> */}
+                            </IconButton>                        
+                        </Link>
                         <IconButton>
                             <MoreVertIcon/>
                         </IconButton>
@@ -41,9 +43,9 @@ const FSidebar = () => {
                     <FSidebarBox icon={<PersonAddAlt1Icon/>} text="Friend requests" hover={true} arrow={true}/>
                     <FSidebarBox icon={<AccessTimeIcon/>} text="Sent requests" hover={true} arrow={true}/>
                     <FSidebarBox icon={<SearchIcon/>} text="Find friends" hover={true} arrow={true}/>
-                    <FSidebarBox icon={<GroupsIcon/>} text="All Friends" hover={true} arrow={true}/>
+                    <FSidebarBox path="/friends/list" icon={<GroupsIcon/>} text="All Friends" hover={true} arrow={true}/>
                     
-
+                    
                 </div>
             </div>
             
