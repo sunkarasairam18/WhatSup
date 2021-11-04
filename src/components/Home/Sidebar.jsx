@@ -102,11 +102,11 @@ const Sidebar = ({
                     <div className="sidebar_headerRight">
                         <Link to="/friends">
                             <IconButton>
-                                <PeopleIcon style={{width:"28px",height:"28px"}}/>
+                                <PeopleIcon />
                             </IconButton>
                         </Link>                        
                         <IconButton>
-                            <MoreVertIcon/>
+                            <MoreVertIcon />
                         </IconButton>
                     </div>
                 </div>
@@ -141,26 +141,18 @@ const Sidebar = ({
                         selected={select === friend.friendId} 
                         onSelect={setSelect}/>
                     ))}
-                    
-                    <SidebarChat />
-                    <SidebarChat />
-                    <SidebarChat />
-                    <SidebarChat />
-                    <SidebarChat />
-                    <SidebarChat />
-                    <SidebarChat />
+                    <SidebarChat/>
+                    <SidebarChat/>
+                    <SidebarChat/>
+                    <SidebarChat/>
+                    <SidebarChat/>
+                    <SidebarChat/>
+                    <SidebarChat/>
+                    <SidebarChat/>
+                    <SidebarChat/>
+                    <SidebarChat/>
 
-
-                    {/* {searchList.map(friend=>(
-                        <SidebarChat 
-                        key={friend.friendId} 
-                        friendId={friend.friendId} 
-                        friendInfoDocId={friend.id} 
-                        name={friend.friendName} 
-                        containerId={friend.container} 
-                        selected={select === friend.friendId} 
-                        onSelect={setSelect}/>
-                    ))} */}
+                   
                 </div>
             </div>
             <CSSTransition in={show} timeout={450} unmountOnExit classNames="profileSlidercontent">

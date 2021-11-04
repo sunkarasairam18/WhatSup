@@ -10,7 +10,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 import '../../css/Friends/FSidebar.css';
-import chit from '../chit.jpeg';
+import icon from '../chat-1.png';
 import FSidebarBox from './FSidebarBox';
 
 const FSidebar = () => {
@@ -20,14 +20,13 @@ const FSidebar = () => {
                 <div className="fsidebar_header">
                     <div className="img">
                         <Link to="/">
-                            <img src={chit} alt="" className="app_icon"/>
+                            <img src={icon} alt="" className="app_icon"/>
                         </Link>
                     </div>
                     <div className="fsidebar_headerRight">
                         <Link to="/friends">
                             <IconButton>
-                                <PeopleIcon style={{width:"28px",height:"28px"}}/>
-                                {/* <img src="https://cdn-icons-png.flaticon.com/512/880/880594.png" style={{width:"28px",height:"28px",color:"grey"}}/> */}
+                                <PeopleIcon />
                             </IconButton>                        
                         </Link>
                         <IconButton>
@@ -44,8 +43,7 @@ const FSidebar = () => {
                     <FSidebarBox icon={<AccessTimeIcon/>} text="Sent requests" hover={true} arrow={true}/>
                     <FSidebarBox icon={<SearchIcon/>} text="Find friends" hover={true} arrow={true}/>
                     <FSidebarBox path="/friends/list" icon={<GroupsIcon/>} text="All Friends" hover={true} arrow={true}/>
-                    
-                    
+                                                            
                 </div>
             </div>
             

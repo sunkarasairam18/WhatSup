@@ -13,6 +13,7 @@ import Sidebar from '../Home/Sidebar';
 import Upload from '../Home/Upload';
 import JustLogin from '../Home/JustLogin';
 import Chat from '../Home/Chat';
+import FullPhoto from '../AllFriends/FullPhoto';
 
 
 function Home(props) {
@@ -82,6 +83,7 @@ function Home(props) {
                     setTruth={setTruth}
                 />  
                 <Switch>  
+                
                 <Route path="/:friendId/:containerId/:friendInfoDocId" >
                     <Chat
                         setSearch={setSearch}

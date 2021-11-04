@@ -1,0 +1,21 @@
+.NoPreview{
+    flex: 0.7;
+    display: grid;
+    place-items: center;
+    background-color: #e7e5e5;
+
+}
+.NPcontent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.NPCimg{
+    width: 200px;
+    height: 200px;
+}
+.NPCtitle{
+    font-size: 25px;
+    font-weight: bold;
+    color: rgb(114, 113, 113);
+}

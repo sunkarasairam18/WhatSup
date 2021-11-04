@@ -1,0 +1,40 @@
+.Preview{
+    flex: 0.7;
+    display: grid;
+    place-items: center;
+    background-color: rgb(211, 206, 206);
+
+
+}
+.Pcontent{
+    background-color: #e7e5e5;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    width: 600px;
+    height: 500px;
+    display: grid;
+    place-items: center;
+    
+}
+.PSubcontent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.Ppic{
+    height: 250px;
+    width: 250px;
+    border-radius: 125px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    cursor: pointer;
+}
+.Pname{
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 30px;
+    font-weight: bold;
+}
+.Pbio{
+    font-size: 20px;
+    color: rgb(39, 39, 39);
+}

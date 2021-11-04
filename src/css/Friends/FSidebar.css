@@ -1,50 +1,53 @@
-.fsidebar{
-    display: flex;
-    flex-direction: column;
-    flex: 0.3;
-    position: relative;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    background-color: #ededed;
-    min-width: 300px;
+.fsidebar {
+  display: flex;
+  flex-direction: column;
+  flex: 0.3;
+  min-width: 400px;
+
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background-color: #ededed;
+}
+
+.fsidebarcontent {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  z-index: 1;
+}
+.fsidebar_header {
+  /* flex: 0.08; */
+  height: 60px;
+
+  display: flex;
+  justify-content: space-between;
+  padding-left: 15px;
+  padding-right: 15px;
+  align-items: center;
+  /* border-right: 1px solid lightgray; */
+  border-bottom: 1px solid lightgray;
+  /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
 
 }
 
-.fsidebarcontent{
-    height: 100vh;
-    position: absolute;
-    width: 100%;
-    z-index: 1;
-}
-.fsidebar_header{
-    display: flex;
-    justify-content: space-between;
-    padding-left: 15px;
-    padding-right: 15px;
-    height: 8vh;
-    align-items: center;
-    /* border-right: 1px solid lightgray; */
-    border-bottom: 1px solid lightgray;
-
+.fsidebar_headerRight {
+  display: flex;
+  align-items: center;
+  min-width: 6vw;
 }
 
-.fsidebar_headerRight{
-    display: flex;
-    align-items: center;
-    min-width: 6vw;
+.app_icon {
+  height: 36px;
+  width: 36px;
 }
-
-.app_icon{
-    height: 35px;
-    width: 35px;
+.fsidebar_title {
+  font-size: 30px;
+  font-weight: bold;
+  padding-left: 12px;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
-.fsidebar_title{
-    font-size: 30px;
-    font-weight: bold;
-    padding-left: 12px;
-    padding-top: 15px;
-    padding-bottom: 15px;
-}
-.fsidebar_requests{
-    padding-left: 10px;
-    padding-right: 10px;
+.fsidebar_requests {
+  padding-left: 10px;
+  padding-right: 10px;
 }

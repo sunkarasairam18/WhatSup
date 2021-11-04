@@ -1,0 +1,24 @@
+.t{
+    display: flex;
+    flex-direction: column;
+
+    height: 100vh;
+    background-color: blueviolet;
+}
+.t1{
+    flex: 0.5;
+
+    /* height: 20%; */
+    background-color: brown;
+}
+.t2{
+    /* height: 30%; */
+    flex: 0.3;
+    background-color: cadetblue;
+}
+.t3{
+    /* height: 50%; */
+    flex: 1;
+    background-color: chocolate;
+    overflow: scroll;
+}
