@@ -42,16 +42,16 @@
     height: 200px;
     border-radius: 100px;    
 }
+.picOptions{
+    top: 96%;
+    position: absolute;
+}
 
 .profile_pic_hover{
     position: absolute;
     top: 0px;
 }
-.profile_pic_org{
-    height: 200px;
-    width: 200px;
-    border-radius: 100px;
-}
+
 .profile_name{
     height: 100px;
     background-color: #f6f6f6;
@@ -104,9 +104,7 @@
     position: relative;
     margin-top: 20px;
 }
-/* .about_user_text{
 
-} */
 .about_user_text_edit{
     position: absolute;
     right: 25px;

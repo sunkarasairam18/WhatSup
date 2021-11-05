@@ -19,7 +19,7 @@ import FriendInfo from './FriendInfo';
 import ChatBubble from './ChatBubble';
 import '../../css/Home/Chat.css';
 
-const Chat = ({setSearch,setTruth}) => {
+const Chat = ({setSearch,setTruth,selectId,setSelectId}) => {
     const [input,setInput] = useState("");
     const {friendId,containerId,friendInfoDocId} = useParams();
     const [userInfoDocId,setUserInfoDocId] = useState(null);
@@ -65,6 +65,7 @@ const Chat = ({setSearch,setTruth}) => {
     };
 
    useEffect(()=>{
+        if(!selectId) setSelectId(friendId);
         setShowInfo(false);
    },[friendId]);
     useEffect(()=>{

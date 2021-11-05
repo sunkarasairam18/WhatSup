@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 
 import '../../css/AllFriends/FullPhoto.css';
 
-const FullPhoto = ({previewUrl}) => {
+const FullPhoto = ({previewUrl,crossClick}) => {
     let history = useHistory();
     const goToPreviousPath = () => {
         history.goBack()
@@ -15,7 +15,7 @@ const FullPhoto = ({previewUrl}) => {
     return ( 
         <div className="FullPhoto">
             <div className="FPcross">             
-                <CloseIcon style={{cursor:"pointer",height:"30px",width:"30px"}} onClick={goToPreviousPath}/>
+                <CloseIcon style={{cursor:"pointer",height:"30px",width:"30px"}} onClick={crossClick?()=>crossClick(false):goToPreviousPath}/>
             </div>
             <div className="FPpiccontainer">
                 <img src={previewUrl} className="FullPic"/>

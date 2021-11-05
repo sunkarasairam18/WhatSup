@@ -5,15 +5,21 @@
     height: 100vh;
     margin: 0px;
     padding: 0px;
-    
-  }
+    position: relative;
+}
   
   .home_body{
+    position: absolute;
     display: flex;
     background-color: #ededed;
     height: 100vh;
     width: 100vw;
     margin: 0px;
     padding: 0px;
-  
-  }
+}
+.fullPhoto{
+  background-color: white;
+  height: 100vh;
+  width: 100vw;
+  z-index: 5;
+}

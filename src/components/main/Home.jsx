@@ -16,13 +16,14 @@ import Chat from '../Home/Chat';
 import FullPhoto from '../AllFriends/FullPhoto';
 
 
-function Home(props) {
+const  Home = ({profileUrl,setProfileUrl}) => {
   const [{user},dispatch] = useStateValue();
   const [isWindowInFocus,setIsWindowInFocus] = useState(true);
   const [showUpload,setShowUpload] = useState(false);
-  const [imageUrl,setImageUrl] = useState();
+  const [showProfile,setShowProfile] = useState(false);
   const [search,setSearch] = useState();
   const [truth,setTruth] = useState(false);
+  const [selectId,setSelectId] = useState("");
   const [uploadFile,setUploadFile] = useState({file:"",url:""});
   var url = "";
 
@@ -34,9 +35,9 @@ function Home(props) {
     }
   },[uploadFile])
 
-  const uploadImage = async () =>{
+  const uploadImage = async (result) =>{
     const formData = new FormData();
-    formData.append("file",uploadFile.file);
+    formData.append("file",result);
     formData.append("upload_preset","kjxylxjb");
     console.log("Form data",formData);
     Axios.post("https://api.cloudinary.com/v1_1/ddpxfhqv6/image/upload",formData).then((response)=>{
@@ -62,7 +63,7 @@ function Home(props) {
 
   const disablebg = () =>{
     var sty = {};
-    if(!showUpload) return;
+    if(!uploadFile.url) return;
     sty["filter"]="blur(1px)";
     return sty;
   }
@@ -70,10 +71,20 @@ function Home(props) {
   return (
 
     <div className="home">   
-        <Upload showUpload={showUpload} setShowUpload={setShowUpload} imageUrl={uploadFile.url} uploadImage={uploadImage} /> 
+        <Upload showUpload={showUpload} uploadFile={uploadFile} setUploadFile={setUploadFile} setShowUpload={setShowUpload} imageUrl={uploadFile.url} uploadImage={uploadImage} /> 
+        {showProfile && 
+        <div className="fullPhoto">
+          <FullPhoto previewUrl={profileUrl} crossClick={setShowProfile}/>
+        </div>
+        }
         <PageVisibility onChange={()=>setIsWindowInFocus(!isWindowInFocus)}>
             <div className="home_body" style={disablebg()}>   
                 <Sidebar 
+                    selectId = {selectId}
+                    setSelectId = {setSelectId}
+                    profileUrl={profileUrl}
+                    setProfileUrl={setProfileUrl}
+                    setShowProfile={setShowProfile}
                     showUpload={showUpload} 
                     setShowUpload={setShowUpload} 
                     setUploadFile={setUploadFile}
@@ -82,12 +93,13 @@ function Home(props) {
                     truth={truth}
                     setTruth={setTruth}
                 />  
-                <Switch>  
-                
+                <Switch>                  
                 <Route path="/:friendId/:containerId/:friendInfoDocId" >
                     <Chat
                         setSearch={setSearch}
                         setTruth={setTruth}
+                        selectId={selectId}
+                        setSelectId={setSelectId}
                     />
                 </Route>                                 
                 <Route path="/">
@@ -95,7 +107,10 @@ function Home(props) {
                 </Route>                                                      
                 </Switch>
             </div>
+
+            
         </PageVisibility>
+        
     </div>
   );
 }

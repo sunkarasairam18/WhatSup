@@ -16,7 +16,7 @@
 }
 .upload_pic{
     height: 350px;
-    background-color: rgb(168, 164, 164);
+    /* background-color: rgb(168, 164, 164); */
     display: grid;
     place-items: center;
 }

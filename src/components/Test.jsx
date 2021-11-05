@@ -1,28 +1,48 @@
-import React from 'react';
+import React,{useState,useRef} from 'react';
 import '../css/Test.css';
+import Cropper from "react-cropper";
+import "cropperjs/dist/cropper.css";
 
-import SidebarChat from './Home/SidebarChat';
-const Test = () => {
+
+
+const Test = ({imageUrl}) => {
+    
+    const [result,setResult] = useState(null);
+
+    const cropperRef = React.createRef(null);
+
+    const [srcImg,selectSrcImg] = useState("");    
+
+
+    const onCrop = () => {
+        const imageElement = cropperRef?.current;
+        const cropper = imageElement?.cropper;
+        setResult(cropper.getCroppedCanvas().toDataURL());
+    };
+
+
     return ( 
         <div className="t">
-            <div className="t1">
 
-            </div>
-            <div className="t2">
+            
+             {srcImg && <Cropper
+                        src={srcImg} 
+                        style={{ height: 400, width: 400 }}
+                        initialAspectRatio={1 / 1}
+                        center={false}
+                        // cropBoxMovable={false}
+                        cropBoxResizable={false}
+                        // toggleDragModeOnDblclick={false}
+                        minContainerWidth={500}
+                        minContainerHeight={500}
+                        // cropBoxData={{ width: 100, height: 50 }}
+                        guides={false}
+                        // minCropBoxWidth={200}
+                        // minCropBoxHeight={200}
 
-            </div>
-            <div className="t3">
-                {/* <SidebarChat/>
-                <SidebarChat/>
-                <SidebarChat/>
-                <SidebarChat/>
-                <SidebarChat/><SidebarChat/>
-                <SidebarChat/>
-                <SidebarChat/><SidebarChat/>
-                <SidebarChat/>
-                <SidebarChat/> */}
-
-            </div>
+                        crop={onCrop}
+                        ref={cropperRef}
+                        />}           
         </div>
      );
 }

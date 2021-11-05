@@ -6,9 +6,12 @@
 .infoheader{
     background-color: rgb(240, 240, 240);
     width: 100%;
-    height: 69px;
+    height: 60px;
     display: flex;
     flex-direction: row;
+    border-left-style: solid;
+    border-left-color: lightgray;
+    border-left-width: 0.1px;
 }
 .infocross{
     width: 100px;

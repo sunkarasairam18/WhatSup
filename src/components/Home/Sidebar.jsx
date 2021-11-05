@@ -1,13 +1,12 @@
 import React, {useState,useEffect } from 'react';
 import { Avatar,IconButton } from '@material-ui/core';
 import PeopleIcon from '@mui/icons-material/People';
-import ChatIcon from '@mui/icons-material/Chat';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {doc,onSnapshot,query,collection,orderBy} from 'firebase/firestore';
 import { SearchOutlined } from '@mui/icons-material';
 import { CSSTransition } from 'react-transition-group';
-import { Switch,Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 import Profile from './Profile';
@@ -19,6 +18,11 @@ import { actionTypes } from '../../services/reducer';
 
 
 const Sidebar = ({
+                    selectId,
+                    setSelectId,
+                    profileUrl,
+                    setShowProfile,
+                    setProfileUrl,
                     showUpload,
                     search,
                     truth,
@@ -27,11 +31,9 @@ const Sidebar = ({
                     setShowUpload,
                     setUploadFile}) => {
     const [{user},dispatch] = useStateValue();
-    const [select,setSelect] = useState("");
     const [show,setShow] = useState(false);
     const [friendsList,setFriendsList] = useState([]);
     const [about,SetAbout] = useState("");
-    const [photoUrl,SetPhotoUrl] = useState("");
 
     const searchRef = React.createRef();
 
@@ -40,7 +42,7 @@ const Sidebar = ({
         onSnapshot(userDoc,userUpdate=>{
             if(userUpdate.exists()){
                 const userData = userUpdate.data();   
-                SetPhotoUrl(userData.photoUrl);
+                setProfileUrl(userData.photoUrl);
                 SetAbout(userData.About);
                 dispatch({
                     type: actionTypes.SET_USER,
@@ -75,8 +77,7 @@ const Sidebar = ({
         }else{
             return (
                 <div onClick={()=>{
-                    searchRef.current?.focus();
-                    
+                    searchRef.current?.focus();                    
                 }}>
                     <SearchOutlined/>
                 </div>
@@ -94,11 +95,10 @@ const Sidebar = ({
     }
 
     return ( 
-
         <div className="sidebar">
             <div className="sidebarcontent">
                 <div className="sidebar_header">
-                    <Avatar src={photoUrl} className="profilepic" onClick={setShow}/>
+                    <Avatar src={profileUrl} className="profilepic" onClick={setShow}/>
                     <div className="sidebar_headerRight">
                         <Link to="/friends">
                             <IconButton>
@@ -138,8 +138,8 @@ const Sidebar = ({
                         friendInfoDocId={friend.id} 
                         name={friend.friendName} 
                         containerId={friend.container} 
-                        selected={select === friend.friendId} 
-                        onSelect={setSelect}/>
+                        selected={selectId === friend.friendId} 
+                        onSelect={setSelectId}/>
                     ))}
                     <SidebarChat/>
                     <SidebarChat/>
@@ -157,7 +157,8 @@ const Sidebar = ({
             </div>
             <CSSTransition in={show} timeout={450} unmountOnExit classNames="profileSlidercontent">
                 <Profile 
-                photo={photoUrl} 
+                setShowProfile={setShowProfile}
+                photo={profileUrl} 
                 name={user.displayName} 
                 about={about} 
                 className="profileSlider" 

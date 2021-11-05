@@ -157,7 +157,7 @@
     height: 60px;
     border-right: 1px solid lightgray;
     /* border-bottom: 1px solid lightgray; */
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
 
 }
 .sidebar_header > .profilepic{

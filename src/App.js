@@ -18,6 +18,8 @@ function App(props) {
   const [{user},dispatch] = useStateValue();
   const [isWindowInFocus,setIsWindowInFocus] = useState(true);
   const [previewUrl,setPreviewUrl] = useState("");
+  const [profileUrl,setProfileUrl] = useState("");
+
 
   useEffect(()=>{
     if (isWindowInFocus) {
@@ -40,11 +42,17 @@ function App(props) {
         <Route path="/friends/list">
           <AllFriends setPreviewUrl={setPreviewUrl}/>
         </Route>
+        
         <Route path="/friends">
           <Friends/>
-        </Route>
+        </Route>   
+           
         <Route path="/">
-          {!user?(<Login/>):(<Home/>)}     
+          {!user?(<Login/>):(
+          <Home
+            profileUrl={profileUrl}
+            setProfileUrl={setProfileUrl}
+          />)}     
           {/* <Test/> */}
         </Route>
       </Switch>

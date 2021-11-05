@@ -1,27 +1,42 @@
 import React,{useState,useEffect} from 'react';
-import { Avatar } from '@material-ui/core';
+import { Avatar,IconButton } from '@material-ui/core';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CreateIcon from '@mui/icons-material/Create';
 
 
 // import CameraHover from './CameraHover';
 import '../../css/Home/Profile.css';
+import PicChangePopDown from './PicChangePopDown';
 // import Upload from './Home/Upload';
 
-const Profile = ({photo,name,about,show,setUploadFile,onBack,setShowUpload}) => {
+const Profile = ({photo,name,about,show,setUploadFile,onBack,setShowUpload,setShowProfile}) => {
     const [hovershow,SetHoverShow] = useState(false);
-    const [file,setFile] = useState();
-    const [selected,setSelected] = useState(false);
+   
+    const [changeShow,setChangeShow] = useState(false);
+    const changePicRef = React.createRef();
+    const myRef = React.createRef();
+
+
 
     const fileChange = (e) =>{
         console.log(e);
         if(e.target.files[0]){
+            // setShowUpload(true);
             setUploadFile({file:e.target.files[0],url:URL.createObjectURL(e.target.files[0])});
         }        
     };
+    const handleDown = (e) =>{
+        if (changePicRef.current && !changePicRef.current.contains(e.target)) {
+            setChangeShow(false);
+            return;
+          }
+    };
 
-    const myRef = React.createRef();
+    useEffect(()=>{        
+        document.addEventListener("click",handleDown);
+    },[changePicRef]);
 
+   
     const click = ()=>{
         myRef.current.click();
     }
@@ -41,14 +56,20 @@ const Profile = ({photo,name,about,show,setUploadFile,onBack,setShowUpload}) => 
                 
             </div>
             <div className="profile_pic">
-                <div className="profile_pic_box" onClick={click}>
-                    <img src={photo} className="profile_pic_org"/>
+                <div className="profile_pic_box" ref={changePicRef} onClick={()=>setChangeShow(!changeShow)}>
+                    <Avatar src={photo} style={{height:"200px",width:"200px"}}/>
                     <input type="file" accept=".png, .jpg, .jpeg" ref={myRef} style={{opacity: "0"}} onChange={fileChange}/>
 
                     {/* {hovershow && <div className="profile_pic_hover" onClick={check}>
                         <CameraHover />
                     </div>} */}
+                    <div className="picOptions">
+                        <PicChangePopDown show={changeShow} setShowProfile={setShowProfile} upload={click}/>
+                    </div>                    
+
                 </div>
+
+                
                 {/* <button onClick={uploadImage}>upload</button> */}
                 {/* <div onClick={click}>CLick</div> */}
                
