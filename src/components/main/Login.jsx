@@ -1,5 +1,4 @@
 import React from 'react';
-import {Button} from "@material-ui/core";
 import '../../css/maincss/Login.css';
 import {auth,provider} from '../../services/firebase';
 import {signInWithPopup} from 'firebase/auth';
@@ -7,7 +6,8 @@ import { useStateValue } from '../../services/StateProvider';
 import { actionTypes } from '../../services/reducer';
 import { addAccount } from '../../services/firebase';
 
-import chit from '../chit.jpeg';
+import icon from '../chat-1.png';
+import google from '../google.png';
 
 const Login = () => {
     const [{},dispatch] = useStateValue();
@@ -31,13 +31,17 @@ const Login = () => {
     return (
         <div className="login">
             <div className="login_container">
-                <img src={chit} alt="" />
+                <img src={icon} alt="" />
                 <div className="login_text">
                     WhatSup
                 </div>
-                <Button onClick={signIn}>
-                    Sign in with Google
-                </Button>
+                <div className="login_btn" onClick={signIn}>
+                    {/* <div className="google_box">
+                        
+                    </div> */}
+                    <img src={google} className="google" alt="" />
+                    Continue with Google
+                </div>
             </div>
         </div>
     );

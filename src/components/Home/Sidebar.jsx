@@ -39,6 +39,7 @@ const Sidebar = ({
 
     useEffect(()=>{
         const userDoc = doc(firestore,`Accounts/${user.uid}`);
+        console.log("User id",user.uid);
         onSnapshot(userDoc,userUpdate=>{
             if(userUpdate.exists()){
                 const userData = userUpdate.data();   
@@ -141,16 +142,7 @@ const Sidebar = ({
                         selected={selectId === friend.friendId} 
                         onSelect={setSelectId}/>
                     ))}
-                    <SidebarChat/>
-                    <SidebarChat/>
-                    <SidebarChat/>
-                    <SidebarChat/>
-                    <SidebarChat/>
-                    <SidebarChat/>
-                    <SidebarChat/>
-                    <SidebarChat/>
-                    <SidebarChat/>
-                    <SidebarChat/>
+                    
 
                    
                 </div>
