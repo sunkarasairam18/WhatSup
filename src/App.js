@@ -18,7 +18,6 @@ function App(props) {
   const [{user},dispatch] = useStateValue();
   const [isWindowInFocus,setIsWindowInFocus] = useState(true);
   const [previewUrl,setPreviewUrl] = useState("");
-  const [profileUrl,setProfileUrl] = useState("");
 
 
   useEffect(()=>{
@@ -50,8 +49,7 @@ function App(props) {
         <Route path="/">
           {!user?(<Login/>):(
           <Home
-            profileUrl={profileUrl}
-            setProfileUrl={setProfileUrl}
+           
           />)}     
           {/* <Test/> */}
         </Route>

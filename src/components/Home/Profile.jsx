@@ -4,42 +4,39 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CreateIcon from '@mui/icons-material/Create';
 
 
-// import CameraHover from './CameraHover';
 import '../../css/Home/Profile.css';
 import PicChangePopDown from './PicChangePopDown';
-// import Upload from './Home/Upload';
 
-const Profile = ({photo,name,about,show,setUploadFile,onBack,setShowUpload,setShowProfile}) => {
+const Profile = ({photo,name,about,setUploadFile,onBack,setShowUpload,setShowProfile}) => {
     const [hovershow,SetHoverShow] = useState(false);
    
     const [changeShow,setChangeShow] = useState(false);
     const changePicRef = React.createRef();
     const myRef = React.createRef();
 
-
-
     const fileChange = (e) =>{
-        console.log(e);
         if(e.target.files[0]){
-            // setShowUpload(true);
+            setShowUpload(true);
             setUploadFile({file:e.target.files[0],url:URL.createObjectURL(e.target.files[0])});
         }        
     };
+
     const handleDown = (e) =>{
         if (changePicRef.current && !changePicRef.current.contains(e.target)) {
             setChangeShow(false);
             return;
           }
     };
-
+    
     useEffect(()=>{        
         document.addEventListener("click",handleDown);
     },[changePicRef]);
 
    
     const click = ()=>{
+        myRef.current.value = null;
         myRef.current.click();
-    }
+    };
 
    
     return (
@@ -47,7 +44,7 @@ const Profile = ({photo,name,about,show,setUploadFile,onBack,setShowUpload,setSh
             <div className="profile_header">
                 <div className="profile_header_content">
                     <div className="profile_header_back_btn" >
-                        <ArrowBackIcon onClick={()=>onBack(!show)}/>
+                        <ArrowBackIcon onClick={()=>onBack(false)}/>
                     </div>
                     <div className="profile_header_title">
                         Profile
@@ -64,7 +61,7 @@ const Profile = ({photo,name,about,show,setUploadFile,onBack,setShowUpload,setSh
                         <CameraHover />
                     </div>} */}
                     <div className="picOptions">
-                        <PicChangePopDown show={changeShow} setShowProfile={setShowProfile} upload={click}/>
+                        <PicChangePopDown show={changeShow} photo={photo} setShowProfile={setShowProfile} upload={click}/>
                     </div>                    
 
                 </div>

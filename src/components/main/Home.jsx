@@ -16,24 +16,19 @@ import Chat from '../Home/Chat';
 import FullPhoto from '../AllFriends/FullPhoto';
 
 
-const  Home = ({profileUrl,setProfileUrl}) => {
+const  Home = () => {
   const [{user},dispatch] = useStateValue();
   const [isWindowInFocus,setIsWindowInFocus] = useState(true);
   const [showUpload,setShowUpload] = useState(false);
   const [showProfile,setShowProfile] = useState(false);
+  const [profileUrl,setProfileUrl] = useState("");
   const [search,setSearch] = useState();
   const [truth,setTruth] = useState(false);
   const [selectId,setSelectId] = useState("");
   const [uploadFile,setUploadFile] = useState({file:"",url:""});
   var url = "";
 
-  
-  useEffect(()=>{
-    if(uploadFile.file){
-      console.log("Upload File",uploadFile);
-      setShowUpload(true);
-    }
-  },[uploadFile])
+
 
   const uploadImage = async (result) =>{
     const formData = new FormData();
@@ -46,7 +41,6 @@ const  Home = ({profileUrl,setProfileUrl}) => {
     }).catch((error)=>{
         console.log(error);
     });
-
   };
 
   const photoUrlDatabase = async (url) =>{
@@ -63,7 +57,7 @@ const  Home = ({profileUrl,setProfileUrl}) => {
 
   const disablebg = () =>{
     var sty = {};
-    if(!uploadFile.url) return;
+    if(!showUpload) return;
     sty["filter"]="blur(1px)";
     return sty;
   }
@@ -71,7 +65,13 @@ const  Home = ({profileUrl,setProfileUrl}) => {
   return (
 
     <div className="home">   
-        <Upload showUpload={showUpload} uploadFile={uploadFile} setUploadFile={setUploadFile} setShowUpload={setShowUpload} imageUrl={uploadFile.url} uploadImage={uploadImage} /> 
+        <Upload 
+        showUpload={showUpload} 
+        setShowUpload={setShowUpload} 
+        uploadFile={uploadFile} 
+        setUploadFile={setUploadFile} 
+        uploadImage={uploadImage} 
+        /> 
         {showProfile && 
         <div className="fullPhoto">
           <FullPhoto previewUrl={profileUrl} crossClick={setShowProfile}/>

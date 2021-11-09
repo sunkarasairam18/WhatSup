@@ -99,7 +99,7 @@ const Sidebar = ({
         <div className="sidebar">
             <div className="sidebarcontent">
                 <div className="sidebar_header">
-                    <Avatar src={profileUrl} className="profilepic" onClick={setShow}/>
+                    <Avatar src={profileUrl} className="profilepic" onClick={()=>setShow(true)}/>
                     <div className="sidebar_headerRight">
                         <Link to="/friends">
                             <IconButton>
@@ -153,8 +153,6 @@ const Sidebar = ({
                 photo={profileUrl} 
                 name={user.displayName} 
                 about={about} 
-                className="profileSlider" 
-                show={show} 
                 showUpload={showUpload} 
                 setShowUpload={setShowUpload} 
                 setUploadFile={setUploadFile}

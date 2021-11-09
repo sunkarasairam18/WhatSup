@@ -6,11 +6,10 @@ import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 
 import '../../css/Home/Upload.css';
-import Test from "../Test";
-import { UploadFile } from '@mui/icons-material';
 
 
-const Upload = ({showUpload,uploadFile,setUploadFile,setShowUpload,imageUrl,uploadImage}) => {
+
+const Upload = ({showUpload,uploadFile,setUploadFile,setShowUpload,uploadImage}) => {
     const imgRef = React.createRef();
     
     const [result,setResult] = useState(null);
@@ -34,34 +33,33 @@ const Upload = ({showUpload,uploadFile,setUploadFile,setShowUpload,imageUrl,uplo
     };
 
     return (  
-        <CSSTransition in={uploadFile.url} timeout={800} unmountOnExit classNames="upload_transition">
+        <CSSTransition in={showUpload} timeout={800} unmountOnExit classNames="upload_transition">
             <div className="upload">
                 <div className="upload_header">
-                    <ClearIcon style={{color:"white",height:"50px",cursor:"pointer"}} onClick={()=>setUploadFile({url:"",file:""})}/>
+                    <ClearIcon style={{color:"white",height:"50px",cursor:"pointer"}} onClick={()=>setShowUpload(false)}/>
                 </div>
                 <div className="upload_pic">
-                    {/* <img ref={imgRef} src={imageUrl} style={{height:"300px",width:"300px",borderRadius:"150px"}} alt=""/> */}
                     <div>
-
-                    {imageUrl && <Cropper
-                        src={imageUrl} 
-                        style={{ height: 350, width: "100%" }}
-                        initialAspectRatio={1 / 1}
-                        center={false}
-                        movable={false}
-                        // cropBoxMovable={false}
-                        // cropBoxResizable={false}
-                        toggleDragModeOnDblclick={false}
-                        minContainerWidth={100}
-                        minContainerHeight={80}
-                        // cropBoxData={{ width: 100, height: 50 }}
-                        guides={false}
-                        // minCropBoxWidth={200}
-                        // minCropBoxHeight={200}
-
-                        crop={onCrop}
-                        ref={cropperRef}
+                        {uploadFile.url && <Cropper
+                            src={uploadFile.url} 
+                            style={{ height: 350, width: "100%" }}
+                            initialAspectRatio={1 / 1}
+                            aspectRatio={1/1}
+                            background={false}
+                            viewMode={1}
+                            center={false}
+                            movable={false}
+                            dragMode={"none"}
+                            cropBoxMovable={false}
+                            cropBoxResizable={false}
+                            toggleDragModeOnDblclick={false}
+                            minContainerWidth={100}
+                            minContainerHeight={80}
+                            guides={false}                            
+                            crop={onCrop}
+                            ref={cropperRef}
                         />}    
+
                     </div>
                 </div>
                 <div className="upload_done">
