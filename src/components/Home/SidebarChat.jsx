@@ -7,8 +7,9 @@ import {firestore,newName} from '../../services/firebase';
 import '../../css/Home/SidebarChat.css';
 import {getObjectfromDate} from './Chat';
 
-const SidebarChat = ({friendId,name,containerId,selected,onSelect,friendInfoDocId}) => {
+const SidebarChat = ({friendId,containerId,selected,onSelect,friendInfoDocId}) => {
     const [lastmessage,setLastmessage] = useState("");
+    const [name,setName] = useState("");
     const [timeTag,setTimetag] = useState("");
     const [url,setUrl] = useState("");
 
@@ -24,6 +25,7 @@ const SidebarChat = ({friendId,name,containerId,selected,onSelect,friendInfoDocI
             onSnapshot(db,docQuery =>{
                 if(docQuery.exists()){
                     setUrl(docQuery.data().photoUrl);
+                    setName(docQuery.data().displayName);
                 }
             });
         }

@@ -21,3 +21,4 @@ const CameraHover = ({handleClick}) => {
 }
  
 export default CameraHover;
+

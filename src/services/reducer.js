@@ -1,5 +1,5 @@
 export const initalState = {
-    user: JSON.parse(localStorage.getItem("whatSupToken")),
+    user: JSON.parse(localStorage.getItem("WhatsUpToken")),
 };
 
 export const actionTypes = {
@@ -16,9 +16,7 @@ export const reducer = (state,action) =>{
                user: {
                       displayName: action.user.displayName,
                       email: action.user.email,
-                      uid: action.user.uid,
-                      lastSeen: new Date(),
-                      onlineStatus: true,
+                      uid: action.user.uid,                      
                     },
             };   
       

@@ -19,7 +19,7 @@ import FriendInfo from './FriendInfo';
 import ChatBubble from './ChatBubble';
 import '../../css/Home/Chat.css';
 
-const Chat = ({setSearch,setTruth,selectId,setSelectId}) => {
+const Chat = ({setSearch,setSearchIcon,selectId,setSelectId}) => {
     const [input,setInput] = useState("");
     const {friendId,containerId,friendInfoDocId} = useParams();
     const [userInfoDocId,setUserInfoDocId] = useState(null);
@@ -95,7 +95,7 @@ const Chat = ({setSearch,setTruth,selectId,setSelectId}) => {
     async function sendMessage(msg){        
         msg.preventDefault();
         setSearch("");
-        setTruth("");
+        setSearchIcon(false);
         const chatCollection = collection(firestore,`ChatContainers/${containerId}/messages`);
         const temporarymessage = input;
         setInput("");

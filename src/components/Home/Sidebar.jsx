@@ -25,8 +25,8 @@ const Sidebar = ({
                     setProfileUrl,
                     showUpload,
                     search,
-                    truth,
-                    setTruth,
+                    searchIcon,
+                    setSearchIcon,
                     setSearch,
                     setShowUpload,
                     setUploadFile}) => {
@@ -66,11 +66,11 @@ const Sidebar = ({
    
 
     function getIcon(){
-        if(truth){
+        if(searchIcon){
             return (
                 <div onClick={()=>{
                     setSearch("");
-                    setTruth(false);
+                    setSearchIcon(false);
                 }}>
                     <ArrowBackIcon/>
                 </div>
@@ -86,7 +86,7 @@ const Sidebar = ({
         }
     }
 
-    function getList(){
+    function getSearchList(){
         if(search){            
             var list = friendsList.filter(friend => friend.friendName.trim().toLowerCase().includes(search.trim().toLowerCase()));
             return list;
@@ -111,10 +111,10 @@ const Sidebar = ({
                         </IconButton>
                     </div>
                 </div>
-                <div className={`sidebar_search ${truth?`sidebar_Search_focus`:`sidebar_Search_blur`}`}>
+                <div className={`sidebar_search ${searchIcon?`sidebar_Search_focus`:`sidebar_Search_blur`}`}>
                     <div className="sidebar_searchContainer">
                         <div className="icons">                                             
-                            <CSSTransition in={truth} timeout={500} classNames="arrow">
+                            <CSSTransition in={searchIcon} timeout={500} classNames="arrow">
                                 {getIcon()}
                             </CSSTransition> 
                         </div>    
@@ -123,16 +123,16 @@ const Sidebar = ({
                             type="text"
                             ref={searchRef}
                             value={search}
-                            onFocus={()=>setTruth(true)}
+                            onFocus={()=>setSearchIcon(true)}
                             onBlur={()=>{
-                                setTruth(search || false);
+                                setSearchIcon(search || false);
                             }}
                             onChange={e=>setSearch(e.target.value)}/>
                     </div>                    
                 </div>
               
                  <div className="sidebar_chats">
-                    {getList()?.map(friend => (
+                    {getSearchList()?.map(friend => (
                         <SidebarChat 
                         key={friend.friendId} 
                         friendId={friend.friendId} 
@@ -142,21 +142,23 @@ const Sidebar = ({
                         selected={selectId === friend.friendId} 
                         onSelect={setSelectId}/>
                     ))}
-                    
-
                    
                 </div>
             </div>
-            <CSSTransition in={show} timeout={450} unmountOnExit classNames="profileSlidercontent">
-                <Profile 
-                setShowProfile={setShowProfile}
-                photo={profileUrl} 
-                name={user.displayName} 
-                about={about} 
-                showUpload={showUpload} 
-                setShowUpload={setShowUpload} 
-                setUploadFile={setUploadFile}
-                onBack={setShow}/>
+            <CSSTransition //Sidebar slider for user photo,name,bio
+                in={show} 
+                timeout={450} 
+                unmountOnExit 
+                classNames="profileSlidercontent"> 
+                    <Profile 
+                    setShowProfile={setShowProfile}
+                    photo={profileUrl} 
+                    name={user.displayName} 
+                    about={about} 
+                    showUpload={showUpload} 
+                    setShowUpload={setShowUpload} 
+                    setUploadFile={setUploadFile}
+                    onBack={setShow}/>
             </CSSTransition>
 
         </div>

@@ -2,7 +2,6 @@ import React, { useState,useEffect } from 'react';
 import {Route,Switch} from 'react-router-dom';
 import Axios from 'axios';
 import {doc,updateDoc} from 'firebase/firestore';
-import PageVisibility from 'react-page-visibility';
 
 import { useStateValue } from '../../services/StateProvider';
 import {firestore} from '../../services/firebase';
@@ -18,12 +17,11 @@ import FullPhoto from '../AllFriends/FullPhoto';
 
 const  Home = () => {
   const [{user},dispatch] = useStateValue();
-  const [isWindowInFocus,setIsWindowInFocus] = useState(true);
   const [showUpload,setShowUpload] = useState(false);
   const [showProfile,setShowProfile] = useState(false);
   const [profileUrl,setProfileUrl] = useState("");
   const [search,setSearch] = useState();
-  const [truth,setTruth] = useState(false);
+  const [searchIcon,setSearchIcon] = useState(false);
   const [selectId,setSelectId] = useState("");
   const [uploadFile,setUploadFile] = useState({file:"",url:""});
   var url = "";
@@ -60,12 +58,11 @@ const  Home = () => {
     if(!showUpload) return;
     sty["filter"]="blur(1px)";
     return sty;
-  }
+  };
 
   return (
-
     <div className="home">   
-        <Upload 
+        <Upload //Pop Up after selecting pic
         showUpload={showUpload} 
         setShowUpload={setShowUpload} 
         uploadFile={uploadFile} 
@@ -73,44 +70,41 @@ const  Home = () => {
         uploadImage={uploadImage} 
         /> 
         {showProfile && 
-        <div className="fullPhoto">
-          <FullPhoto previewUrl={profileUrl} crossClick={setShowProfile}/>
+        <div className="fullPhoto">  
+          <FullPhoto //Displays use full photo
+          previewUrl={profileUrl} 
+          crossClick={setShowProfile}/>
         </div>
         }
-        <PageVisibility onChange={()=>setIsWindowInFocus(!isWindowInFocus)}>
-            <div className="home_body" style={disablebg()}>   
-                <Sidebar 
-                    selectId = {selectId}
-                    setSelectId = {setSelectId}
-                    profileUrl={profileUrl}
-                    setProfileUrl={setProfileUrl}
-                    setShowProfile={setShowProfile}
-                    showUpload={showUpload} 
-                    setShowUpload={setShowUpload} 
-                    setUploadFile={setUploadFile}
-                    search={search}
-                    setSearch={setSearch}
-                    truth={truth}
-                    setTruth={setTruth}
-                />  
-                <Switch>                  
-                <Route path="/:friendId/:containerId/:friendInfoDocId" >
-                    <Chat
-                        setSearch={setSearch}
-                        setTruth={setTruth}
-                        selectId={selectId}
-                        setSelectId={setSelectId}
-                    />
-                </Route>                                 
-                <Route path="/">
-                  <JustLogin/>
-                </Route>                                                      
-                </Switch>
-            </div>
-
-            
-        </PageVisibility>
-        
+        <div className="home_body" style={disablebg()}>   
+          <Sidebar 
+            selectId = {selectId}
+            setSelectId = {setSelectId}
+            profileUrl={profileUrl}
+            setProfileUrl={setProfileUrl}
+            setShowProfile={setShowProfile}
+            showUpload={showUpload} 
+            setShowUpload={setShowUpload}                 
+            setUploadFile={setUploadFile}    
+            search={search}
+            setSearch={setSearch}
+            searchIcon={searchIcon}
+            setSearchIcon={setSearchIcon}
+          />  
+          <Switch>                  
+            <Route path="/:friendId/:containerId/:friendInfoDocId" >
+              <Chat
+                setSearch={setSearch}
+                setSearchIcon={setSearchIcon}
+                selectId={selectId}
+                setSelectId={setSelectId}
+              />                        
+            </Route>                                 
+            <Route path="/">
+              <JustLogin/>
+            </Route>                                                      
+          </Switch>
+        </div>
     </div>
   );
 }

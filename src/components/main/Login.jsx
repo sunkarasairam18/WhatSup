@@ -13,14 +13,14 @@ const Login = () => {
     const [{},dispatch] = useStateValue();
 
     const signIn = () =>{
-        console.log("Sign IN ");
         signInWithPopup(auth,provider).then(result => {
             const {displayName,email,uid} = result.user;
-            localStorage.setItem("whatSupToken",JSON.stringify({
+            localStorage.setItem("WhatsUpToken",JSON.stringify({
                 "displayName": displayName,
                 "email": email,
                 "uid": uid,                
             }));
+            // console.log("Sign IN ",result.user);
             addAccount(displayName,email,uid);
             dispatch({
                 type: actionTypes.SET_USER,
@@ -33,7 +33,7 @@ const Login = () => {
             <div className="login_container">
                 <img src={icon} alt="" />
                 <div className="login_text">
-                    WhatSup
+                    WhatsUp
                 </div>
                 <div className="login_btn" onClick={signIn}>
                     {/* <div className="google_box">

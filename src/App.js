@@ -3,7 +3,7 @@ import { Switch,Route } from 'react-router-dom';
 import PageVisibility from 'react-page-visibility';
 
 
-import {updateLastSeenOnlineStatus,updateOnlineStatus} from './services/firebase';
+import {updateLastSeen,updateOnlineStatus} from './services/firebase';
 import { useStateValue } from "./services/StateProvider";
 import FullPhoto from './components/AllFriends/FullPhoto';
 
@@ -16,46 +16,43 @@ import Test from './components/Test';
 
 function App(props) {
   const [{user},dispatch] = useStateValue();
-  const [isWindowInFocus,setIsWindowInFocus] = useState(true);
   const [previewUrl,setPreviewUrl] = useState("");
 
 
   useEffect(()=>{
-    if (isWindowInFocus) {
-      if(user) updateLastSeenOnlineStatus(user.uid,false);
-      console.log("user : ",user);
-      //Screen OFF 
-    }else{
-      if(user) updateOnlineStatus(user.uid,true);
-      //Screen On
-    }
-  },[isWindowInFocus]);
+    updateOnlineStatus(user.uid,true);
+  },[]);
 
+  const handleVisibilityChange = isVisible => {
+    updateOnlineStatus(user.uid,isVisible);
+    if(!isVisible){
+      updateLastSeen(user.uid);
+    }
+  };
 
   return (
-    <div className="app">    
-      <Switch>
-        <Route path="/friends/list/:selectedId/display">
-          <FullPhoto previewUrl={previewUrl}/>
-        </Route>
-        <Route path="/friends/list">
-          <AllFriends setPreviewUrl={setPreviewUrl}/>
-        </Route>
-        
-        <Route path="/friends">
-          <Friends/>
-        </Route>   
-           
-        <Route path="/">
-          {!user?(<Login/>):(
-          <Home
-           
-          />)}     
-          {/* <Test/> */}
-        </Route>
-      </Switch>
-      
-    </div>
+    <PageVisibility onChange={handleVisibilityChange}>
+      <div className="app">    
+        <Switch>
+          <Route path="/friends/list/:selectedId/display">
+            <FullPhoto previewUrl={previewUrl}/>
+          </Route>
+          <Route path="/friends/list">
+            <AllFriends setPreviewUrl={setPreviewUrl}/>
+          </Route>
+          
+          <Route path="/friends">
+            <Friends/>
+          </Route>   
+            
+          <Route path="/">
+            {!user?(<Login/>):(<Home/>)}          
+            {/* <Test/> */}
+          </Route>
+        </Switch>      
+      </div>
+    </PageVisibility>
+
   );
 }
 
