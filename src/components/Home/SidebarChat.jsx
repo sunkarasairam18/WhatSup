@@ -1,13 +1,13 @@
 import { Avatar } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { doc,onSnapshot,getDoc } from '@firebase/firestore';
+import { doc,onSnapshot,getDoc,updateDoc } from '@firebase/firestore';
 
-import {firestore,newName} from '../../services/firebase';
+import {firestore} from '../../services/firebase';
 import '../../css/Home/SidebarChat.css';
 import {getObjectfromDate} from './Chat';
 
-const SidebarChat = ({friendId,containerId,selected,onSelect,friendInfoDocId}) => {
+const SidebarChat = ({uid,friendName,friendId,friendInfoDocId,containerId,selected,onSelect}) => {
     const [lastmessage,setLastmessage] = useState("");
     const [name,setName] = useState("");
     const [timeTag,setTimetag] = useState("");
@@ -24,8 +24,11 @@ const SidebarChat = ({friendId,containerId,selected,onSelect,friendInfoDocId}) =
             const db = doc(firestore,`Accounts/${friendId}`);
             onSnapshot(db,docQuery =>{
                 if(docQuery.exists()){
-                    setUrl(docQuery.data().photoUrl);
-                    setName(docQuery.data().displayName);
+                    const {displayName,photoUrl} = docQuery.data();
+                    setUrl(photoUrl);
+                    setName(displayName);
+                    if(friendName !== displayName) updateFriendName(displayName);                    
+                    
                 }
             });
         }
@@ -51,14 +54,19 @@ const SidebarChat = ({friendId,containerId,selected,onSelect,friendInfoDocId}) =
         }
     }
    
-    
+    async function updateFriendName(name){
+        const db = doc(firestore,`Accounts/${uid}/Friends/${friendInfoDocId}`);
+        const timestamp = {
+            friendName: name,
+        };
+        await updateDoc(db,timestamp);
+    };        
 
     const shortMsg = (msg) =>{
         if(msg){
             if(msg.length>38) return msg.substring(0,38)+"...";
             return msg;
-        }
-        
+        }        
     }
     return (
         <Link to={`/${friendId}/${containerId}/${friendInfoDocId}`} onClick={()=>onSelect(friendId)}>

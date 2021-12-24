@@ -24,10 +24,10 @@ function App(props) {
   },[]);
 
   const handleVisibilityChange = isVisible => {
-    updateOnlineStatus(user.uid,isVisible);
-    if(!isVisible){
-      updateLastSeen(user.uid);
-    }
+    // updateOnlineStatus(user.uid,isVisible);
+    // if(!isVisible){
+    //   updateLastSeen(user.uid);
+    // }
   };
 
   return (

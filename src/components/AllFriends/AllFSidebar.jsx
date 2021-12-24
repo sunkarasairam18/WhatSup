@@ -53,11 +53,11 @@ const AllFSidebar = ({selectedId,setSelectedId}) => {
                     <div className="AllFsidebar_headerRight">
                         <Link to="/friends">
                             <IconButton>
-                                <PeopleIcon/>
+                                <PeopleIcon style={{height:"30px",width:"30px"}}/>
                             </IconButton>                        
                         </Link>
                         <IconButton>
-                            <MoreVertIcon/>
+                            <MoreVertIcon style={{height:"26px",width:"26px"}}/>
                         </IconButton>
                     </div>
 

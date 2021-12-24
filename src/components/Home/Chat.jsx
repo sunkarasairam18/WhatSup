@@ -1,15 +1,16 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useRef,useEffect} from 'react';
 import { Avatar,IconButton } from '@mui/material';
 import { SearchOutlined } from '@mui/icons-material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
+import SendIcon from '@mui/icons-material/Send';
 import MicIcon from '@mui/icons-material/Mic';
 import { useParams } from 'react-router-dom';
 import { query,onSnapshot,doc,collection,setDoc,addDoc,updateDoc,orderBy,limit,where } from '@firebase/firestore';
 import Picker from 'emoji-picker-react';
 import { CSSTransition } from 'react-transition-group';
-
+import { KeyboardArrowDown } from '@mui/icons-material';
 
 
 import { useStateValue } from '../../services/StateProvider';
@@ -31,10 +32,29 @@ const Chat = ({setSearch,setSearchIcon,selectId,setSelectId}) => {
     const [showInfo,setShowInfo] = useState(false);
     var pastmsg = "";
 
-    const bottomRef = React.createRef();
-    useEffect(()=>{        
-        bottomRef.current.scrollIntoView({behavior:'auto'});
-    });
+   
+
+
+    const [showBottomArrow, setShowBottomArrow] = useState(true)
+
+    const observer = new IntersectionObserver(([entry]) => setShowBottomArrow(entry.isIntersecting))
+
+    useEffect(() => {
+        observer.observe(bottomRef.current)
+        return () => { observer.disconnect() }
+    }, []);
+
+  
+
+
+    const bottomRef = useRef(null);
+    const scrollToBottom = () => {
+        bottomRef.current.scrollIntoView({ behavior: "auto" });
+    };
+    
+    useEffect(scrollToBottom, [messages]);
+    
+     
 
     useEffect(()=>{
         const userFriendDoc = doc(firestore,`Accounts/${user.uid}/Friends/${friendInfoDocId}`);
@@ -56,6 +76,9 @@ const Chat = ({setSearch,setSearchIcon,selectId,setSelectId}) => {
     //     }
     // };
 
+
+    
+
     useEffect(()=>{
         setLastSeen(getLastSeen(friend?.lastSeen));
     },[friend]);
@@ -68,6 +91,7 @@ const Chat = ({setSearch,setSearchIcon,selectId,setSelectId}) => {
         if(!selectId) setSelectId(friendId);
         setShowInfo(false);
    },[friendId]);
+
     useEffect(()=>{
         if(friendId && containerId){
             const document = doc(firestore,`Accounts/${friendId}`);
@@ -78,7 +102,7 @@ const Chat = ({setSearch,setSearchIcon,selectId,setSelectId}) => {
                     setFriend(docData);
                 }
             });
-            const chatQuery = query(collection(firestore,`ChatContainers/${containerId}/messages`),orderBy('timestamp'),limit(10));
+            const chatQuery = query(collection(firestore,`ChatContainers/${containerId}/messages`),orderBy('timestamp'));
             onSnapshot(chatQuery,(chatSnapshot)=>{
                 setMessages(chatSnapshot.docs.map(chat => ({
                     id: chat.id,
@@ -175,7 +199,6 @@ const Chat = ({setSearch,setSearchIcon,selectId,setSelectId}) => {
             
             <div className="chat_header">
                 <div className="chat_header_content" onClick={()=>setShowInfo(true)}>
-
                     <Avatar src={friend.photoUrl}/>
                     <div className="chat_headerInfo">
                         <h3>{friend.displayName}</h3>
@@ -196,18 +219,25 @@ const Chat = ({setSearch,setSearchIcon,selectId,setSelectId}) => {
                 
             </div>
             <div className="chat_body">
-                {messages.map(({id,data}) => (
-                    <ChatBubble     
-                        key={id}
-                        fullClass={correctCss(data.sender,user.uid,pastmsg)}                    
-                        message={data.message}                         
-                        timestamp={getObjectfromDate(new Date(data.timestamp?.toDate()))}
+                    {messages.map(({id,data}) => (
+                        <ChatBubble     
+                            key={id}
+                            fullClass={correctCss(data.sender,user.uid,pastmsg)}                    
+                            message={data.message}                         
+                            timestamp={getObjectfromDate(new Date(data.timestamp?.toDate()))}
                         />                   
-                ))}
-                <div ref={bottomRef}></div>        
+                    ))}
+                    <div ref={bottomRef}></div>
+                     {/* <div className="arrow_container">
 
+                    <div className="arrow_down">
+                        <KeyboardArrowDown style={{height:"30px",width:"30px",color:"grey"}}/>
+                    </div>
+                    </div> */}
+               
             </div>
             <div className="chat_footer">
+
                 <IconButton>
                     <InsertEmoticonIcon/>                    
                 </IconButton>
@@ -216,7 +246,12 @@ const Chat = ({setSearch,setSearchIcon,selectId,setSelectId}) => {
                     <input value = {input} onChange={e => setInput(e.target.value)} placeholder="Type a message" type="text" />
                     <button onClick={sendMessage}>Send a message</button>
                 </form>
-                <MicIcon/>
+                <SendIcon style={{height:"24px",width:"24px"}}/>
+                <CSSTransition in={!showBottomArrow} timeout={600} unmountOnExit classNames="bottom_arrow">
+                    <div className="arrow_down" onClick={scrollToBottom}>
+                        <KeyboardArrowDown style={{height:"30px",width:"30px",color:"grey"}}/>
+                    </div>
+                </CSSTransition>
             </div>            
             </div>
             </CSSTransition>

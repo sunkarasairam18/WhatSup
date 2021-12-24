@@ -3,10 +3,11 @@ import { Avatar,IconButton } from '@material-ui/core';
 import PeopleIcon from '@mui/icons-material/People';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {doc,onSnapshot,query,collection,orderBy} from 'firebase/firestore';
+import {doc,getDoc,onSnapshot,query,collection,orderBy, snapshotEqual} from 'firebase/firestore';
 import { SearchOutlined } from '@mui/icons-material';
 import { CSSTransition } from 'react-transition-group';
 import { Link } from 'react-router-dom';
+import Badge from '@mui/material/Badge';
 
 
 import Profile from './Profile';
@@ -33,7 +34,10 @@ const Sidebar = ({
     const [{user},dispatch] = useStateValue();
     const [show,setShow] = useState(false);
     const [friendsList,setFriendsList] = useState([]);
+    const [friendIdsList,setFriendIdsList] = useState([]);
     const [about,SetAbout] = useState("");
+    const [requestsCount,setRequestsCount] = useState(0);
+
 
     const searchRef = React.createRef();
 
@@ -56,14 +60,42 @@ const Sidebar = ({
     useEffect(()=>{
         const friendQuery = query(collection(firestore,`Accounts/${user.uid}/Friends`),orderBy('lastsent','desc'));
         onSnapshot(friendQuery,(querySnapshot)=>{
-            setFriendsList(querySnapshot.docs.map(e => ({
-                id: e.id,
-                ...e.data(),
-            })));
-        });        
+            setFriendsList(querySnapshot.docs.map(e => (
+                {
+                    id: e.id,
+                    ...e.data()
+                }
+            )));
+        });  
+        console.log(friendsList);      
     },[]);
 
-   
+
+    useEffect(()=>{
+        const userDoc = doc(firestore,`Accounts/${user.uid}`);
+        onSnapshot(userDoc,userUpdate=>{
+            setRequestsCount(userUpdate.data().Requests.length);
+        });
+    },[]);
+
+    // useEffect(()=>{
+    //     if(friendsList.length != 0){
+    //         var list = [...friendsList];
+    //         for(var i = 0;i<friendsList.length;i++){
+    //             list[i]["friendName"] = getName(list[i]["friendId"]);
+    //         }
+    //         console.log("new list",list);
+    //     }
+    // },[friendsList])
+
+    async function getName(id){
+        const db = doc(firestore,`Accounts/${id}`);
+        const snapshot = await getDoc(db);
+        if(snapshot.exists()){
+            return snapshot.data().displayName;
+        }
+        else return "";
+    }
 
     function getIcon(){
         if(searchIcon){
@@ -88,11 +120,18 @@ const Sidebar = ({
 
     function getSearchList(){
         if(search){            
-            var list = friendsList.filter(friend => friend.friendName.trim().toLowerCase().includes(search.trim().toLowerCase()));
+            var list = friendsList.filter(friend => friend.friendName?.trim().toLowerCase().includes(search.trim().toLowerCase()));
             return list;
         }else{
             return friendsList;
         }
+    }
+
+    function hideChatTitle(){
+        if(search){
+            return "chats_tag";
+        }
+        return "chats_tag_not_show";
     }
 
     return ( 
@@ -102,12 +141,14 @@ const Sidebar = ({
                     <Avatar src={profileUrl} className="profilepic" onClick={()=>setShow(true)}/>
                     <div className="sidebar_headerRight">
                         <Link to="/friends">
-                            <IconButton>
-                                <PeopleIcon />
-                            </IconButton>
+                            <IconButton >
+                                <Badge badgeContent={requestsCount} color="warning" max={9} >
+                                    <PeopleIcon style={{height:"30px",width:"30px"}}/>
+                                </Badge>
+                            </IconButton>                            
                         </Link>                        
                         <IconButton>
-                            <MoreVertIcon />
+                            <MoreVertIcon style={{height:"26px",width:"26px"}}/>
                         </IconButton>
                     </div>
                 </div>
@@ -132,17 +173,20 @@ const Sidebar = ({
                 </div>
               
                  <div className="sidebar_chats">
-                    {getSearchList()?.map(friend => (
+                    <div className={hideChatTitle()}>
+                        CHATS
+                    </div>
+                    {getSearchList().map(friend => (
                         <SidebarChat 
-                        key={friend.friendId} 
+                        key={friend.friendId}   
+                        uid={user.uid}        
+                        friendName={friend.friendName}              
                         friendId={friend.friendId} 
                         friendInfoDocId={friend.id} 
-                        name={friend.friendName} 
                         containerId={friend.container} 
                         selected={selectId === friend.friendId} 
                         onSelect={setSelectId}/>
-                    ))}
-                   
+                    ))}                   
                 </div>
             </div>
             <CSSTransition //Sidebar slider for user photo,name,bio

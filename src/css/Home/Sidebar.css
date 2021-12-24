@@ -184,3 +184,18 @@
     overflow: scroll;
     /* overflow-y: scroll; */
 }
+.chats_tag{
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+    padding-right: 20px;
+    padding-top: 18px;
+    padding-bottom: 18px;
+    cursor: pointer;
+    color: gray;
+    border-bottom: 1px solid #f6f6f6;    
+    display: block;
+}
+.chats_tag_not_show{
+    display: none;
+}
