@@ -8,7 +8,7 @@
     position: relative;
 }
   
-  .home_body{
+.home_body{
     position: absolute;
     display: flex;
     background-color: #ededed;

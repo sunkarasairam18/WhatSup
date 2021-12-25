@@ -20,7 +20,7 @@ function App(props) {
 
 
   useEffect(()=>{
-    updateOnlineStatus(user.uid,true);
+    if(user) updateOnlineStatus(user.uid,true);
   },[]);
 
   const handleVisibilityChange = isVisible => {

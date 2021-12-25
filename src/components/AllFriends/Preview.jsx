@@ -10,9 +10,10 @@ import '../../css/AllFriends/Preview.css';
 
 const Preview = ({selectedId,setSelectedId,setPreviewUrl}) => {
     const [friend,setFriend] = useState({
-        name:"",about:"",photoUrl:""
+        name:"",about:"",photoUrl:"",email:""
     });
     const {previewId} = useParams();
+    const [showLine,setShowLine] = useState(false);
 
     useEffect(()=>{
         if(!selectedId){
@@ -25,11 +26,12 @@ const Preview = ({selectedId,setSelectedId,setPreviewUrl}) => {
         const friendDoc = doc(firestore,`Accounts/${previewId}`);
         onSnapshot(friendDoc,friendUpdate =>{
             if(friendUpdate.exists()){
-                const {displayName,About,photoUrl} = friendUpdate.data();
+                const {displayName,About,photoUrl,email} = friendUpdate.data();
                 setFriend({
                     name: displayName,
                     about: About,
-                    photoUrl: photoUrl
+                    photoUrl: photoUrl,
+                    email: email
                 });
             };
         });
@@ -38,17 +40,29 @@ const Preview = ({selectedId,setSelectedId,setPreviewUrl}) => {
     return ( 
         <div className="Preview">
             <div className="Pcontent">
-                <div className="PSubcontent">
-                    <Link to={`/friends/list/${previewId}/display`}>
-                        <img src={friend.photoUrl} className="Ppic" onClick={()=>setPreviewUrl(friend.photoUrl)}/>
-                    </Link>
+                
+            {/* <div className="PSubcontent">
+                    
+            </div> */}
+                <Link to={`/friends/list/${previewId}/display`}>
+                    <img src={friend.photoUrl} className="Ppic" onClick={()=>setPreviewUrl(friend.photoUrl)}/>
+                </Link>
+                    
+            </div>
+            <div className="Pinfo">
                     <div className="Pname">
                         {friend.name}
+                    </div>
+                    <div className="Pfriendscount" onMouseEnter={()=>setShowLine(true)} onMouseLeave={()=>setShowLine(false)}>
+                        61 Friends
+                        {showLine && <hr className="Pfchr"/>}
+                    </div>
+                    <div className="Pemail">
+                        {friend.email}
                     </div>
                     <div className="Pbio">
                         {friend.about}
                     </div>
-                </div>
             </div>
         </div>
     );

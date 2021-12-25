@@ -3,6 +3,8 @@ import {Route,Switch} from 'react-router-dom';
 import Axios from 'axios';
 import {doc,updateDoc} from 'firebase/firestore';
 
+import Backdrop from '@mui/material/Backdrop';
+
 import { useStateValue } from '../../services/StateProvider';
 import {firestore} from '../../services/firebase';
 
@@ -14,7 +16,6 @@ import JustLogin from '../Home/JustLogin';
 import Chat from '../Home/Chat';
 import FullPhoto from '../AllFriends/FullPhoto';
 
-
 const  Home = () => {
   const [{user},dispatch] = useStateValue();
   const [showUpload,setShowUpload] = useState(false);
@@ -24,11 +25,12 @@ const  Home = () => {
   const [searchIcon,setSearchIcon] = useState(false);
   const [selectId,setSelectId] = useState("");
   const [uploadFile,setUploadFile] = useState({file:"",url:""});
+  const [showSkeleton, setShowSkeleton] = useState(false);
   var url = "";
 
-
-
+  
   const uploadImage = async (result) =>{
+    setShowSkeleton(true);
     const formData = new FormData();
     formData.append("file",result);
     formData.append("upload_preset","kjxylxjb");
@@ -49,26 +51,36 @@ const  Home = () => {
         photoUrl: url,
       };
       updateDoc(db,photoUpdate);
+      setShowSkeleton(false);
     }
     
   };
 
-  const disablebg = () =>{
-    var sty = {};
-    if(!showUpload) return;
-    sty["filter"]="blur(1px)";
-    return sty;
-  };
+  
 
+  
   return (
     <div className="home">   
-        <Upload //Pop Up after selecting pic
-        showUpload={showUpload} 
-        setShowUpload={setShowUpload} 
-        uploadFile={uploadFile} 
-        setUploadFile={setUploadFile} 
-        uploadImage={uploadImage} 
-        /> 
+        <Backdrop
+          sx={{ color: '#FFFFFF', zIndex: (theme) => theme.zIndex.drawer + 1 }}          
+          open={showUpload}
+        >
+           <Upload //Pop Up after selecting pic
+          showUpload={showUpload} 
+          setShowUpload={setShowUpload} 
+          uploadFile={uploadFile} 
+          setUploadFile={setUploadFile} 
+          uploadImage={uploadImage} 
+          /> 
+        </Backdrop>
+        
+        {/* <Upload //Pop Up after selecting pic
+          showUpload={showUpload} 
+          setShowUpload={setShowUpload} 
+          uploadFile={uploadFile} 
+          setUploadFile={setUploadFile} 
+          uploadImage={uploadImage} 
+        />  */}
         {showProfile && 
         <div className="fullPhoto">  
           <FullPhoto //Displays use full photo
@@ -76,7 +88,7 @@ const  Home = () => {
           crossClick={setShowProfile}/>
         </div>
         }
-        <div className="home_body" style={disablebg()}>   
+        <div className="home_body">   
           <Sidebar 
             selectId = {selectId}
             setSelectId = {setSelectId}
@@ -84,13 +96,15 @@ const  Home = () => {
             setProfileUrl={setProfileUrl}
             setShowProfile={setShowProfile}
             showUpload={showUpload} 
-            setShowUpload={setShowUpload}                 
+            setShowUpload={setShowUpload}                             
             setUploadFile={setUploadFile}    
             search={search}
             setSearch={setSearch}
             searchIcon={searchIcon}
             setSearchIcon={setSearchIcon}
+            showSkeleton={showSkeleton}
           />  
+
           <Switch>                  
             <Route path="/:friendId/:containerId/:friendInfoDocId" >
               <Chat

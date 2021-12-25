@@ -21,8 +21,7 @@ const Upload = ({showUpload,uploadFile,setUploadFile,setShowUpload,uploadImage})
 
     const onCrop = () => {
         const imageElement = cropperRef?.current;
-        const cropper = imageElement?.cropper;
-        
+        const cropper = imageElement?.cropper;        
         setResult(cropper.getCroppedCanvas().toDataURL());
     };
 

@@ -30,14 +30,15 @@ const Sidebar = ({
                     setSearchIcon,
                     setSearch,
                     setShowUpload,
-                    setUploadFile}) => {
+                    setUploadFile,
+                    showSkeleton
+                    }) => {
     const [{user},dispatch] = useStateValue();
     const [show,setShow] = useState(false);
     const [friendsList,setFriendsList] = useState([]);
-    const [friendIdsList,setFriendIdsList] = useState([]);
     const [about,SetAbout] = useState("");
     const [requestsCount,setRequestsCount] = useState(0);
-
+    
 
     const searchRef = React.createRef();
 
@@ -78,24 +79,9 @@ const Sidebar = ({
         });
     },[]);
 
-    // useEffect(()=>{
-    //     if(friendsList.length != 0){
-    //         var list = [...friendsList];
-    //         for(var i = 0;i<friendsList.length;i++){
-    //             list[i]["friendName"] = getName(list[i]["friendId"]);
-    //         }
-    //         console.log("new list",list);
-    //     }
-    // },[friendsList])
+  
 
-    async function getName(id){
-        const db = doc(firestore,`Accounts/${id}`);
-        const snapshot = await getDoc(db);
-        if(snapshot.exists()){
-            return snapshot.data().displayName;
-        }
-        else return "";
-    }
+   
 
     function getIcon(){
         if(searchIcon){
@@ -186,7 +172,8 @@ const Sidebar = ({
                         containerId={friend.container} 
                         selected={selectId === friend.friendId} 
                         onSelect={setSelectId}/>
-                    ))}                   
+                    ))}    
+                   
                 </div>
             </div>
             <CSSTransition //Sidebar slider for user photo,name,bio
@@ -202,7 +189,9 @@ const Sidebar = ({
                     showUpload={showUpload} 
                     setShowUpload={setShowUpload} 
                     setUploadFile={setUploadFile}
-                    onBack={setShow}/>
+                    onBack={setShow}
+                    showSkeleton={showSkeleton}
+                    />
             </CSSTransition>
 
         </div>

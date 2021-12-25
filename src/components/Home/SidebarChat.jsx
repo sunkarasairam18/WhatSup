@@ -74,8 +74,8 @@ const SidebarChat = ({uid,friendName,friendId,friendInfoDocId,containerId,select
                 <Avatar src={`${url}`} style={{width:"50px",height:"50px"}}/>
                 <div className="sidebarChat_info">
                     <div className="sidebarChat_info_main">
-                        <div className="sidebarChat_info_name">{name}</div>
-                        <span>{timeTag}</span>
+                        <div className="sidebarChat_info_name">{friendName}</div>
+                        <span>{timeTag}</span>                         
                     </div>                   
                     <div className="sidebarChat_info_last_content">
                         <p ref={lastMsgRef} className="lastmsgcontext">{shortMsg(lastmessage.message)}</p>                        
@@ -83,6 +83,7 @@ const SidebarChat = ({uid,friendName,friendId,friendInfoDocId,containerId,select
                 </div>               
             </div>
         </Link>
+       
     );
 }
 
