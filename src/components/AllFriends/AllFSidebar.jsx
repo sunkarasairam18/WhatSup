@@ -41,8 +41,7 @@ const AllFSidebar = ({selectedId,setSelectedId}) => {
     }
 
     return ( 
-        <div className="AllFsidebar">
-            
+        <div className="AllFsidebar">            
             <div className="AllFsidebarcontent">
                 <div className="AllFsidebar_header">
                     <div className="img">
@@ -96,6 +95,7 @@ const AllFSidebar = ({selectedId,setSelectedId}) => {
                 </div>
                 <div className="ALFSCfriends">
                     {getList().map(friend => <AllFSidebarCard 
+                                            key={friend.id}
                                             id={friend.id}
                                             to={`/friends/list/${friend.id}`} 
                                             selected={friend.id===selectedId} 

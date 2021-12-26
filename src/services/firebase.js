@@ -24,11 +24,13 @@ async function addAccount(name,email,uid){
         await setDoc(doc(firestore,"Accounts",uid),
         {
             About: "Hey there! I am using What'Sup.",
-            email: email,
             displayName: name,
+            email: email,
+            friendsCount: 0,
             lastSeen: new Date(),
             onlineStatus: true,
             photoUrl: "",
+            Requests: [],
             uid: uid,
         },{merge: true});        
     }

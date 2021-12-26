@@ -1,16 +1,16 @@
 import React from 'react';
 
-import '../../css/AllFriends/NoPreview.css';
+import '../../css/common/NoPreview.css';
 
 
 import team from '../team.png';
-const NoPreview = () => {
+const NoPreview = ({text,flex}) => {
     return ( 
-        <div className="NoPreview">
+        <div className="NoPreview" style={{flex:`${flex}`}}>
             <div className="NPcontent">
                 <img src={team} className="NPCimg"/>
                 <div className="NPCtitle">
-                    Select people's names to preview their profile.
+                    {text}
                 </div>
             </div>
         </div>

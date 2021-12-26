@@ -50,6 +50,7 @@ const Sidebar = ({
                 const userData = userUpdate.data();   
                 setProfileUrl(userData.photoUrl);
                 SetAbout(userData.About);
+                setRequestsCount(userData.Requests.length);
                 dispatch({
                     type: actionTypes.SET_USER,
                     user: userData,
@@ -72,12 +73,6 @@ const Sidebar = ({
     },[]);
 
 
-    useEffect(()=>{
-        const userDoc = doc(firestore,`Accounts/${user.uid}`);
-        onSnapshot(userDoc,userUpdate=>{
-            setRequestsCount(userUpdate.data().Requests.length);
-        });
-    },[]);
 
   
 

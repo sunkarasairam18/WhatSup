@@ -4,6 +4,7 @@ import { doc,onSnapshot,updateDoc } from 'firebase/firestore';
 
 import "../../css/Friends/FRequestsCards.css"
 import Grid from '@mui/material/Grid';
+import NoPreview from '../common/NoPreview';
 
 import FRequestCard from './FRequestCard';
 import { useStateValue } from '../../services/StateProvider';
@@ -22,14 +23,7 @@ const FRequestsCards = () => {
         });
     },[]);
 
-    const names = ["Ben stokes","Warner","Butter Tomato","Virat","Ab Devilliers"];
-    const col = 4;
-
-    const populateFour = (names,start,end) =>{
-        return names.slice(start,end+1).map(name => (
-            <FRequestCard name={name}/>
-        ));
-    }
+    
 
     const delRequest = (id) =>{
         const userDoc = doc(firestore,`Accounts/${user.uid}`);
@@ -45,8 +39,7 @@ const FRequestsCards = () => {
         
     }
 
-    const populateRequests = (names) =>{
-      
+    const populateRequests = () =>{      
         return (
             requests.map(request =>(
                 // <Grid lg={3}  md={4} sm={6} key={request}>
@@ -59,19 +52,18 @@ const FRequestsCards = () => {
 
     return (
         <div className="FRCShow">
+            {(requests.length > 0) &&
             <div className="FRCSContent">
                 <div className="FRCSCTitle">
                     Friend requests
                 </div>
-                <div className="FRCSDisplay">
-                   
+                <div className="FRCSDisplay">                   
                     <Grid container >
-                        {populateRequests(names)}
-                    </Grid>
-                                       
-
+                        {populateRequests()}
+                    </Grid>                                       
                 </div>
-            </div>
+            </div>}
+            {(requests.length === 0) && <NoPreview text={"When you have friend requests, you'll see them here."} flex={1}/>}
         </div>
     );
 }

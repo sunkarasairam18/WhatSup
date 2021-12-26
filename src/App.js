@@ -13,6 +13,7 @@ import Login from './components/main/Login';
 import Friends from './components/main/Friends';
 import AllFriends from './components/main/AllFriends';
 import Test from './components/Test';
+import PopUpFriends from './components/AllFriends/PopUpFriends';
 
 function App(props) {
   const [{user},dispatch] = useStateValue();
@@ -47,6 +48,7 @@ function App(props) {
             
           <Route path="/">
             {!user?(<Login/>):(<Home/>)}          
+            {/* <PopUpFriends/> */}
             {/* <Test/> */}
           </Route>
         </Switch>      

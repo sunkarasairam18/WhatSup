@@ -3,7 +3,7 @@ import { Switch,Route } from 'react-router-dom';
 
 import '../../css/maincss/AllFriends.css';
 import AllFSidebar from '../AllFriends/AllFSidebar';
-import NoPreview from '../AllFriends/NoPreview';
+import NoPreview from '../common/NoPreview';
 import Preview from '../AllFriends/Preview';
 
 
@@ -20,7 +20,7 @@ const AllFriends = ({setPreviewUrl}) => {
                         <Preview selectedId={selectedId} setSelectedId={setSelectedId} setPreviewUrl={setPreviewUrl}/>                        
                     </Route>
                     <Route path="/friends/list">
-                        <NoPreview/>
+                        <NoPreview text={"Select people's names to preview their profile."} flex={0.7}/>
                     </Route>
                 </Switch>
             </div>
