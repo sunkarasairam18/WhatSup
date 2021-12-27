@@ -24,11 +24,14 @@ const  Home = () => {
   const [search,setSearch] = useState();
   const [searchIcon,setSearchIcon] = useState(false);
   const [selectId,setSelectId] = useState("");
+  const [chatTyping,setChatTyping] = useState(false);
   const [uploadFile,setUploadFile] = useState({file:"",url:""});
   const [showSkeleton, setShowSkeleton] = useState(false);
   var url = "";
 
-  
+  useEffect(()=>{
+    console.log("chat typing",chatTyping);
+  },[chatTyping]);
   const uploadImage = async (result) =>{
     setShowSkeleton(true);
     const formData = new FormData();
@@ -55,9 +58,6 @@ const  Home = () => {
     }
     
   };
-
-  
-
   
   return (
     <div className="home">   
@@ -103,6 +103,7 @@ const  Home = () => {
             searchIcon={searchIcon}
             setSearchIcon={setSearchIcon}
             showSkeleton={showSkeleton}
+            setChatTyping={setChatTyping}
           />  
 
           <Switch>                  
@@ -112,6 +113,7 @@ const  Home = () => {
                 setSearchIcon={setSearchIcon}
                 selectId={selectId}
                 setSelectId={setSelectId}
+                chatTyping={chatTyping}
               />                        
             </Route>                                 
             <Route path="/">

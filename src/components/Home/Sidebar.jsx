@@ -31,7 +31,8 @@ const Sidebar = ({
                     setSearch,
                     setShowUpload,
                     setUploadFile,
-                    showSkeleton
+                    showSkeleton,
+                    setChatTyping
                     }) => {
     const [{user},dispatch] = useStateValue();
     const [show,setShow] = useState(false);
@@ -70,13 +71,7 @@ const Sidebar = ({
             )));
         });  
         console.log(friendsList);      
-    },[]);
-
-
-
-  
-
-   
+    },[]);   
 
     function getIcon(){
         if(searchIcon){
@@ -165,10 +160,11 @@ const Sidebar = ({
                         friendId={friend.friendId} 
                         friendInfoDocId={friend.id} 
                         containerId={friend.container} 
-                        selected={selectId === friend.friendId} 
-                        onSelect={setSelectId}/>
-                    ))}    
-                   
+                        selectId={selectId}
+                        onSelect={setSelectId}
+                        setChatTyping={setChatTyping}
+                        />
+                    ))}                       
                 </div>
             </div>
             <CSSTransition //Sidebar slider for user photo,name,bio

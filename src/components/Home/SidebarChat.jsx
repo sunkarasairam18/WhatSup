@@ -7,13 +7,11 @@ import {firestore} from '../../services/firebase';
 import '../../css/Home/SidebarChat.css';
 import {getObjectfromDate} from './Chat';
 
-const SidebarChat = ({uid,friendName,friendId,friendInfoDocId,containerId,selected,onSelect}) => {
+const SidebarChat = ({uid,friendName,friendId,friendInfoDocId,containerId,selectId,onSelect,setChatTyping}) => {
     const [lastmessage,setLastmessage] = useState("");
-    const [name,setName] = useState("");
+    const [typing,setTyping] = useState(false);
     const [timeTag,setTimetag] = useState("");
     const [url,setUrl] = useState("");
-
-    var lastMsgRef = React.createRef(); 
 
     useEffect(()=>{
         setTimetag(properTag(lastmessage?.timestamp));
@@ -26,7 +24,6 @@ const SidebarChat = ({uid,friendName,friendId,friendInfoDocId,containerId,select
                 if(docQuery.exists()){
                     const {displayName,photoUrl} = docQuery.data();
                     setUrl(photoUrl);
-                    setName(displayName);
                     if(friendName !== displayName) updateFriendName(displayName);                    
                     
                 }
@@ -34,15 +31,24 @@ const SidebarChat = ({uid,friendName,friendId,friendInfoDocId,containerId,select
         }
     },[friendId]);
 
+
+    useEffect(()=>{
+        if(selectId == friendId){
+            setChatTyping(typing);
+        }
+    },[selectId])
+
     useEffect(()=>{
         if(containerId){
             const container = doc(firestore,`ChatContainers/${containerId}`);
             onSnapshot(container,(containerSnapshot)=>{
                 if(containerSnapshot.exists()){
                     const containerData = containerSnapshot.data();
+                    setTyping(containerData.typingBy[friendId]);                    
                     getLastMessage(containerId,containerData.lastMessageId);
                 }
-            });            
+            });   
+            
         }
     },[containerId])
 
@@ -62,23 +68,25 @@ const SidebarChat = ({uid,friendName,friendId,friendInfoDocId,containerId,select
         await updateDoc(db,timestamp);
     };        
 
-    const shortMsg = (msg) =>{
+    const shortString = (msg,l) =>{
         if(msg){
-            if(msg.length>38) return msg.substring(0,38)+"...";
+            if(msg.length>l) return msg.substring(0,l)+"...";
             return msg;
         }        
     }
+
     return (
         <Link to={`/${friendId}/${containerId}/${friendInfoDocId}`} onClick={()=>onSelect(friendId)}>
-            <div className={selected?"sidebarChatSelected":"sidebarChat"}>
+            <div className={selectId === friendId?"sidebarChatSelected":"sidebarChat"}>
                 <Avatar src={`${url}`} style={{width:"50px",height:"50px"}}/>
                 <div className="sidebarChat_info">
                     <div className="sidebarChat_info_main">
-                        <div className="sidebarChat_info_name">{friendName}</div>
+                        <div className="sidebarChat_info_name">{shortString(friendName,29)}</div>
                         <span>{timeTag}</span>                         
                     </div>                   
                     <div className="sidebarChat_info_last_content">
-                        <p ref={lastMsgRef} className="lastmsgcontext">{shortMsg(lastmessage.message)}</p>                        
+                        {!typing && <p className="lastmsgcontext">{shortString(lastmessage.message,38)}</p>}                        
+                        {typing && <p className="typing">typing...</p>}
                     </div>
                 </div>               
             </div>

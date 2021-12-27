@@ -1,12 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useFocus } from "react";
 import { Avatar, IconButton } from "@material-ui/core";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CreateIcon from "@mui/icons-material/Create";
+import DoneIcon from '@mui/icons-material/Done';
+
+
+import Snackbar from '@mui/material/Snackbar';
+import CloseIcon from '@mui/icons-material/Close';
+
 
 import Skeleton from "@mui/material/Skeleton";
-
+import { firestore } from "../../services/firebase";
+import { doc,updateDoc } from "firebase/firestore";
 import "../../css/Home/Profile.css";
 import PicChangePopDown from "./PicChangePopDown";
+import { useStateValue } from '../../services/StateProvider';
 
 const Profile = ({
   photo,
@@ -18,9 +26,53 @@ const Profile = ({
   setShowProfile,
   showSkeleton,
 }) => {
+  const [{user},dispatch] = useStateValue();
   const [changeShow, setChangeShow] = useState(false);
+  const [writtenName,setWrittenName] = useState();
+  const [writeName,setWriteName] = useState(false);
+  const [writtenAbout,setWrittenAbout] = useState();
+  const [writeAbout,setWriteAbout] = useState(false);
   const changePicRef = React.createRef();
   const myRef = React.createRef();
+  const writeNameRef = React.useRef(null);
+  const writeAboutRef = React.useRef(null);
+
+  const ClickToWriteName = () =>{
+    setWriteName(true);
+    writeNameRef.current.focus();
+  };
+
+  const ClickToConfirmName = () =>{
+    setWriteName(false);
+    writeNameRef.current.blur();
+    const db = doc(firestore,`Accounts/${user.uid}`);
+    const Name = {
+        displayName: writtenName,
+    };
+    updateDoc(db,Name);
+
+  };
+
+  const ClickToWriteAbout = () =>{
+    setWriteAbout(true);
+    writeAboutRef.current.focus();
+  };
+
+  const ClickToConfirmAbout = () =>{
+    setWriteAbout(false);
+    writeAboutRef.current.blur();
+    const db = doc(firestore,`Accounts/${user.uid}`);
+    const About = {
+        About: writtenAbout,
+    };
+    updateDoc(db,About);
+
+  };
+
+  useEffect(()=>{
+    setWrittenName(name);
+    setWrittenAbout(about);
+  },[name,about]);
 
   const fileChange = (e) => {
     if (e.target.files[0]) {
@@ -48,16 +100,30 @@ const Profile = ({
     myRef.current.click();
   };
 
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleToggle = () => {
-    setOpen(!open);
+  const [openSnack, setOpenSnack] = useState(false);
+  const [snackMessage,setSnackMessage] = useState("");
+  
+
+
+  const handleCloseSnack = () => {
+    setOpenSnack(false);
   };
 
   return (
     <div className="profile">
+      <Snackbar
+        open={openSnack}
+        onClose={handleCloseSnack}
+        autoHideDuration={3000}
+        message={snackMessage}
+        key={snackMessage}
+        disableWindowBlurListener={true}
+        action={
+          <React.Fragment>            
+            <CloseIcon onClick={handleCloseSnack} style={{cursor:'pointer'}}/>
+          </React.Fragment>
+        }
+      />
       <div className="profile_header">
         <div className="profile_header_content">
           <div className="profile_header_back_btn">
@@ -90,7 +156,6 @@ const Profile = ({
             style={{ display: "none" }}
             onChange={fileChange}
           />
-
           
           <div className="picOptions">
             <PicChangePopDown
@@ -100,32 +165,73 @@ const Profile = ({
               upload={click}
             />
           </div>
-        </div>
-
-        {/* <button onClick={uploadImage}>upload</button> */}
-        {/* <div onClick={click}>CLick</div> */}
+        </div>      
       </div>
-      <div className="profile_name">
-        <div className="profile_name_content">
-          <div className="profile_name_title">Your Name</div>
+      <div className="profile_box">
+        <div className="profile_box_content">
+          <div className="profile_box_title">Your Name</div>
           <div className="profile_user">
-            <div className="profile_user_name">{name}</div>
-            <CreateIcon
+            {/* <div className="profile_user_name">{name}</div> */}
+            <div className="pu_name_input_box">
+              {!writeName && <div className="puni_cover"/>}
+              <input 
+              value={writtenName} 
+              className="pu_name_input" 
+              onChange={e=>setWrittenName(e.target.value)} 
+              ref={writeNameRef}          
+              />
+              <hr className={!writeName?"puibHr":"puibHrfocus"}/>
+            </div>
+            {!writeName && <CreateIcon
               className="profile_user_name_edit"
               style={{ height: "23px", width: "23px" }}
-            />
+              onClick={ClickToWriteName}
+            />}
+            {writeName && <DoneIcon
+              className="profile_user_name_edit"
+              style={{ height: "25px", width: "25px" }}
+              onClick={()=>{
+                ClickToConfirmName();
+                setSnackMessage("Your name changed");
+                setOpenSnack(true);
+              }}
+            />}
           </div>
         </div>
       </div>
-      <div className="about_name">
-        <div className="about_name_content">
-          <div className="about_name_title">About</div>
-          <div className="about_user">
-            <div className="about_user_text">{about}</div>
-            <CreateIcon
-              className="about_user_text_edit"
+      <div className="pnabout">
+        <div className="pnacontent">
+          This name will be visible to your WhatsUp friends. 
+        </div>
+      </div>
+      <div className="profile_box">
+        <div className="profile_box_content">
+          <div className="profile_box_title">About</div>
+          <div className="profile_user">            
+            <div className="pu_name_input_box">
+              {!writeAbout && <div className="puni_cover"/>}
+              <input 
+              value={writtenAbout} 
+              className="pu_name_input" 
+              onChange={e=>setWrittenAbout(e.target.value)} 
+              ref={writeAboutRef}
+              />
+              <hr className={!writeAbout?"puibHr":"puibHrfocus"}/>
+            </div>
+            {!writeAbout && <CreateIcon
+              className="profile_user_name_edit"
               style={{ height: "23px", width: "23px" }}
-            />
+              onClick={ClickToWriteAbout}
+            />}
+            {writeAbout && <DoneIcon
+              className="profile_user_name_edit"
+              style={{ height: "25px", width: "25px" }}
+              onClick={()=>{
+                ClickToConfirmAbout();
+                setSnackMessage("Your about changed");
+                setOpenSnack(true);
+              }}
+            />}
           </div>
         </div>
       </div>

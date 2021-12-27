@@ -47,6 +47,7 @@
 }
 
 .chat_headerInfo > p{
+    font-weight: 500;
     color: gray;
     font-size: 0.8em;
 }

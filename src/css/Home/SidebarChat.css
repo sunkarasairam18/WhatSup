@@ -73,11 +73,15 @@ a{
 .lastmsgcontext{
     color: gray;
     font-size: 16px;
-    
     height: 20px;
     overflow: hidden;
-
-
+}
+.typing{
+    color: #32CD32;
+    font-size: 16px;
+    height: 20px;
+    overflow: hidden;
+    font-weight: 600;
 }
 
 .sidebarChat_notification_badge{

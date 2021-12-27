@@ -52,7 +52,7 @@
     top: 0px;
 }
 
-.profile_name{
+.profile_box{
     height: 100px;
     background-color: #f6f6f6;
     box-shadow: rgba(0, 0, 0, 0.15) 1.0px 1.0px 2.0px;
@@ -60,11 +60,11 @@
     align-items: center;
 
 }
-.profile_name_content{
+.profile_box_content{
     padding-left: 30px;
     flex: 1;
 }
-.profile_name_title{
+.profile_box_title{
     color: grey;
     font-size: 15px;
 }
@@ -75,14 +75,60 @@
     position: relative;
     margin-top: 20px;
 }
+.puni_cover{
+    width: 90%;
+    padding: 5px;
+    font-size: 18px;
+    height: 30px;
+    position: absolute;
+    /* background-color: lightgreen; */
+
+}
+.pu_name_input_box{
+    flex: 0.95;
+    /* width: 90%; */
+    display: flex;
+    flex-direction: column;
+    /* background-color: lightgreen; */
+    border: none;
+}
+.pu_name_input_box > input{
+    background-color: #f6f6f6;
+    /* background-color: lightgreen; */
+    padding: 5px;
+    width: 87%;
+    font-size: 18px;
+    border: none;
+}
+.puibHr{
+    border: 1px solid #f6f6f6;
+}
+.puibHrfocus{
+    border: 1px solid grey;
+
+}
+.pu_name_input_box > input:focus{
+    
+    outline: none;
+}
 .profile_user_name_edit{
     position: absolute;
+    top: 3px;
     right: 25px;
     color: rgb(156, 152, 152);
     cursor: pointer;
 
 }
-
+.pnabout{
+    height: 50px;
+    display: grid;
+    place-items: center;
+}
+.pnacontent{
+    font-size: 15px;
+    color: grey;
+    font-weight: 500;
+}
 .about_name{
     height: 13%;
     background-color: #f6f6f6;

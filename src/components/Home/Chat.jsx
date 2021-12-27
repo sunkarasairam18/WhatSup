@@ -20,11 +20,12 @@ import FriendInfo from './FriendInfo';
 import ChatBubble from './ChatBubble';
 import '../../css/Home/Chat.css';
 
-const Chat = ({setSearch,setSearchIcon,selectId,setSelectId}) => {
+const Chat = ({setSearch,setSearchIcon,selectId,setSelectId,chatTyping}) => {
     const [input,setInput] = useState("");
     const {friendId,containerId,friendInfoDocId} = useParams();
     const [userInfoDocId,setUserInfoDocId] = useState(null);
     const [friend, setFriend] = useState({});
+    // const [typing,setTyping] = useState(false);
     const [messages, setMessages] = useState([]);
     const [{user},dispatch] = useStateValue();
     const [chosenEmoji, setChosenEmoji] = useState(null);
@@ -111,6 +112,19 @@ const Chat = ({setSearch,setSearchIcon,selectId,setSelectId}) => {
             });
         }
     },[friendId,containerId]);
+
+    // useEffect(()=>{
+    //     if(friendId && containerId){
+    //         const document = doc(firestore,`ChatContainers/${containerId}`);
+    //         onSnapshot(document,docUpdate=>{
+    //             if(docUpdate.exists()){
+    //                 const useDoc = docUpdate.data();
+    //                 console.log(useDoc);
+    //                 setTyping(useDoc.typingBy[friendId]);
+    //             }
+    //         });
+    //     }
+    // },[friendId,containerId]);
 
  
 
@@ -202,7 +216,7 @@ const Chat = ({setSearch,setSearchIcon,selectId,setSelectId}) => {
                     <Avatar src={friend.photoUrl}/>
                     <div className="chat_headerInfo">
                         <h3>{friend.displayName}</h3>
-                        <p>{friend?.onlineStatus?`online`:`last seen ${lastSeen}`}</p>
+                        <p>{!chatTyping?(friend?.onlineStatus?`online`:`last seen ${lastSeen}`):"typing..."}</p>
                     </div>
                 </div>
                 <div className="chat_headerRight">

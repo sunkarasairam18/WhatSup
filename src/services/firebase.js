@@ -23,7 +23,7 @@ async function addAccount(name,email,uid){
     if(!accountSnapshot.exists()){
         await setDoc(doc(firestore,"Accounts",uid),
         {
-            About: "Hey there! I am using What'Sup.",
+            About: "Hey there! I am using WhatsUp.",
             displayName: name,
             email: email,
             friendsCount: 0,
