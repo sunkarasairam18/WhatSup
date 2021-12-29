@@ -114,6 +114,7 @@ const  Home = () => {
                 selectId={selectId}
                 setSelectId={setSelectId}
                 chatTyping={chatTyping}
+                setChatTyping={setChatTyping}
               />                        
             </Route>                                 
             <Route path="/">

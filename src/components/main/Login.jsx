@@ -26,7 +26,10 @@ const Login = () => {
                 type: actionTypes.SET_USER,
                 user: result.user,
             });
-        }).catch(error => alert(error.message));
+        }).catch(error => {
+            console.log(error);
+            alert(error.message);
+        });
     };
     return (
         <div className="login">

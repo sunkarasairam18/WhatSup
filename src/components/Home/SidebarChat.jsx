@@ -36,7 +36,7 @@ const SidebarChat = ({uid,friendName,friendId,friendInfoDocId,containerId,select
         if(selectId == friendId){
             setChatTyping(typing);
         }
-    },[selectId])
+    },[selectId,typing]);
 
     useEffect(()=>{
         if(containerId){
@@ -44,7 +44,7 @@ const SidebarChat = ({uid,friendName,friendId,friendInfoDocId,containerId,select
             onSnapshot(container,(containerSnapshot)=>{
                 if(containerSnapshot.exists()){
                     const containerData = containerSnapshot.data();
-                    setTyping(containerData.typingBy[friendId]);                    
+                    setTyping(containerData[friendId].typing);                    
                     getLastMessage(containerId,containerData.lastMessageId);
                 }
             });   
