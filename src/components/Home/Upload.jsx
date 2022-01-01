@@ -6,7 +6,7 @@ import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 
 import '../../css/Home/Upload.css';
-
+import '../../css/common/StandardTransition.css';
 
 
 const Upload = ({showUpload,uploadFile,setUploadFile,setShowUpload,uploadImage}) => {
@@ -32,7 +32,7 @@ const Upload = ({showUpload,uploadFile,setUploadFile,setShowUpload,uploadImage})
     };
 
     return (  
-        <CSSTransition in={showUpload} timeout={800} unmountOnExit classNames="upload_transition">
+        <CSSTransition in={showUpload} timeout={800} unmountOnExit classNames="standard_transition">
             <div className="upload">
                 <div className="upload_header">
                     <ClearIcon style={{color:"white",height:"50px",cursor:"pointer"}} onClick={()=>setShowUpload(false)}/>

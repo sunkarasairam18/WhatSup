@@ -12,8 +12,7 @@ import Home from './components/main/Home';
 import Login from './components/main/Login';
 import Friends from './components/main/Friends';
 import AllFriends from './components/main/AllFriends';
-import Test from './components/Test';
-import PopUpFriends from './components/AllFriends/PopUpFriends';
+import SentRequestDialog from './components/Home/SentRequestDialog';
 
 function App(props) {
   const [{user},dispatch] = useStateValue();
@@ -35,7 +34,7 @@ function App(props) {
     <PageVisibility onChange={handleVisibilityChange}>
       <div className="app">    
         <Switch>
-          <Route path="/friends/list/:selectedId/display">
+          <Route path="/:selectedId/display">
             <FullPhoto previewUrl={previewUrl}/>
           </Route>
           <Route path="/friends/list">
@@ -45,8 +44,11 @@ function App(props) {
           <Route path="/friends">
             <Friends/>
           </Route>   
+
+          
             
           <Route path="/">
+            {/* <SentRequestDialog/> */}
             {!user?(<Login/>):(<Home/>)}          
             {/* <PopUpFriends/> */}
             {/* <Test/> */}

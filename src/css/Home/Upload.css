@@ -38,30 +38,14 @@
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 }
 
-.upload_transition-enter{
-    transform: scale(0.3);
-    opacity: 0;
+.cropper-view-box {
+	box-shadow: 0 0 0 1px #39f;
+	border-radius: 50%;
+	outline: 0;
 }
-.upload_transition-enter-active{
-    transform: scale(1);
-    opacity: 1;
-    transition: all 200ms;
+.cropper-face {
+	background-color:inherit !important;
 }
-.upload_transition-enter-done{
-    transform: scale(1);
-    opacity: 1;
-}
-.upload_transition-exit{
-    transform: scale(1);
-    opacity: 1;
-
-}
-.upload_transition-exit-active{
-    transform: scale(0.3);
-    opacity: 0;
-    transition: all 200ms;
-}
-.upload_transition-exit-done{
-    transform: scale(0);
-    opacity: 0;
+.cropper-view-box {
+	outline:inherit !important;
 }

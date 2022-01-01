@@ -33,6 +33,8 @@ const AllFSidebarCard = ({id,to,selected,setSelectedId}) => {
                     </div>
                 </div>
             </div>
+            
+            
         </Link>
      );
 }

@@ -8,7 +8,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import {onSnapshot,query,collection} from 'firebase/firestore';
 
 
-import '../../css/AllFriends/AllFSidebar.css';
+import '../../css/common/CommonSidebar.css';
 import icon from '../chat-1.png';
 import { useStateValue } from '../../services/StateProvider';
 import AllFSidebarCard from './AllFSidebarCard';
@@ -41,15 +41,15 @@ const AllFSidebar = ({selectedId,setSelectedId}) => {
     }
 
     return ( 
-        <div className="AllFsidebar">            
-            <div className="AllFsidebarcontent">
-                <div className="AllFsidebar_header">
+        <div className="CommonSidebar">            
+            <div className="CSContent">
+                <div className="CS_header">
                     <div className="img">
                         <Link to="/">
                             <img src={icon} alt="" className="app_icon"/>
                         </Link>
                     </div>
-                    <div className="AllFsidebar_headerRight">
+                    <div className="CS_headerRight">
                         <Link to="/friends">
                             <IconButton>
                                 <PeopleIcon style={{height:"30px",width:"30px"}}/>
@@ -61,27 +61,27 @@ const AllFSidebar = ({selectedId,setSelectedId}) => {
                     </div>
 
                 </div>
-                <div className="AllFScontent">
-                    <div className="AFsearch">
-                        <div className="AFStitle">
-                            <div className="AFSback">
+                <div className="CS_content">
+                    <div className="CSC_search">
+                        <div className="CSCS_title">
+                            <div className="CSCST_back">
                                 <Link to="/friends">
                                     <IconButton>
                                         <ArrowBackIcon  style={{width:"25px",height:"25px"}}/>
                                     </IconButton>
                                 </Link>                                
                             </div>
-                            <div className="AFStitles">
-                                <div className="AFSTsmall">
+                            <div className="CSCStitles">
+                                <div className="CSCSTsmall">
                                     Friends
                                 </div>
-                                <div className="SFSTbig">
+                                <div className="CSCSTbig">
                                     All Friends
                                 </div>
                             </div>
                         </div>
-                        <div className="AFSinput">
-                            <div className="AFSIIcon">
+                        <div className="CSCSinput">
+                            <div className="CSCSIIcon">
                                 <SearchIcon/>
                             </div>
                             <input type="text" onChange={e => setSearch(e.target.value)} placeholder="Search Friends"/>
@@ -90,17 +90,15 @@ const AllFSidebar = ({selectedId,setSelectedId}) => {
                     </div>
                     <div className="friendCount">
                         {`${friendsList.length<=0?"No":friendsList.length} friends`}
-                    </div>
-                   
+                    </div>                   
                 </div>
-                <div className="ALFSCfriends">
+                <div className="CSCfriends">
                     {getList().map(friend => <AllFSidebarCard 
                                             key={friend.id}
                                             id={friend.id}
                                             to={`/friends/list/${friend.id}`} 
                                             selected={friend.id===selectedId} 
-                                            setSelectedId={setSelectedId}/>)}
-                    
+                                            setSelectedId={setSelectedId}/>)}                    
                 </div>          
             </div>
 

@@ -1,0 +1,27 @@
+.standard_transition-enter{
+    transform: scale(0.3);
+    opacity: 0;
+}
+.standard_transition-enter-active{
+    transform: scale(1);
+    opacity: 1;
+    transition: all 200ms;
+}
+.standard_transition-enter-done{
+    transform: scale(1);
+    opacity: 1;
+}
+.standard_transition-exit{
+    transform: scale(1);
+    opacity: 1;
+
+}
+.standard_transition-exit-active{
+    transform: scale(0.3);
+    opacity: 0;
+    transition: all 200ms;
+}
+.standard_transition-exit-done{
+    transform: scale(0);
+    opacity: 0;
+}

@@ -145,6 +145,38 @@
 .sidebar_searchContainer>input:focus{
     outline: none;
 }
+.send_request{
+    
+    flex: 0.07;
+    cursor: pointer;
+    border-bottom: 1px solid #e7e7e7;
+    border-top: 1px solid #e7e7e7;
+    background-color: white;
+    display: flex;
+    align-items: center;
+
+}
+.sr_content{
+    display: flex;
+    /* background-color: gray; */
+    flex: 1;
+    padding-left: 25px;
+    align-items: center;
+
+}
+.src_icon{
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    /* background-color: white; */
+    display: grid;
+    place-items: center;
+    margin-right: 20px;
+}
+.src_title{
+    font-size: 16px;
+    font-weight: 500;
+}
 
 .sidebar_header{
 
@@ -194,6 +226,7 @@
     cursor: pointer;
     color: gray;
     border-bottom: 1px solid #f6f6f6;    
+    border-top: 1px solid #f6f6f6;    
     display: block;
 }
 .chats_tag_not_show{

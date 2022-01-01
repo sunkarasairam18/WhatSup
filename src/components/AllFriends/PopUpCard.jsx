@@ -1,10 +1,12 @@
 import React,{useState,useEffect} from 'react';
 import { firestore } from '../../services/firebase';
 import { doc,onSnapshot } from 'firebase/firestore';
+import { useStateValue } from '../../services/StateProvider';
 import '../../css/AllFriends/PopUpCard.css';
 
 const PopUpCard = ({id}) => {
     const [friend,setFriend] = useState({name:"",photoUrl:""});
+    const [{user},dispatch] = useStateValue();
 
     useEffect(()=>{
         if(id){
@@ -24,7 +26,7 @@ const PopUpCard = ({id}) => {
             <div className="PUCcontent">
                 <img src={friend.photoUrl} style={{height:"50px",width:"50px",borderRadius:"25px"}} />
                 <div className="PUCCname">
-                    {friend.name}
+                    {user.uid === id?"You":friend.name}
                 </div>
             </div>
         </div>

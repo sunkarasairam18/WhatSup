@@ -1,0 +1,69 @@
+.sent_request_dialog{
+    background-color: grey;
+    width: 500px;
+    height: 250px;
+    background-color: rgb(224, 222, 222);
+    border-radius: 8px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.srd_content{
+    background-color: rgb(224, 222, 222);
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    padding-top: 10px;
+}
+
+.srdc_header{
+    
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 0.13;
+    border-bottom: 1px solid rgb(184, 181, 181);
+    padding-bottom: 5px;
+
+
+}
+.srdc_subject{
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 15px;
+    font-weight: 600;
+}
+.srdch_title{
+    font-size: 25px;
+    font-weight: bold;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    flex: 1;
+
+}
+.srdch_close{
+    position: absolute;
+    right: 10px;
+    top: 3px;
+}
+
+.srdc_input{
+    padding: 20px;
+}
+.srdc_bottom{
+    display: flex;
+    flex-direction: row-reverse;
+    padding-right: 20px;
+
+}
+.send_request_btn{
+    font-size: 15px;
+    font-weight: 600;
+    background-color: rgb(168, 164, 164);
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.send_request_btn:hover{
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}

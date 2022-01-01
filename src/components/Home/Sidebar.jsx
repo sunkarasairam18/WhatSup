@@ -8,7 +8,7 @@ import { SearchOutlined } from '@mui/icons-material';
 import { CSSTransition } from 'react-transition-group';
 import { Link } from 'react-router-dom';
 import Badge from '@mui/material/Badge';
-
+import AddCommentIcon from '@mui/icons-material/AddComment';
 
 import Profile from './Profile';
 import '../../css/Home/Sidebar.css';
@@ -32,7 +32,8 @@ const Sidebar = ({
                     setShowUpload,
                     setUploadFile,
                     showSkeleton,
-                    setChatTyping
+                    setChatTyping,
+                    setShowNewRequestDialog
                     }) => {
     const [{user},dispatch] = useStateValue();
     const [show,setShow] = useState(false);
@@ -147,7 +148,18 @@ const Sidebar = ({
                             onChange={e=>setSearch(e.target.value)}/>
                     </div>                    
                 </div>
-              
+                {!search &&
+                <div className="send_request" onClick={()=>setShowNewRequestDialog(true)}>
+                    <div className="sr_content">
+                        <div className="src_icon">
+                            <AddCommentIcon style={{height:"20px",width:"20px",color:"grey"}}/>
+                        </div>
+                        <div className="src_title">
+                            Send New Request
+                        </div>
+                    </div>
+                </div>
+                }
                  <div className="sidebar_chats">
                     <div className={hideChatTitle()}>
                         CHATS
@@ -164,6 +176,7 @@ const Sidebar = ({
                         onSelect={setSelectId}
                         setChatTyping={setChatTyping}
                         />
+                        
                     ))}                       
                 </div>
             </div>

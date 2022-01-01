@@ -55,7 +55,7 @@ const Preview = ({ selectedId, setSelectedId, setPreviewUrl }) => {
         {/* <div className="PSubcontent">
                     
             </div> */}
-        <Link to={`/friends/list/${previewId}/display`}>
+        <Link to={`/${previewId}/display`}>
           <img
             src={friend.photoUrl}
             className="Ppic"

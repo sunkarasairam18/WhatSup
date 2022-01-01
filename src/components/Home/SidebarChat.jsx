@@ -90,6 +90,7 @@ const SidebarChat = ({uid,friendName,friendId,friendInfoDocId,containerId,select
                     </div>
                 </div>               
             </div>
+            
         </Link>
        
     );

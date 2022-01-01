@@ -66,5 +66,5 @@ async function updateOnlineStatus(uid,status){
    
 // }
 
-export {addAccount,updateLastSeen,updateOnlineStatus,firestore,auth,provider};
+export {addAccount,updateLastSeen,updateOnlineStatus,firebaseApp,firestore,auth,provider};
 

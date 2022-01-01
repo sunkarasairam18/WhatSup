@@ -36,7 +36,7 @@
     cursor: pointer;
 }
 .chat_message_content{
-    margin-right: 50px;
+    margin-right: 77px;
     margin-bottom: 3px;
     /* background-color: violet; */
 }
@@ -72,14 +72,21 @@
 }
 
 .chat_timestamp{
+    position: relative;
+    /* background-color: rosybrown; */
     color: gray;
     margin-top: -10px;
     text-align: right;
-    font-size: x-small;
+    font-size: 12px;
+    display: flex;
+    flex-direction: row-reverse;
 }
-.chat_timestamp_text{
-    position: absolute;
-    bottom: 0px;
+/* .chat_timestamp_text{
+     
+} */
+.seenicon{
+    /* background-color: rgb(69, 69, 240); */
+    margin-top: -1px;
+    padding-left: 3px;
     
-
 }
