@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import { doc,onSnapshot,updateDoc } from 'firebase/firestore';
+import { doc,onSnapshot,updateDoc,query,collection ,deleteDoc} from 'firebase/firestore';
 
 
 import "../../css/Friends/FRequestsCards.css"
@@ -17,27 +17,26 @@ const FRequestsCards = () => {
     const [requests,setRequests] = useState([]);
 
     useEffect(()=>{
-        const userDoc = doc(firestore,`Accounts/${user.uid}`);
-        onSnapshot(userDoc,userUpdate=>{
-            setRequests(userUpdate.data().Requests);
-        });
-    },[]);
+        const requestsQuery = query(
+            collection(firestore, `Accounts/${user.uid}/Requests`)
+          );
+          onSnapshot(requestsQuery, (requestSnapshot) => {
+            setRequests(
+              requestSnapshot.docs.map((request) => ({
+                id: request.id,
+                data: request.data(),
+              }))
+            );
+          });
+          console.log("R-:",requests);
+    },[]);    
 
-    
-
-    const delRequest = (id) =>{
-        const userDoc = doc(firestore,`Accounts/${user.uid}`);
-        var list = requests.filter(request => request != id);
-        const newRequests = {
-            Requests : list,
-        }
-        updateDoc(userDoc,newRequests).then(e=>{
-            console.log(e);
-        }).catch(error=>{
-            console.log("Error : ",error);
-        });;
+    const delRequest = async (id) =>{
+        const obj = requests.find(o => o.data.SentBy === id);
+        const requestDoc = doc(firestore,`Accounts/${user.uid}/Requests/${obj.id}`);
+        await deleteDoc(requestDoc);        
         
-    }
+    };
 
     const populateRequests = () =>{      
         return (
@@ -45,7 +44,7 @@ const FRequestsCards = () => {
                 // <Grid lg={3}  md={4} sm={6} key={request}>
                 //     <FRequestCard id={request} delRequest={delRequest}/>
                 // </Grid>
-                <FRequestCard id={request} key={request} delRequest={delRequest}/>
+                <FRequestCard id={request.data.SentBy} key={request.data.SentBy} delRequest={delRequest}/>
             ))
         );
     } 

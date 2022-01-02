@@ -7,7 +7,7 @@ import DoneIcon from '@mui/icons-material/Done';
 
 import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
-
+import Alert from '@mui/material/Alert';
 
 import Skeleton from "@mui/material/Skeleton";
 import { firestore } from "../../services/firebase";
@@ -103,27 +103,21 @@ const Profile = ({
   const [openSnack, setOpenSnack] = useState(false);
   const [snackMessage,setSnackMessage] = useState("");
   
-
-
-  const handleCloseSnack = () => {
-    setOpenSnack(false);
-  };
-
   return (
     <div className="profile">
       <Snackbar
         open={openSnack}
-        onClose={handleCloseSnack}
-        autoHideDuration={3000}
+        onClose={()=>setOpenSnack(false)}
+        autoHideDuration={2500}
         message={snackMessage}
         key={snackMessage}
         disableWindowBlurListener={true}
-        action={
-          <React.Fragment>            
-            <CloseIcon onClick={handleCloseSnack} style={{cursor:'pointer'}}/>
-          </React.Fragment>
-        }
-      />
+        sx={{ width: "350px" }}        
+      >
+        <Alert onClose={()=>setOpenSnack(false)} variant="filled" severity="success" sx={{ width: '100%' }} >
+          {snackMessage}
+        </Alert>
+      </Snackbar>
       <div className="profile_header">
         <div className="profile_header_content">
           <div className="profile_header_back_btn">

@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 import Axios from "axios";
 import { doc, updateDoc } from "firebase/firestore";
+import Snackbar from '@mui/material/Snackbar';
 
 import Backdrop from "@mui/material/Backdrop";
+import Alert from '@mui/material/Alert';
 
 import { useStateValue } from "../../services/StateProvider";
 import { firestore } from "../../services/firebase";
@@ -15,6 +17,7 @@ import Upload from "../Home/Upload";
 import JustLogin from "../Home/JustLogin";
 import Chat from "../Home/Chat";
 import FullPhoto from "../AllFriends/FullPhoto";
+import CloseIcon from '@mui/icons-material/Close';
 
 const Home = () => {
   const [{ user }, dispatch] = useStateValue();
@@ -28,6 +31,9 @@ const Home = () => {
   const [uploadFile, setUploadFile] = useState({ file: "", url: "" });
   const [showSkeleton, setShowSkeleton] = useState(false);
   const [showNewRequestDialog,setShowNewRequestDialog] = useState(false);
+  const [openSnack,setOpenSnack] = useState(false);
+  const [snackMessage,setSnackMessage] = useState();
+  const [severity,setSeverity] = useState();
   var url = "";
 
   useEffect(() => {
@@ -82,16 +88,36 @@ const Home = () => {
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={showNewRequestDialog}
       >
-       <SentRequestDialog  showNewRequestDialog={showNewRequestDialog} setShowNewRequestDialog={setShowNewRequestDialog}/>
+       <SentRequestDialog 
+        showNewRequestDialog={showNewRequestDialog} 
+        setShowNewRequestDialog={setShowNewRequestDialog}
+        setOpenSnack={setOpenSnack}
+        setSnackMessage={setSnackMessage}
+        setSeverity={setSeverity}
+        />
       </Backdrop>
       {showProfile && (
         <div className="fullPhoto">
-          <FullPhoto //Displays use full photo
+          <FullPhoto //Displays user full photo
             previewUrl={profileUrl}
             crossClick={setShowProfile}
           />
         </div>
       )}
+      <Snackbar
+        open={openSnack}
+        autoHideDuration={2500}
+        onClose={()=>setOpenSnack(false)}
+        key={snackMessage}
+        disableWindowBlurListener={true}        
+        sx={{ width: "350px" }}
+      >
+        
+        <Alert onClose={()=>setOpenSnack(false)} variant="filled" color="success" severity={severity} sx={{ width: '100%' }} >
+          {snackMessage}
+        </Alert>
+        
+      </Snackbar>
       <div className="home_body">
         <Sidebar
           selectId={selectId}

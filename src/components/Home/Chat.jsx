@@ -277,10 +277,7 @@ const Chat = ({
               <div className="chat_headerRight">
                 <IconButton>
                   <SearchOutlined />
-                </IconButton>
-                <IconButton>
-                  <AttachFileIcon />
-                </IconButton>
+                </IconButton>                
                 <IconButton>
                   <MoreVertIcon />
                 </IconButton>
