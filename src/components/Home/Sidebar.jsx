@@ -9,7 +9,7 @@ import { CSSTransition } from 'react-transition-group';
 import { Link } from 'react-router-dom';
 import Badge from '@mui/material/Badge';
 import AddCommentIcon from '@mui/icons-material/AddComment';
-
+import NoChats from './NoChats';
 import Profile from './Profile';
 import '../../css/Home/Sidebar.css';
 import SidebarChat from './SidebarChat';
@@ -52,12 +52,18 @@ const Sidebar = ({
                 const userData = userUpdate.data();   
                 setProfileUrl(userData.photoUrl);
                 SetAbout(userData.About);
-                setRequestsCount(userData.Requests.length);
                 dispatch({
                     type: actionTypes.SET_USER,
                     user: userData,
                 });
             }
+        });
+    },[]);
+
+    useEffect(()=>{
+        const requestQuery = query(collection(firestore,`Accounts/${user.uid}/Requests`));
+        onSnapshot(requestQuery,(querySnapshot)=>{
+            setRequestsCount(querySnapshot.docs.length);
         });
     },[]);
 
@@ -71,7 +77,6 @@ const Sidebar = ({
                 }
             )));
         });  
-        console.log(friendsList);      
     },[]);   
 
     function getIcon(){
@@ -175,9 +180,10 @@ const Sidebar = ({
                         selectId={selectId}
                         onSelect={setSelectId}
                         setChatTyping={setChatTyping}
-                        />
-                        
-                    ))}                       
+                        />                        
+                    ))}    
+                    {(!search && friendsList.length === 0) && <NoChats/>}
+
                 </div>
             </div>
             <CSSTransition //Sidebar slider for user photo,name,bio

@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import {getFirestore,doc,setDoc,getDoc,addDoc,updateDoc,query,collection,onSnapshot} from 'firebase/firestore';
+import {getFirestore,doc,setDoc,getDoc,updateDoc} from 'firebase/firestore';
 import { getAuth,GoogleAuthProvider } from "firebase/auth";
 
 const firebaseApp = initializeApp({

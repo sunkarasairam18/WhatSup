@@ -1,0 +1,20 @@
+.no_chats{
+    /* background-color: blanchedalmond; */
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.nc_content{
+    display: flex;
+    flex-direction: column;
+}
+.ncc_icon{
+    display: flex;
+    justify-content: center;
+}
+.ncc_title{
+    margin-top: 20px;
+    font-size: 30px;
+    font-weight: 500;
+}

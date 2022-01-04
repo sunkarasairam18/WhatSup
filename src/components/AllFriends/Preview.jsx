@@ -14,7 +14,7 @@ const Preview = ({ selectedId, setSelectedId, setPreviewUrl }) => {
     about: "",
     photoUrl: "",
     email: "",
-    friendsCount: 0
+    friendsCount: 0,
   });
   const { previewId } = useParams();
   const [showLine, setShowLine] = useState(false);
@@ -38,7 +38,7 @@ const Preview = ({ selectedId, setSelectedId, setPreviewUrl }) => {
           about: About,
           photoUrl: photoUrl,
           email: email,
-          friendsCount: friendsCount
+          friendsCount: friendsCount,
         });
       }
     });
@@ -46,11 +46,14 @@ const Preview = ({ selectedId, setSelectedId, setPreviewUrl }) => {
 
   return (
     <div className="Preview">
-      <Backdrop
-        open={showDialog}
-        >
-        <PopUpFriends id={previewId} friendsCount={friend.friendsCount} setShowDialog={setShowDialog}/>        
-    </Backdrop>
+      <Backdrop open={showDialog}>
+        <PopUpFriends
+          id={previewId}
+          friendsCount={friend.friendsCount}
+          showDialog={showDialog}
+          setShowDialog={setShowDialog}
+        />
+      </Backdrop>
       <div className="Pcontent">
         {/* <div className="PSubcontent">
                     
@@ -69,11 +72,11 @@ const Preview = ({ selectedId, setSelectedId, setPreviewUrl }) => {
           className="Pfriendscount"
           onMouseEnter={() => setShowLine(true)}
           onMouseLeave={() => setShowLine(false)}
-          onClick={()=>setShowDialog(true)}
+          onClick={() => setShowDialog(true)}
         >
-          {(friend.friendsCount > 1) && `${friend.friendsCount} friends`}
+          {friend.friendsCount > 1 && `${friend.friendsCount} friends`}
           {!friend.friendsCount && `No friends`}
-          {(friend.friendsCount === 1) && `${friend.friendsCount} friend`}
+          {friend.friendsCount === 1 && `${friend.friendsCount} friend`}
           {showLine && <hr className="Pfchr" />}
         </div>
         <div className="Pemail">{friend.email}</div>

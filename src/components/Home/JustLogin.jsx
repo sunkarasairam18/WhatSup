@@ -12,7 +12,7 @@ const JustLogin = () => {
                 {/* <ForumIcon style={{height: "150px",width: "150px",color:"#32CD32"}}/>     */}
                 <img src={icon} style={{height: "150px",width: "150px"}}/>
                 <div className="justloginwish">
-                    What'Sup
+                    WhatsUp
                 </div>
                 <div className="justloginintro">
                     Just Chit-Chat

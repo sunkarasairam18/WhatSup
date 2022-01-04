@@ -6,8 +6,10 @@ import PopUpCard from "./PopUpCard";
 import {onSnapshot,query,collection} from 'firebase/firestore';
 import { firestore } from '../../services/firebase';
 import SearchIcon from '@mui/icons-material/Search';
+import { CSSTransition } from 'react-transition-group';
+import '../../css/common/StandardTransition.css';
 
-const PopUpFriends = ({id,friendsCount,setShowDialog}) => {
+const PopUpFriends = ({id,friendsCount,showDialog,setShowDialog}) => {
   const [search,setSearch] = useState("");
   const [friendsList,setFriendsList] = useState([]);
   const [queryList,setQueryList] = useState([]);
@@ -36,6 +38,7 @@ const PopUpFriends = ({id,friendsCount,setShowDialog}) => {
   }  
 
   return (
+    <CSSTransition in={showDialog} timeout={800} unmountOnExit classNames="standard_transition">
     <div className="FPopUp">
       
         <div className="FPopUpMain">
@@ -80,6 +83,7 @@ const PopUpFriends = ({id,friendsCount,setShowDialog}) => {
         </div> 
         
     </div>
+    </CSSTransition>
   );
 };
 
