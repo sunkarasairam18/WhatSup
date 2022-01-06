@@ -43,6 +43,7 @@ const FSidebar = () => {
             hover={false}
           />
           <FSidebarBox
+            path="/requests/list"
             icon={<PersonAddAlt1Icon />}
             text="Friend requests"
             hover={true}
@@ -54,7 +55,7 @@ const FSidebar = () => {
             hover={true}
             arrow={true}
           />
-          
+
           <FSidebarBox
             path="/friends/list"
             icon={<GroupsIcon />}

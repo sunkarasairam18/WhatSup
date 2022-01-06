@@ -7,26 +7,25 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SearchIcon from "@mui/icons-material/Search";
 import { onSnapshot, query, collection } from "firebase/firestore";
 
+import FRSidebarCard from "./FRSidebarCard";
 import "../../css/common/CommonSidebar.css";
 import icon from "../chat-1.png";
 import { useStateValue } from "../../services/StateProvider";
-import AllFSidebarCard from "./AllFSidebarCard";
 import { firestore } from "../../services/firebase";
 
-const AllFSidebar = ({selectedId,setSelectedId}) => {
-  const [friendsList, setFriendsList] = useState([]);
+const FRSidebar = ({selectedId,setSelectedId}) => {
+  const [requestsList, setRequestsList] = useState([]);
   const [search, setSearch] = useState("");
   const [{ user }, dispatch] = useStateValue();
 
   useEffect(() => {
-    const friendQuery = query(
-      collection(firestore, `Accounts/${user.uid}/Friends`)
+    const requestsQuery = query(
+      collection(firestore, `Accounts/${user.uid}/Requests`)
     );
-    onSnapshot(friendQuery, (querySnapshot) => {
-      setFriendsList(
+    onSnapshot(requestsQuery, (querySnapshot) => {
+      setRequestsList(
         querySnapshot.docs.map((e) => ({
-          name: e.data().friendName,
-          id: e.data().friendId,
+          ...e.data()
         }))
       );
     });
@@ -34,15 +33,15 @@ const AllFSidebar = ({selectedId,setSelectedId}) => {
 
   function getList() {
     if (search !== "") {
-      var list = friendsList.filter((friend) =>
-        friend.name.trim().toLowerCase().includes(search.trim().toLowerCase())
+        console.log("Requests : ",requestsList);
+      var list = requestsList.filter((request) =>
+        request.displayName.trim().toLowerCase().includes(search.trim().toLowerCase())
       );
       return list;
     } else {
-      return friendsList;
+      return requestsList;
     }
   }
-
 
   return (
     <div className="CommonSidebar">
@@ -76,7 +75,7 @@ const AllFSidebar = ({selectedId,setSelectedId}) => {
               </div>
               <div className="CSCStitles">
                 <div className="CSCSTsmall">Friends</div>
-                <div className="CSCSTbig">All Friends</div>
+                <div className="CSCSTbig">Friend requests</div>
               </div>
             </div>
             <div className="CSCSinput">
@@ -86,21 +85,21 @@ const AllFSidebar = ({selectedId,setSelectedId}) => {
               <input
                 type="text"
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search Friends"
+                placeholder="Search Requests"
               />
             </div>
           </div>
           <div className="friendCount">
-            {`${friendsList.length <= 0 ? "No" : friendsList.length} friends`}
+            {requestsList.length <= 0 ? "No new requests" : (requestsList.length == 1?"1 request":`${requestsList.length} requests`)}
           </div>
         </div>
         <div className="CSCfriends">
-          {getList().map((friend) => (
-            <AllFSidebarCard
-              key={friend.id}
-              id={friend.id}
-              to={`/friends/list/${friend.id}`}
-              selected={friend.id === selectedId}
+          {getList().map((request) => (
+            <FRSidebarCard
+              key={request.SentBy}
+              id={request.SentBy}
+              to={`/requests/list/${request.SentBy}`}
+              selected={request.SentBy === selectedId}
               setSelectedId={setSelectedId}
             />
           ))}
@@ -110,4 +109,4 @@ const AllFSidebar = ({selectedId,setSelectedId}) => {
   );
 };
 
-export default AllFSidebar;
+export default FRSidebar;

@@ -24,6 +24,10 @@
 .FRCImg{
     height: 60%;
     overflow: hidden;
+    cursor: pointer;
+    background-color: antiquewhite;
+    display: grid;
+    place-items: center;
 }
 .FRCImg>img{
     max-width: 100%;

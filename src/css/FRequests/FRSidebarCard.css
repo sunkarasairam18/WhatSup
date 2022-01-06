@@ -1,0 +1,60 @@
+.FRSCard{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.FRSCcontent{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-bottom: 5px;
+    padding-right: 5px;
+}
+/* .FRSCcontent:hover{
+    background-color: rgb(221, 219, 219);
+} */
+.FRSCselect{
+    background-color: rgb(221, 219, 219);
+}
+.FRSC_operations{
+    width: 100%;
+    /* background-color: aliceblue; */
+    padding: 5px;
+}
+.FRSCCPname{
+    margin-top: 5px;
+    font-weight: 600;
+    margin-left: 10px;
+}
+.FRSCC_buttons{
+    display: flex;
+    margin-top: 5px;
+    justify-content: center;
+    margin-top: 10px;
+}
+.FRSCCB_confirm{
+    flex: 0.45;
+    background-color: rgb(106, 106, 238);
+    text-align: center;
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-weight: 600;
+    border-radius: 5px;
+}
+.FRSCCB_delete{
+    flex: 0.45;
+    text-align: center;
+    background-color: #d4d3d3;
+    color: black;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-weight: 600;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+.FRSCCB_delete:hover{
+    background-color: #cecdcd;
+}

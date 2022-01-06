@@ -5,6 +5,7 @@ import { firestore } from "../../services/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { Link } from "react-router-dom";
 import PopUpFriends from "./PopUpFriends";
+import { Avatar } from '@material-ui/core';
 
 import "../../css/AllFriends/Preview.css";
 
@@ -46,7 +47,9 @@ const Preview = ({ selectedId, setSelectedId, setPreviewUrl }) => {
 
   return (
     <div className="Preview">
-      <Backdrop open={showDialog}>
+      <Backdrop 
+        sx={{zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={showDialog}>
         <PopUpFriends
           id={previewId}
           friendsCount={friend.friendsCount}
@@ -58,21 +61,39 @@ const Preview = ({ selectedId, setSelectedId, setPreviewUrl }) => {
         {/* <div className="PSubcontent">
                     
             </div> */}
-        <Link to={`/${previewId}/display`}>
+        {friend.photoUrl && <Link to={`/${previewId}/display`}>
+            
           <img
             src={friend.photoUrl}
             className="Ppic"
             onClick={() => setPreviewUrl(friend.photoUrl)}
           />
-        </Link>
+        </Link>}
+        {!friend.photoUrl && 
+        <div className="Ppic_no_cursor">
+          <Avatar style={{height:"250px",width:"250px"}}/>
+        </div>}
+
       </div>
       <div className="Pinfo">
         <div className="Pname">{friend.name}</div>
         <div
-          className="Pfriendscount"
-          onMouseEnter={() => setShowLine(true)}
-          onMouseLeave={() => setShowLine(false)}
-          onClick={() => setShowDialog(true)}
+          className={friend.friendsCount?"Pfriendscount":"Pfriendscount_no_cursor"}
+          onMouseEnter={() => {
+            if(friend.friendsCount != 0){
+              setShowLine(true);
+            }
+          }}
+          onMouseLeave={() =>{
+            if(friend.friendsCount != 0){
+              setShowLine(false);
+            }
+          }}
+          onClick={() => {
+            if(friend.friendsCount != 0){
+              setShowDialog(true);
+            }
+          }}
         >
           {friend.friendsCount > 1 && `${friend.friendsCount} friends`}
           {!friend.friendsCount && `No friends`}

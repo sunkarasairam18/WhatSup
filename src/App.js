@@ -12,6 +12,7 @@ import Home from './components/main/Home';
 import Login from './components/main/Login';
 import Friends from './components/main/Friends';
 import AllFriends from './components/main/AllFriends';
+import FRequests from './components/main/FRequests';
 import SentRequestDialog from './components/Home/SentRequestDialog';
 
 function App(props) {
@@ -37,6 +38,10 @@ function App(props) {
           <Route path="/:selectedId/display">
             <FullPhoto previewUrl={previewUrl}/>
           </Route>
+          <Route path="/requests/list">
+            <FRequests setPreviewUrl={setPreviewUrl}/>
+          </Route>
+
           <Route path="/friends/list">
             <AllFriends setPreviewUrl={setPreviewUrl}/>
           </Route>

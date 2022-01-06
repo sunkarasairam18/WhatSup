@@ -32,10 +32,11 @@ const FRequestsCards = () => {
     },[]);    
 
     const delRequest = async (id) =>{
-        const obj = requests.find(o => o.data.SentBy === id);
-        const requestDoc = doc(firestore,`Accounts/${user.uid}/Requests/${obj.id}`);
-        await deleteDoc(requestDoc);        
-        
+        // const obj = requests.find(o => o.data.SentBy === id);
+        const requesterDoc = doc(firestore,`Accounts/${user.uid}/Requests/${id}`);
+        await deleteDoc(requesterDoc);    
+        const userDoc = doc(firestore,`Accounts/${id}/Sent Requests/${user.uid}`);
+        await deleteDoc(userDoc);        
     };
 
     const populateRequests = () =>{      
