@@ -1,0 +1,18 @@
+.starter_chat{
+    /* background-color: violet; */
+    display: flex;
+    justify-content: center;    
+    margin-bottom: 10px;
+
+}
+.sc_in{
+    padding: 7px;
+    border-radius: 8px;
+    text-align: center;
+    width: fit-content;
+    background-color: #dcf8c6;
+    /* background-color: #d3f6b8; */
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    font-size: small;
+
+}

@@ -25,7 +25,8 @@ import { KeyboardArrowDown } from "@mui/icons-material";
 
 import { useStateValue } from "../../services/StateProvider";
 import { firestore } from "../../services/firebase";
-
+import NewChatBubble from "./ChatBubble";
+import InfoBubble from "./InfoBubble";
 import FriendInfo from "./FriendInfo";
 import ChatBubble from "./ChatBubble";
 import "../../css/Home/Chat.css";
@@ -215,17 +216,34 @@ const Chat = ({
       });
   }
 
-  function correctCss(sender, accountId, pastSenderId) {
-    var s = "chat_message ";
-    if (sender === accountId) {
-      s += "chat_receiver ";
+  // function correctCss(sender, accountId, pastSenderId) {
+  //   if(sender == 'start') return "starter_chat";
+  //   var s = "chat_message ";
+  //   if (sender === accountId) {
+  //     s += "chat_receiver ";
+  //   }
+  //   if (!pastSenderId) {
+  //     s += sender === accountId ? "chat_right_corner " : "chat_left_corner ";
+  //   } else if (pastSenderId === accountId) {
+  //     s += sender === accountId ? "" : "chat_left_corner ";
+  //   } else {
+  //     s += sender === accountId ? "chat_right_corner " : "";
+  //   }
+  //   pastmsg = sender;
+  //   return s;
+  // }
+
+  function correctCss(sender, myId, pastSenderId) {
+    var s = "nchat_message ";
+    if (sender === myId) {
+      s += "nchat_receiver ";
     }
     if (!pastSenderId) {
-      s += sender === accountId ? "chat_right_corner " : "chat_left_corner ";
-    } else if (pastSenderId === accountId) {
-      s += sender === accountId ? "" : "chat_left_corner ";
+      s += sender === myId ? "chat_right_corner " : "chat_left_corner ";
+    } else if (pastSenderId === myId) {
+      s += sender === myId ? "" : "chat_left_corner ";
     } else {
-      s += sender === accountId ? "chat_right_corner " : "";
+      s += sender === myId ? "chat_right_corner " : "";
     }
     pastmsg = sender;
     return s;
@@ -251,6 +269,7 @@ const Chat = ({
     } ${date.median}`;
     return day;
   }
+
 
   return (
     <div className="chat_container">
@@ -284,7 +303,7 @@ const Chat = ({
               </div>
             </div>
             <div className="chat_body">
-              {messages.map(({ id, data }) => (
+              {/* {messages.map(({ id, data }) => (
                 <ChatBubble
                   key={id}
                   fullClass={correctCss(data.sender, user.uid, pastmsg)}
@@ -293,6 +312,21 @@ const Chat = ({
                     new Date(data.timestamp?.toDate())
                   )}
                 />
+              ))} */}
+              {messages.map(({id,data})=>(
+                data.sender!="start"?(
+                <NewChatBubble
+                  key={id}
+                  fullClass={correctCss(data.sender, user.uid, pastmsg)}
+                  message={data.message}
+                  timestamp={getObjectfromDate(new Date(data.timestamp?.toDate()))}
+                  senderMe={data.sender == user.uid}
+                />):(
+                  <InfoBubble
+                  key={id}
+                  displayName={friend.displayName}
+                  message={data.message}/>
+                )
               ))}
               <div ref={bottomRef}></div>
               {/* <div className="arrow_container">

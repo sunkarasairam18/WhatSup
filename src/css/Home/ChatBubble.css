@@ -1,48 +1,20 @@
-.chat_message{
+.nchat_message{
     position: relative;
     font-size: 16px;
-    padding-left: 8px;
-    padding-top: 8px;
-    padding-right: 8px;
-    padding-bottom: 3px;
-    background-color: #ffffff;
+    padding: 8px;
     border-radius: 10px;
     width: fit-content;
-    display: flex;
-    flex-direction: column;
+    
     max-width: 60%;
     margin-bottom: 3px;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
-.chat_mesage_box{
-    display: flex;
-    flex-direction: row;
 
-}
-.readmore{
-    /* position: absolute; */
-    bottom: 8px;
-    color: rgb(69, 69, 240);
-    font-weight: 600;
-    /* cursor: pointer; */
-    /* margin-top: -5px; */
-    text-align: left;
-    /* margin: 5px; */
-    width: fit-content;
-    padding: 5px;
-    /* background-color: turquoise; */
-}
-.readmore:hover{
-    cursor: pointer;
-}
-.chat_message_content{
-    margin-right: 77px;
-    margin-bottom: 3px;
-    /* background-color: violet; */
-}
-.chat_receiver{
-    margin-left: auto;
+.nchat_receiver{
+    /* background-color: #dcf8c6; */
     background-color: #dcf8c6;
+
+    margin-left: auto;
 }
 
 .chat_right_corner:before{
@@ -70,23 +42,53 @@
     left: -8px;
     top: 0px;
 }
-
-.chat_timestamp{
+.ncm_box{
+    background-color: tomato;
+}
+.nchat_timestamp{
     position: relative;
-    /* background-color: rosybrown; */
+    width: 75px;
+    margin-left: auto;
     color: gray;
-    margin-top: -10px;
-    text-align: right;
     font-size: 12px;
     display: flex;
     flex-direction: row-reverse;
 }
-/* .chat_timestamp_text{
-     
-} */
-.seenicon{
-    /* background-color: rgb(69, 69, 240); */
-    margin-top: -1px;
-    padding-left: 3px;
-    
+.nchat_timestamp_receiver{
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    width: fit-content;
+}
+.nchat_timestamp_sender{
+    position: absolute;
+    top: -10px;
+    width: fit-content;
+}
+.nseenicon{
+    top: -10px;
+    position: absolute;
+}
+.ncm_box_sender{
+    background-color: turquoise;
+    margin-right: 60px;
+}
+.ncm_box_receiver{
+    background-color: tomato;
+    margin-right: 80px;
+}
+.readmore{
+    /* position: absolute; */
+    color: rgb(69, 69, 240);
+    font-weight: 600;
+    /* cursor: pointer; */
+    /* margin-top: -5px; */
+    text-align: left;
+    padding: 5px;
+    /* margin: 5px; */
+    width: fit-content;
+    /* background-color: turquoise; */
+}
+.readmore:hover{
+    cursor: pointer;
 }
