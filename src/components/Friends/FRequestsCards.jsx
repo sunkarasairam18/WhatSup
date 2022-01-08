@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import { doc,onSnapshot,updateDoc,query,collection ,deleteDoc} from 'firebase/firestore';
+import { onSnapshot,query,collection } from 'firebase/firestore';
 
 
 import "../../css/Friends/FRequestsCards.css"
@@ -30,14 +30,7 @@ const FRequestsCards = () => {
           });
           console.log("R-:",requests);
     },[]);    
-
-    const delRequest = async (id) =>{
-        // const obj = requests.find(o => o.data.SentBy === id);
-        const requesterDoc = doc(firestore,`Accounts/${user.uid}/Requests/${id}`);
-        await deleteDoc(requesterDoc);    
-        const userDoc = doc(firestore,`Accounts/${id}/Sent Requests/${user.uid}`);
-        await deleteDoc(userDoc);        
-    };
+   
 
     const populateRequests = () =>{      
         return (
@@ -45,7 +38,7 @@ const FRequestsCards = () => {
                 // <Grid lg={3}  md={4} sm={6} key={request}>
                 //     <FRequestCard id={request} delRequest={delRequest}/>
                 // </Grid>
-                <FRequestCard id={request.data.SentBy} key={request.data.SentBy} delRequest={delRequest}/>
+                <FRequestCard id={request.data.SentBy} key={request.data.SentBy}/>
             ))
         );
     } 

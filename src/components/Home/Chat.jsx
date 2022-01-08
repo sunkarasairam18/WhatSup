@@ -1,23 +1,18 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Avatar, IconButton } from "@mui/material";
 import { SearchOutlined } from "@mui/icons-material";
-import AttachFileIcon from "@mui/icons-material/AttachFile";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import SendIcon from "@mui/icons-material/Send";
-import MicIcon from "@mui/icons-material/Mic";
 import { useParams } from "react-router-dom";
 import {
   query,
   onSnapshot,
   doc,
   collection,
-  setDoc,
   addDoc,
   updateDoc,
-  orderBy,
-  limit,
-  where,
+  orderBy
 } from "@firebase/firestore";
 import Picker from "emoji-picker-react";
 import { CSSTransition } from "react-transition-group";
@@ -40,8 +35,7 @@ const Chat = ({
   setChatTyping
 }) => {
   const [input, setInput] = useState("");
-  const { friendId, containerId, friendInfoDocId } = useParams();
-  const [userInfoDocId, setUserInfoDocId] = useState(null);
+  const { friendId, containerId } = useParams();
   const [friend, setFriend] = useState({});
   // const [typing,setTyping] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -71,17 +65,17 @@ const Chat = ({
 
   useEffect(scrollToBottom, [messages]);
 
-  useEffect(() => {
-    const userFriendDoc = doc(
-      firestore,
-      `Accounts/${user.uid}/Friends/${friendInfoDocId}`
-    );
-    onSnapshot(userFriendDoc, (userFriendQuery) => {
-      if (userFriendQuery.exists()) {
-        setUserInfoDocId(userFriendQuery.data().myInfoIdinHis);
-      }
-    });
-  }, [friendInfoDocId]);
+  // useEffect(() => {
+  //   const userFriendDoc = doc(
+  //     firestore,
+  //     `Accounts/${user.uid}/Friends/${friendInfoDocId}`
+  //   );
+  //   onSnapshot(userFriendDoc, (userFriendQuery) => {
+  //     if (userFriendQuery.exists()) {
+  //       setUserInfoDocId(userFriendQuery.data().myInfoIdinHis);
+  //     }
+  //   });
+  // }, [friendInfoDocId]);
 
   // async function getMyDocIdinFriends(){
   //     const userDoc = doc(firestore,`Accounts/${user.uid}/Friends/${friendInfoDocId}`);
@@ -189,49 +183,31 @@ const Chat = ({
       timestamp: new Date(),
     };
     const newMessage = await addDoc(chatCollection, msgObj);
-    console.log("User Info : ", userInfoDocId);
     const sameUpdate = {
       lastsent: msgObj.timestamp,
     };
     const userDoc = doc(
       firestore,
-      `Accounts/${user.uid}/Friends/${friendInfoDocId}`
+      `Accounts/${user.uid}/Friends/${friendId}`
     );
     const friendDoc = doc(
       firestore,
-      `Accounts/${friendId}/Friends/${userInfoDocId}`
+      `Accounts/${friendId}/Friends/${user.uid}`
     );
     const newLastMsg = doc(firestore, `ChatContainers/${containerId}`);
     const newDoc = {
       lastMessageId: newMessage["_key"]["path"]["segments"][3],
     };
     updateDoc(newLastMsg, newDoc);
-    updateDoc(userDoc, sameUpdate);
+    updateDoc(userDoc, sameUpdate, { merge: true });
     updateDoc(friendDoc, sameUpdate, { merge: true })
       .then((e) => {
-        console.log(e);
+        console.log("Time updated ",e);
       })
       .catch((error) => {
         console.log("Error : ", error);
       });
   }
-
-  // function correctCss(sender, accountId, pastSenderId) {
-  //   if(sender == 'start') return "starter_chat";
-  //   var s = "chat_message ";
-  //   if (sender === accountId) {
-  //     s += "chat_receiver ";
-  //   }
-  //   if (!pastSenderId) {
-  //     s += sender === accountId ? "chat_right_corner " : "chat_left_corner ";
-  //   } else if (pastSenderId === accountId) {
-  //     s += sender === accountId ? "" : "chat_left_corner ";
-  //   } else {
-  //     s += sender === accountId ? "chat_right_corner " : "";
-  //   }
-  //   pastmsg = sender;
-  //   return s;
-  // }
 
   function correctCss(sender, myId, pastSenderId) {
     var s = "nchat_message ";

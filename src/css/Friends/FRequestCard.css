@@ -2,9 +2,8 @@
 .CardApperance-exit{
     opacity: 1;
 }
-.CardApperance-exit-active{
-   
-    transition: all 1000ms;
+.CardApperance-exit-active{   
+    transition: all 800ms;
 }
 .CardApperance-exit-done{
     opacity: 0;
@@ -62,6 +61,17 @@
     cursor: pointer;
    
 }
+.FRCConfirmAcc{
+    margin-top: 20px;
+    padding: 10px;
+    font-weight: 600;
+    text-align: center;
+    color: white;
+    background-color: rgb(152, 152, 240);
+    border-radius: 5px;
+    cursor: pointer;
+   
+}
 .FRCConfirm:hover{
     background-color: rgb(96, 96, 238);
 
@@ -81,7 +91,7 @@
     background-color: #d1cfcf;
 }
 .FRCRequestDel{
-    margin-top: 63px;
+    margin-top: 5px;
     padding: 10px;
     font-weight: 600;
     text-align: center;

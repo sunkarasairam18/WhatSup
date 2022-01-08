@@ -6,12 +6,15 @@ import "../../css/Friends/FRequestCard.css";
 import { firestore } from '../../services/firebase';
 import { CSSTransition } from 'react-transition-group';
 import Grid from '@mui/material/Grid';
+import { delRequest,confirmRequest } from '../../services/firebase';
+import { useStateValue } from '../../services/StateProvider';
 
 
-
-const FRequestCard = ({id,delRequest}) => {
+const FRequestCard = ({id}) => {
     const [sender,setSender] = useState({name:"",photoUrl:""});
-    const [appear,setAppear] = useState(true);
+    const [appearDel,setAppearDel] = useState(true);
+    const [appearConfirm,setAppearConfirm] = useState(true);
+    const [{user},dispatch] = useStateValue();
 
     useEffect(()=>{
         const senderDoc = doc(firestore,`Accounts/${id}`) ;
@@ -24,15 +27,14 @@ const FRequestCard = ({id,delRequest}) => {
     },[]);
 
     useEffect(()=>{
-        if(!appear){
-            setTimeout(()=>{delRequest(id)},1000);            
-        }
-    },[appear])
+        if(!appearDel) setTimeout(()=>{delRequest(user.uid,id)},800);                                
+        if(!appearConfirm) setTimeout(()=>{confirmRequest(user.uid,id)},800);
+    },[appearDel,appearConfirm])
 
     const url = "https://scontent.fvga4-1.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=2skap-CRIy4AX-O19Y1&_nc_ht=scontent.fvga4-1.fna&oh=00_AT8idiBEEBZyWG1aoOkE6Z0EGCci7ADnoSLQzAKOOxoKCQ&oe=61FCCDF8";
 
     return ( 
-        <CSSTransition in={appear} timeout={2000} classNames="CardApperance">
+        <CSSTransition in={appearDel && appearConfirm} timeout={800} classNames="CardApperance">
             <Grid lg={3}  md={4} sm={6}>
                 <div className="FRCard">
                     <Link to={`requests/list/${id}`}>
@@ -45,11 +47,14 @@ const FRequestCard = ({id,delRequest}) => {
                         <div className="FRCTitle">
                             {sender.name}
                         </div>
-                       {appear && <div className="FRCConfirm">
-                            Confirm
-                        </div>}
-                        <div className={`${appear?"FRCDelete":"FRCRequestDel"}`} onClick={()=>setAppear(false)}>
-                            {appear?"Delete":"Request deleted"}
+                        
+                        <div className={appearConfirm?"FRCConfirm":"FRCConfirmAcc"}
+                            onClick={()=>setAppearConfirm(false)}
+                        >
+                            {appearConfirm ? "Confirm":"Accepted request"}
+                        </div>
+                        <div className={appearDel?"FRCDelete":"FRCRequestDel"} onClick={()=>setAppearDel(false)}>
+                            {appearDel ?"Delete":"Request deleted"}
                         </div>
                     </div>
                 </div>

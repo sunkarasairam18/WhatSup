@@ -1,6 +1,7 @@
 .FRSCard{
     padding-left: 15px;
     padding-right: 15px;
+    height: 80px;
 }
 .FRSCcontent{
     cursor: pointer;
@@ -33,6 +34,7 @@
     margin-top: 5px;
     justify-content: center;
     margin-top: 10px;
+    /* background-color: lightgreen; */
 }
 .FRSCCB_confirm{
     flex: 0.45;
@@ -57,4 +59,9 @@
 }
 .FRSCCB_delete:hover{
     background-color: #cecdcd;
+}
+.r_del_acc{
+    font-size: 15px;
+    color: grey;
+    margin-left: 10px;
 }

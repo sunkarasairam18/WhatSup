@@ -138,7 +138,7 @@ const Home = () => {
         />
 
         <Switch>
-          <Route path="/:friendId/:containerId/:friendInfoDocId">
+          <Route path="/:friendId/:containerId">
             <Chat
               setSearch={setSearch}
               setSearchIcon={setSearchIcon}

@@ -172,7 +172,7 @@ const Sidebar = ({
                     {getSearchList().map(friend => (
                         <SidebarChat 
                         key={friend.friendId}   
-                        uid={user.uid}        
+                        userId={user.uid}        
                         friendName={friend.friendName}              
                         friendId={friend.friendId} 
                         friendInfoDocId={friend.id} 

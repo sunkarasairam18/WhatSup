@@ -1,16 +1,19 @@
 import React,{useState,useEffect} from 'react';
-import { Link,useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { firestore } from '../../services/firebase';
-import { onSnapshot,doc } from 'firebase/firestore';
+import { onSnapshot,doc,addDoc,setDoc,collection } from 'firebase/firestore';
 import { Avatar } from '@material-ui/core';
-import { deleteDoc } from 'firebase/firestore';
 import { useStateValue } from '../../services/StateProvider';
+
+import { delRequest,confirmRequest } from '../../services/firebase';
 
 const FRSidebarCard = ({id,to,selected,setSelectedId}) => {
     const [{user},dispatch] = useStateValue();
     const [requester,setRequester] = useState({name:"",photoUrl:""});
     const [cardClass,setCardClass] = useState("FRSCcontent");
-    const history = useHistory();
+    const [appearDelete,setAppearDelete] = useState(false);
+    const [appearConfirm,setAppearConfirm] = useState(false);
+
     useEffect(()=>{
         if(selected) setCardClass("FRSCcontent FRSCselect");
         else setCardClass("FRSCcontent");
@@ -29,13 +32,18 @@ const FRSidebarCard = ({id,to,selected,setSelectedId}) => {
         }
     },[id]);
 
-    const delRequest = async (id) =>{
-        // const obj = requests.find(o => o.data.SentBy === id);
-        const requesterDoc = doc(firestore,`Accounts/${user.uid}/Requests/${id}`);
-        await deleteDoc(requesterDoc);    
-        const userDoc = doc(firestore,`Accounts/${id}/Sent Requests/${user.uid}`);
-        await deleteDoc(userDoc);        
-    };
+    useEffect(()=>{
+        if(appearDelete){
+            setTimeout(()=>{delRequest(user.uid,id)},4000);
+        }
+    },[appearDelete]);
+
+
+    useEffect(()=>{
+        if(appearConfirm){
+            setTimeout(()=>{confirmRequest(user.uid,id)},4000);
+        }
+    },[appearConfirm]);
 
     return (
         <Link to={to}>
@@ -57,41 +65,59 @@ const FRSidebarCard = ({id,to,selected,setSelectedId}) => {
                     <Avatar src={requester.photoUrl} style={{width:"50px",height:"50px"}}/>
                     <div className="FRSC_operations">                    
                         <div className="FRSCCPname">
-                            {requester.name}
+                            {requester.name.length>29?requester.name.substring(0,30)+"...":requester.name}
                         </div>
                         <div className="FRSCC_buttons">
-                            <div className="FRSCCB_confirm"
-                                onMouseOver={()=>{
-                                    if(!selected){
-                                        setCardClass("FRSCcontent");
-                                    }
-                                }}
-                                onMouseLeave={()=>{
-                                    if(!selected){
-                                        setCardClass("FRSCcontent FRSCselect");
-                                    }
-                                }}
-                                >
-                                Confirm
-                            </div>
-                            <Link to={'/requests/list'} className="FRSCCB_delete">
-                            <div 
-                                onMouseOver={()=>{
-                                    if(!selected){
-                                        setCardClass("FRSCcontent");
-                                    }
-                                }}
-                                onMouseLeave={()=>{
-                                    if(!selected){
-                                        setCardClass("FRSCcontent FRSCselect");
-                                    }
-                                }}
-                                onClick={()=>delRequest(id)}                                                                    
-                                >
-                                Delete
-                            </div>
+                            {!appearDelete && !appearConfirm && 
+                            <Link to={'/requests/list'}  className="FRSCCB_confirm">                            
+                                <div 
+                                    onMouseOver={()=>{
+                                        if(!selected){
+                                            setCardClass("FRSCcontent");
+                                        }
+                                    }}
+                                    onMouseLeave={()=>{
+                                        if(!selected){
+                                            setCardClass("FRSCcontent FRSCselect");
+                                        }
+                                    }}
+                                    onClick={()=>{                                        
+                                        setAppearConfirm(true)
+                                    }}
+                                    >
+                                    Confirm
+                                </div>
                             </Link>
+                            }
+                            
+                            {!appearDelete && !appearConfirm && 
+                            <Link to={'/requests/list'} className="FRSCCB_delete">
+                                <div 
+                                    onMouseOver={()=>{
+                                        if(!selected){
+                                            setCardClass("FRSCcontent");
+                                        }
+                                    }}
+                                    onMouseLeave={()=>{
+                                        if(!selected){
+                                            setCardClass("FRSCcontent FRSCselect");
+                                        }
+                                    }}
+                                    onClick={()=>setAppearDelete(true)}                                                                                                 
+                                    >
+                                    Delete
+                                </div>
+                            </Link>}
                         </div>
+                        {appearDelete && 
+                        <div className="r_del_acc">
+                            Request deleted
+                        </div>}
+                        {appearConfirm &&
+                            <div className="r_del_acc">
+                                Accepted Request
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

@@ -7,7 +7,7 @@ import {firestore} from '../../services/firebase';
 import '../../css/Home/SidebarChat.css';
 import {getObjectfromDate} from './Chat';
 
-const SidebarChat = ({uid,friendName,friendId,friendInfoDocId,containerId,selectId,onSelect,setChatTyping}) => {
+const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,setChatTyping}) => {
     const [lastmessage,setLastmessage] = useState("");
     const [typing,setTyping] = useState(false);
     const [timeTag,setTimetag] = useState("");
@@ -55,17 +55,26 @@ const SidebarChat = ({uid,friendName,friendId,friendInfoDocId,containerId,select
     async function getLastMessage(containerId,Id){
         const msgContainer = doc(firestore,`ChatContainers/${containerId}/messages/${Id}`);
         const snapShot = await getDoc(msgContainer);
-        if(snapShot.exists()){
-            setLastmessage(snapShot.data());
-        }
+        if(Id == "start"){
+            if(snapShot.exists()){
+                setLastmessage({
+                    ...snapShot.data(),
+                    message: `You and ${friendName},Both are friends now.`
+                });
+            }
+        }else{
+            if(snapShot.exists()){
+                setLastmessage(snapShot.data());
+            }
+        }        
     }
    
     async function updateFriendName(name){
-        const db = doc(firestore,`Accounts/${uid}/Friends/${friendInfoDocId}`);
-        const timestamp = {
+        const db = doc(firestore,`Accounts/${userId}/Friends/${friendId}}`);
+        const displayName = {
             friendName: name,
         };
-        await updateDoc(db,timestamp);
+        await updateDoc(db,displayName);
     };        
 
     const shortString = (msg,l) =>{
@@ -76,7 +85,7 @@ const SidebarChat = ({uid,friendName,friendId,friendInfoDocId,containerId,select
     }
 
     return (
-        <Link to={`/${friendId}/${containerId}/${friendInfoDocId}`} onClick={()=>onSelect(friendId)}>
+        <Link to={`/${friendId}/${containerId}`} onClick={()=>onSelect(friendId)}>
             <div className={selectId === friendId?"sidebarChatSelected":"sidebarChat"}>
                 <Avatar src={`${url}`} style={{width:"50px",height:"50px"}}/>
                 <div className="sidebarChat_info">
