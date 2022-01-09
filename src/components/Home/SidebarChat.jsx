@@ -2,14 +2,18 @@ import { Avatar } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { doc,onSnapshot,getDoc,updateDoc } from '@firebase/firestore';
-
+import { Badge } from '@material-ui/core';
+import MailIcon from '@mui/icons-material/Mail';
 import {firestore} from '../../services/firebase';
 import '../../css/Home/SidebarChat.css';
 import {getObjectfromDate} from './Chat';
+import '../../css/common/StandardTransition.css';
+import { CSSTransition } from 'react-transition-group';
 
 const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,setChatTyping}) => {
     const [lastmessage,setLastmessage] = useState("");
     const [typing,setTyping] = useState(false);
+    const [showBadge,setShowBadge] = useState(true);
     const [timeTag,setTimetag] = useState("");
     const [url,setUrl] = useState("");
 
@@ -94,10 +98,15 @@ const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,s
                         <span>{timeTag}</span>                         
                     </div>                   
                     <div className="sidebarChat_info_last_content">
-                        {!typing && <p className="lastmsgcontext">{shortString(lastmessage.message,38)}</p>}                        
+                        {!typing && <p className="lastmsgcontext">{shortString(lastmessage.message,35)}</p>}                        
                         {typing && <p className="typing">typing...</p>}
                     </div>
-                </div>               
+                    <div className="sidebarChat_notification_badge">
+                        
+                    </div>
+                </div>      
+               
+         
             </div>
             
         </Link>

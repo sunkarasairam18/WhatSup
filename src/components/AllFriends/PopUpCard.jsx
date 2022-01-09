@@ -1,11 +1,11 @@
 import React,{useState,useEffect} from 'react';
 import { firestore } from '../../services/firebase';
-import { doc,onSnapshot } from 'firebase/firestore';
+import { doc,onSnapshot,updateDoc } from 'firebase/firestore';
 import { useStateValue } from '../../services/StateProvider';
 import { Avatar } from "@mui/material";
 import '../../css/AllFriends/PopUpCard.css';
 
-const PopUpCard = ({id}) => {
+const PopUpCard = ({id,name}) => {
     const [friend,setFriend] = useState({name:"",photoUrl:"",email:""});
     const [{user},dispatch] = useStateValue();
 
@@ -16,10 +16,19 @@ const PopUpCard = ({id}) => {
                 if(friendUpdate.exists()){
                     const {displayName,photoUrl,email} = friendUpdate.data();
                     setFriend({name: displayName,photoUrl: photoUrl,email: email});
+                    if(name != displayName) updateFriendName(displayName,id);
                 }
             });
         }
     },[id])
+
+    async function updateFriendName(name,friendId){
+        const db = doc(firestore,`Accounts/${user.uid}/Friends/${friendId}}`);
+        const displayName = {
+            friendName: name,
+        };
+        await updateDoc(db,displayName);
+    };        
 
 
     return ( 

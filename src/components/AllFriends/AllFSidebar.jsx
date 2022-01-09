@@ -99,6 +99,7 @@ const AllFSidebar = ({selectedId,setSelectedId}) => {
             <AllFSidebarCard
               key={friend.id}
               id={friend.id}
+              name={friend.name}
               to={`/friends/list/${friend.id}`}
               selected={friend.id === selectedId}
               setSelectedId={setSelectedId}

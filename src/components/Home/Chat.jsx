@@ -20,7 +20,6 @@ import { KeyboardArrowDown } from "@mui/icons-material";
 
 import { useStateValue } from "../../services/StateProvider";
 import { firestore } from "../../services/firebase";
-import NewChatBubble from "./ChatBubble";
 import InfoBubble from "./InfoBubble";
 import FriendInfo from "./FriendInfo";
 import ChatBubble from "./ChatBubble";
@@ -63,29 +62,10 @@ const Chat = ({
     bottomRef.current.scrollIntoView({ behavior: "auto" });
   };
 
-  useEffect(scrollToBottom, [messages]);
+  useEffect(()=>{
+    if(showBottomArrow) scrollToBottom();          
+  }, [messages]);
 
-  // useEffect(() => {
-  //   const userFriendDoc = doc(
-  //     firestore,
-  //     `Accounts/${user.uid}/Friends/${friendInfoDocId}`
-  //   );
-  //   onSnapshot(userFriendDoc, (userFriendQuery) => {
-  //     if (userFriendQuery.exists()) {
-  //       setUserInfoDocId(userFriendQuery.data().myInfoIdinHis);
-  //     }
-  //   });
-  // }, [friendInfoDocId]);
-
-  // async function getMyDocIdinFriends(){
-  //     const userDoc = doc(firestore,`Accounts/${user.uid}/Friends/${friendInfoDocId}`);
-  //     const snapshot = await getDoc(userDoc);
-  //     if(snapshot.exists()){
-  //         const data = snapshot.data();
-  //         console.log("User in friend's doc : ",data.myInfoIdinHis);
-  //         return data.myInfoIdinHis;
-  //     }
-  // };
 
   useEffect(() => {
     setLastSeen(getLastSeen(friend?.lastSeen));
@@ -291,7 +271,7 @@ const Chat = ({
               ))} */}
               {messages.map(({id,data})=>(
                 data.sender!="start"?(
-                <NewChatBubble
+                <ChatBubble
                   key={id}
                   fullClass={correctCss(data.sender, user.uid, pastmsg)}
                   message={data.message}

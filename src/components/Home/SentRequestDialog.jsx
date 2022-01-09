@@ -99,7 +99,7 @@ const SentRequestDialog = ({
     const { error } = Joi.validate(value, schema);
     if (value.email.trim() === "") {
       console.log(error);
-      setSnackMessage("Enter Email Id");
+      setSnackMessage("Enter Email");
       setSeverity("info");
       setOpenSnack(true);
     } else if (error) {
@@ -207,7 +207,7 @@ const SentRequestDialog = ({
           <div className="srdc_subject">Send Request to chat</div>
           <div className="srdc_input">
             <TextField
-              label="Enter Email Id"
+              label="Enter Email"
               color="secondary"
               size="medium"
               value={value.email}

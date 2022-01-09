@@ -1,13 +1,13 @@
 import React,{useState,useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { firestore } from '../../services/firebase';
-import { onSnapshot,doc,addDoc,setDoc,collection } from 'firebase/firestore';
+import { onSnapshot,doc,addDoc,setDoc,collection,updateDoc } from 'firebase/firestore';
 import { Avatar } from '@material-ui/core';
 import { useStateValue } from '../../services/StateProvider';
 
 import { delRequest,confirmRequest } from '../../services/firebase';
 
-const FRSidebarCard = ({id,to,selected,setSelectedId}) => {
+const FRSidebarCard = ({id,name,to,selected,setSelectedId}) => {
     const [{user},dispatch] = useStateValue();
     const [requester,setRequester] = useState({name:"",photoUrl:""});
     const [cardClass,setCardClass] = useState("FRSCcontent");
@@ -27,10 +27,19 @@ const FRSidebarCard = ({id,to,selected,setSelectedId}) => {
                 if(requesterUpdate.exists()){
                     const {displayName,photoUrl} = requesterUpdate.data();
                     setRequester({name: displayName,photoUrl: photoUrl});
+                    if(name != displayName) updateRequesterName(displayName,id);
                 }
             });
         }
     },[id]);
+
+    async function updateRequesterName(name,friendId){
+        const db = doc(firestore,`Accounts/${user.uid}/Requests/${friendId}}`);
+        const displayName = {
+            displayName: name,
+        };
+        await updateDoc(db,displayName);
+    }; 
 
     useEffect(()=>{
         if(appearDelete){

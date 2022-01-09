@@ -98,6 +98,7 @@ const FRSidebar = ({selectedId,setSelectedId}) => {
             <FRSidebarCard
               key={request.SentBy}
               id={request.SentBy}
+              name={request.displayName}
               to={`/requests/list/${request.SentBy}`}
               selected={request.SentBy === selectedId}
               setSelectedId={setSelectedId}

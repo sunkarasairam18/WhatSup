@@ -3,25 +3,34 @@ import { Link } from 'react-router-dom';
 import { Avatar } from '@material-ui/core';
 import '../../css/AllFriends/AllFSidebarCard.css';
 import { firestore } from '../../services/firebase';
-import { doc,onSnapshot } from 'firebase/firestore';
+import { useStateValue } from '../../services/StateProvider';
+import { doc,onSnapshot,updateDoc } from 'firebase/firestore';
 import '../../css/FRequests/FRSidebarCard.css';
 
-const AllFSidebarCard = ({id,to,selected,setSelectedId}) => {
+const AllFSidebarCard = ({id,name,to,selected,setSelectedId}) => {
     const [friend,setFriend] = useState({name:"",photoUrl:""});
+    const [{user},dispatch] = useStateValue();
 
     useEffect(()=>{
-        console.log("Id",id);
         if(id){
             const friendDoc = doc(firestore,`Accounts/${id}`);
             onSnapshot(friendDoc,friendUpdate =>{
                 if(friendUpdate.exists()){
                     const {displayName,photoUrl} = friendUpdate.data();
                     setFriend({name: displayName,photoUrl: photoUrl});
+                    if(name!=displayName) updateFriendName(displayName,id);
                 }
             });
         }
     },[id])
 
+    async function updateFriendName(name,friendId){
+        const db = doc(firestore,`Accounts/${user.uid}/Friends/${friendId}}`);
+        const displayName = {
+            friendName: name,
+        };
+        await updateDoc(db,displayName);
+    }; 
 
     return ( 
         <Link to={to}>

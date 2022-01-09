@@ -75,6 +75,7 @@ const PopUpFriends = ({id,friendsCount,showDialog,setShowDialog}) => {
                 <PopUpCard 
                 key={friend.id}
                 id={friend.id}
+                name={friend.name}
                 />       
               ))}
               
