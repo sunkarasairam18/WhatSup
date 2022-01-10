@@ -2,18 +2,14 @@ import { Avatar } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { doc,onSnapshot,getDoc,updateDoc } from '@firebase/firestore';
-import { Badge } from '@material-ui/core';
-import MailIcon from '@mui/icons-material/Mail';
 import {firestore} from '../../services/firebase';
 import '../../css/Home/SidebarChat.css';
 import {getObjectfromDate} from './Chat';
 import '../../css/common/StandardTransition.css';
-import { CSSTransition } from 'react-transition-group';
 
 const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,setChatTyping}) => {
     const [lastmessage,setLastmessage] = useState("");
     const [typing,setTyping] = useState(false);
-    const [showBadge,setShowBadge] = useState(true);
     const [timeTag,setTimetag] = useState("");
     const [url,setUrl] = useState("");
 
@@ -101,9 +97,9 @@ const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,s
                         {!typing && <p className="lastmsgcontext">{shortString(lastmessage.message,35)}</p>}                        
                         {typing && <p className="typing">typing...</p>}
                     </div>
-                    <div className="sidebarChat_notification_badge">
+                    {/* <div className="sidebarChat_notification_badge">
                         
-                    </div>
+                    </div> */}
                 </div>      
                
          
@@ -117,15 +113,17 @@ const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,s
 
 export function properTag(msgDate){
     var tag = "";
-    const todaystamp = Math.round(new Date().getTime()/ 1000); 
+    const todaystamp = Math.round(new Date().getTime() / 1000);
+    const exactTwelve = 86400*Math.trunc(todaystamp/86400);
+    console.log("Today : ",todaystamp,"Exact 12 : ",exactTwelve);
     const date = getObjectfromDate(new Date(msgDate?.toDate()));
-    if(todaystamp - msgDate?.seconds < 86400){
+    if(exactTwelve <= msgDate?.seconds){
         tag = `${date.hours}:${date.minutes<10?`0${date.minutes}`:date.minutes} ${date.median}`;
     }
-    else if(todaystamp - msgDate?.seconds < 172800){
+    else if(exactTwelve - msgDate?.seconds < 86400){
         tag = "yesterday";
-    }
-    else if(todaystamp - msgDate?.seconds < 604800){
+    }    
+    else if(exactTwelve - msgDate?.seconds < 604800){
         tag = date.day;
     }else{
         tag = `${date.date<10?`0${date.date}`:date.date}/${date.month<10?`0${date.month}`:date.month}/${date.year}`;

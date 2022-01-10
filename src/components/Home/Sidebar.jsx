@@ -3,7 +3,7 @@ import { Avatar,IconButton } from '@material-ui/core';
 import PeopleIcon from '@mui/icons-material/People';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {doc,getDoc,onSnapshot,query,collection,orderBy, snapshotEqual} from 'firebase/firestore';
+import {doc,onSnapshot,query,collection,orderBy} from 'firebase/firestore';
 import { SearchOutlined } from '@mui/icons-material';
 import { CSSTransition } from 'react-transition-group';
 import { Link } from 'react-router-dom';
@@ -175,7 +175,6 @@ const Sidebar = ({
                         userId={user.uid}        
                         friendName={friend.friendName}              
                         friendId={friend.friendId} 
-                        friendInfoDocId={friend.id} 
                         containerId={friend.container} 
                         selectId={selectId}
                         onSelect={setSelectId}

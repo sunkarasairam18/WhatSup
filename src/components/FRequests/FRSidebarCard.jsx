@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { firestore } from '../../services/firebase';
-import { onSnapshot,doc,addDoc,setDoc,collection,updateDoc } from 'firebase/firestore';
+import { onSnapshot,doc,updateDoc } from 'firebase/firestore';
 import { Avatar } from '@material-ui/core';
 import { useStateValue } from '../../services/StateProvider';
 

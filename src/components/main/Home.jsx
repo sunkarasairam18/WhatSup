@@ -17,7 +17,6 @@ import Upload from "../Home/Upload";
 import JustLogin from "../Home/JustLogin";
 import Chat from "../Home/Chat";
 import FullPhoto from "../AllFriends/FullPhoto";
-import CloseIcon from '@mui/icons-material/Close';
 
 const Home = () => {
   const [{ user }, dispatch] = useStateValue();
@@ -80,7 +79,6 @@ const Home = () => {
           showUpload={showUpload}
           setShowUpload={setShowUpload}
           uploadFile={uploadFile}
-          setUploadFile={setUploadFile}
           uploadImage={uploadImage}
         />
       </Backdrop>

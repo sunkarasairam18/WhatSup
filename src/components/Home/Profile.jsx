@@ -1,12 +1,11 @@
-import React, { useState, useEffect,useFocus } from "react";
-import { Avatar, IconButton } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { Avatar } from "@material-ui/core";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CreateIcon from "@mui/icons-material/Create";
 import DoneIcon from '@mui/icons-material/Done';
 
 
 import Snackbar from '@mui/material/Snackbar';
-import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
 
 import Skeleton from "@mui/material/Skeleton";

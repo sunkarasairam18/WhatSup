@@ -128,20 +128,6 @@ const Chat = ({
     },2500);
   };
 
-  
-
-  // useEffect(()=>{
-  //     if(friendId && containerId){
-  //         const document = doc(firestore,`ChatContainers/${containerId}`);
-  //         onSnapshot(document,docUpdate=>{
-  //             if(docUpdate.exists()){
-  //                 const useDoc = docUpdate.data();
-  //                 console.log(useDoc);
-  //                 setTyping(useDoc.typingBy[friendId]);
-  //             }
-  //         });
-  //     }
-  // },[friendId,containerId]);
 
   async function sendMessage(msg) {
     msg.preventDefault();
@@ -160,6 +146,7 @@ const Chat = ({
       message: temporarymessage,
       readBy: { ...readBy },
       sender: user.uid,
+      receiver: friendId,
       timestamp: new Date(),
     };
     const newMessage = await addDoc(chatCollection, msgObj);
@@ -208,12 +195,18 @@ const Chat = ({
   function getLastSeen(lastSeenStamp) {
     var day = "";
     const todaystamp = Math.round(new Date().getTime() / 1000);
+    const exactTwelve = 86400*Math.trunc(todaystamp/86400);
+    console.log("Today : ",todaystamp,"Exact 12 : ",exactTwelve);
     const date = getObjectfromDate(new Date(lastSeenStamp?.toDate()));
-    if (todaystamp - lastSeenStamp?.seconds < 86400) {
+    if(exactTwelve <= lastSeenStamp?.seconds){
       day = `today `;
-    } else if (todaystamp - lastSeenStamp?.seconds < 172800) {
+    }
+    // if (exactTwelve - lastSeenStamp?.seconds < 86400) {
+    //   day = `today `;
+    // } 
+    else if (exactTwelve - lastSeenStamp?.seconds < 86400) {
       day = `yesterday `;
-    } else if (todaystamp - lastSeenStamp?.seconds < 604800) {
+    } else if (exactTwelve - lastSeenStamp?.seconds < 604800) {
       day = `${date.day} `;
     } else {
       day = `${date.date < 10 ? `0${date.date}` : date.date}/${
@@ -277,6 +270,10 @@ const Chat = ({
                   message={data.message}
                   timestamp={getObjectfromDate(new Date(data.timestamp?.toDate()))}
                   senderMe={data.sender == user.uid}
+                  reader={data.receiver}
+                  readBy={data.readBy}
+                  containerId={containerId}
+                  msgDocId={id}
                 />):(
                   <InfoBubble
                   key={id}

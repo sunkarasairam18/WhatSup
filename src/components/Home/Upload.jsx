@@ -9,15 +9,9 @@ import '../../css/Home/Upload.css';
 import '../../css/common/StandardTransition.css';
 
 
-const Upload = ({showUpload,uploadFile,setUploadFile,setShowUpload,uploadImage}) => {
-    const imgRef = React.createRef();
-    
+const Upload = ({showUpload,uploadFile,setShowUpload,uploadImage}) => {
     const [result,setResult] = useState(null);
-
     const cropperRef = React.createRef(null);
-
-    const [srcImg,selectSrcImg] = useState("");    
-
 
     const onCrop = () => {
         const imageElement = cropperRef?.current;
