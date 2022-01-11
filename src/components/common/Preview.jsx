@@ -4,10 +4,10 @@ import Backdrop from "@mui/material/Backdrop";
 import { firestore } from "../../services/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { Link } from "react-router-dom";
-import PopUpFriends from "./PopUpFriends";
+import PopUpFriends from "../AllFriends/PopUpFriends";
 import { Avatar } from '@material-ui/core';
 
-import "../../css/AllFriends/Preview.css";
+import "../../css/common/Preview.css";
 
 const Preview = ({ selectedId, setSelectedId, setPreviewUrl }) => {
   const [friend, setFriend] = useState({

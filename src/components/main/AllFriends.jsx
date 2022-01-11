@@ -4,7 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import "../../css/common/Container.css";
 import AllFSidebar from "../AllFriends/AllFSidebar";
 import NoPreview from "../common/NoPreview";
-import Preview from "../AllFriends/Preview";
+import Preview from "../common/Preview";
 
 
 const AllFriends = ({ setPreviewUrl }) => {

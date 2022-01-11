@@ -1,4 +1,4 @@
-import React, {useState,useEffect } from 'react';
+import React, {useState,useEffect,useRef } from 'react';
 import { Avatar,IconButton } from '@material-ui/core';
 import PeopleIcon from '@mui/icons-material/People';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -40,9 +40,15 @@ const Sidebar = ({
     const [friendsList,setFriendsList] = useState([]);
     const [about,SetAbout] = useState("");
     const [requestsCount,setRequestsCount] = useState(0);
-    
+    const chatTop = useRef(null);
 
     const searchRef = React.createRef();
+
+    useEffect(()=>{
+        if(!searchIcon){
+            chatTop.current.scrollIntoView({ behavior: "auto" });
+        }
+    },[searchIcon]);
 
     useEffect(()=>{
         const userDoc = doc(firestore,`Accounts/${user.uid}`);
@@ -169,6 +175,7 @@ const Sidebar = ({
                     <div className={hideChatTitle()}>
                         CHATS
                     </div>
+                    <div ref={chatTop}></div>
                     {getSearchList().map(friend => (
                         <SidebarChat 
                         key={friend.friendId}   

@@ -42,6 +42,7 @@ const FSidebar = () => {
             text="Home"
             hover={false}
           />
+
           <FSidebarBox
             path="/requests/list"
             icon={<PersonAddAlt1Icon />}
@@ -50,6 +51,7 @@ const FSidebar = () => {
             arrow={true}
           />
           <FSidebarBox
+            path="/sentrequests/list"
             icon={<AccessTimeIcon />}
             text="Sent requests"
             hover={true}

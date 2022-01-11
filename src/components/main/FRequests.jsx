@@ -2,7 +2,7 @@ import React,{useState} from 'react';
 import { Switch, Route } from "react-router-dom";
 
 import FRSidebar from '../FRequests/FRSidebar';
-import Preview from '../AllFriends/Preview';
+import Preview from '../common/Preview';
 import NoPreview from '../common/NoPreview';
 import "../../css/common/Container.css";
 

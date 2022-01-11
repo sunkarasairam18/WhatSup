@@ -1,0 +1,38 @@
+.SRCard{
+    height: 70px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.SRCcontent{
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    border-radius: 10px;
+    padding-left: 10px;
+}
+.SRCcontent:hover{
+    background-color: rgb(221, 219, 219);
+}
+.SRCselect{
+    background-color: rgb(221, 219, 219);
+}
+.SRCCname{
+    font-size: 15px;
+    font-weight: 600;
+    margin-left: 10px;
+}
+.SRCCcancel{
+    right: 10px;
+    position: absolute;
+    padding: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    text-align: center;
+    color: black;
+    background-color: #d4d3d3;
+    border-radius: 5px;
+    cursor: pointer;
+
+}

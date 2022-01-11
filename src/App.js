@@ -13,6 +13,7 @@ import Login from './components/main/Login';
 import Friends from './components/main/Friends';
 import AllFriends from './components/main/AllFriends';
 import FRequests from './components/main/FRequests';
+import SentRequests from './components/main/SentRequests';
 import SentRequestDialog from './components/Home/SentRequestDialog';
 
 function App(props) {
@@ -40,6 +41,9 @@ function App(props) {
           </Route>
           <Route path="/requests/list">
             <FRequests setPreviewUrl={setPreviewUrl}/>
+          </Route>
+          <Route path="/sentrequests/list">
+            <SentRequests setPreviewUrl={setPreviewUrl}/>
           </Route>
 
           <Route path="/friends/list">

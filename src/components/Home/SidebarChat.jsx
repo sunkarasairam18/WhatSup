@@ -1,7 +1,7 @@
 import { Avatar } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { doc,onSnapshot,getDoc,updateDoc } from '@firebase/firestore';
+import { doc,onSnapshot,getDoc,updateDoc,query,collection,orderBy,where,limit } from '@firebase/firestore';
 import {firestore} from '../../services/firebase';
 import '../../css/Home/SidebarChat.css';
 import {getObjectfromDate} from './Chat';
@@ -11,6 +11,7 @@ const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,s
     const [lastmessage,setLastmessage] = useState("");
     const [typing,setTyping] = useState(false);
     const [timeTag,setTimetag] = useState("");
+    const [notify,setNotify] = useState();
     const [url,setUrl] = useState("");
 
     useEffect(()=>{
@@ -52,6 +53,20 @@ const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,s
         }
     },[containerId])
 
+    useEffect(()=>{
+        if(containerId){
+            const notifyQuery = query(
+                collection(firestore, `ChatContainers/${containerId}/messages`),
+                where(`readBy.${userId}`,"==",false),
+                limit(1)
+            );
+            onSnapshot(notifyQuery,(notifySnapshot)=>{
+                setNotify(notifySnapshot.docs?.length>0?true:false);
+                console.log("Docs : ",notifySnapshot);
+            });            
+        }
+    },[containerId]);
+
     async function getLastMessage(containerId,Id){
         const msgContainer = doc(firestore,`ChatContainers/${containerId}/messages/${Id}`);
         const snapShot = await getDoc(msgContainer);
@@ -89,17 +104,17 @@ const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,s
             <div className={selectId === friendId?"sidebarChatSelected":"sidebarChat"}>
                 <Avatar src={`${url}`} style={{width:"50px",height:"50px"}}/>
                 <div className="sidebarChat_info">
-                    <div className="sidebarChat_info_main">
-                        <div className="sidebarChat_info_name">{shortString(friendName,29)}</div>
+                    <div className="sci_main">
+                        <div className="sci_name">{shortString(friendName,29)}</div>
                         <span>{timeTag}</span>                         
-                    </div>                   
-                    <div className="sidebarChat_info_last_content">
-                        {!typing && <p className="lastmsgcontext">{shortString(lastmessage.message,35)}</p>}                        
+                    </div>                 
+                    <div className="sci_last_content">
+                        {!typing && <p className={`lastmsgcontext ${selectId === friendId?"":(notify?"notifytext":"")}`}>{shortString(lastmessage.message,35)}</p>}                        
                         {typing && <p className="typing">typing...</p>}
                     </div>
-                    {/* <div className="sidebarChat_notification_badge">
+                    {selectId !== friendId && notify &&
+                    <div className="sci_badge"/>}
                         
-                    </div> */}
                 </div>      
                
          
@@ -115,7 +130,6 @@ export function properTag(msgDate){
     var tag = "";
     const todaystamp = Math.round(new Date().getTime() / 1000);
     const exactTwelve = 86400*Math.trunc(todaystamp/86400);
-    console.log("Today : ",todaystamp,"Exact 12 : ",exactTwelve);
     const date = getObjectfromDate(new Date(msgDate?.toDate()));
     if(exactTwelve <= msgDate?.seconds){
         tag = `${date.hours}:${date.minutes<10?`0${date.minutes}`:date.minutes} ${date.median}`;
