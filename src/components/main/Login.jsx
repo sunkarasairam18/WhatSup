@@ -18,7 +18,8 @@ const Login = () => {
             localStorage.setItem("WhatsUpToken",JSON.stringify({
                 "displayName": displayName,
                 "email": email,
-                "uid": uid,                
+                "uid": uid,   
+                "onlineStatus": true    
             }));
             // console.log("Sign IN ",result.user);
             addAccount(displayName,email,uid);

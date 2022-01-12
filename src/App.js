@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react';
 import { Switch,Route } from 'react-router-dom';
 import PageVisibility from 'react-page-visibility';
 
+import { actionTypes } from './services/reducer';
 
 import {updateLastSeen,updateOnlineStatus} from './services/firebase';
 import { useStateValue } from "./services/StateProvider";
@@ -22,14 +23,33 @@ function App(props) {
 
 
   useEffect(()=>{
-    if(user) updateOnlineStatus(user.uid,true);
+    if(user){
+      dispatch({
+        type: actionTypes.UPDATE_ONLINE,
+        user: {
+          ...user,
+          onlineStatus: true
+        },
+      });
+      updateOnlineStatus(user.uid,true);
+    }
   },[]);
 
   const handleVisibilityChange = isVisible => {
-    // updateOnlineStatus(user.uid,isVisible);
-    // if(!isVisible){
-    //   updateLastSeen(user.uid);
-    // }
+    if(user){
+
+      updateOnlineStatus(user.uid,isVisible);
+      dispatch({
+        type: actionTypes.UPDATE_ONLINE,
+        user: {
+          ...user,
+          onlineStatus: isVisible
+        },
+      });
+      if(!isVisible){
+        updateLastSeen(user.uid);
+      }
+    }
   };
 
   return (

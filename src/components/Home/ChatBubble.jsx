@@ -1,31 +1,40 @@
 import React, { useState, useEffect,useRef } from "react";
 import { firestore } from "../../services/firebase";
 import { doc, updateDoc } from "firebase/firestore";
+import { useStateValue } from "../../services/StateProvider";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
+import Unread from './Unread';
+
 import "../../css/Home/ChatBubble.css";
 
-const ChatBubble = ({ fullClass, message, timestamp, senderMe, reader, readBy, containerId, msgDocId }) => {
+const ChatBubble = ({ fullClass, message, timestamp, senderMe, reader, readBy,unreadId,containerId,msgId,unreadCount }) => {
   const [overflow, setOverflow] = useState(false);
   const [bubbleVisible,setBubbleVisible] = useState(false);
+  const [{user},dispatch] = useStateValue();
 
   useEffect(()=>{
     if(!senderMe){
-      if(reader && !readBy[reader] && bubbleVisible){
-        const db = doc(firestore, `ChatContainers/${containerId}/messages/${msgDocId}`);
+      console.log("Status : ",user);
+      if(reader && !readBy[reader] && bubbleVisible && user.onlineStatus){
+        const db = doc(firestore, `ChatContainers/${containerId}/messages/${msgId}`);
         const tempRead = {
           readBy: {...readBy,[reader]: true}
         }
         updateDoc(db, tempRead);
       }
     }
-  },[bubbleVisible]);
+  },[bubbleVisible,user]);
+
+
+
+  
 
   const bubbleRef = useRef(null);
   const observer = new IntersectionObserver(([entry]) =>{          
     setBubbleVisible(entry.isIntersecting);
-    console.log(entry.isIntersecting,message);
   }
   );
+
   useEffect(()=>{
     if(!senderMe){
       if(reader && !readBy[reader]){
@@ -37,11 +46,15 @@ const ChatBubble = ({ fullClass, message, timestamp, senderMe, reader, readBy, c
     }
   },[]);
 
+ 
+
   useEffect(() => {
-    if (message.length > 400 && !overflow) setOverflow(true);
+    if ( message.length > 400 && !overflow) setOverflow(true);
   }, []);
 
   return (
+    <div>
+      {unreadId === msgId && <Unread count={unreadCount}/>}
     <div
       className={`nchat_message ${fullClass}`}
       style={{ backgroundColor: senderMe ? "" : "white" }}
@@ -68,6 +81,7 @@ const ChatBubble = ({ fullClass, message, timestamp, senderMe, reader, readBy, c
           } ${timestamp.median}`}
         </div>
       </div>
+    </div>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import Axios from "axios";
 import { doc, updateDoc } from "firebase/firestore";
@@ -33,11 +33,8 @@ const Home = () => {
   const [openSnack,setOpenSnack] = useState(false);
   const [snackMessage,setSnackMessage] = useState();
   const [severity,setSeverity] = useState();
-  var url = "";
 
-  useEffect(() => {
-    console.log("chat typing", chatTyping);
-  }, [chatTyping]);
+  
   const uploadImage = async (result) => {
     setShowSkeleton(true);
     const formData = new FormData();

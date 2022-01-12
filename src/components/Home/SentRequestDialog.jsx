@@ -40,9 +40,11 @@ const SentRequestDialog = ({
     if (!receiver) return;
     console.log("Receiver", receiver);
     console.log("Id", receiver[0]?.id);
-    findInFriends(receiver[0]?.id);
-    findInRequests(receiver[0]?.id);
-    findInSentRequests(receiver[0]?.id);
+    if(receiver.length > 0){
+      findInFriends(receiver[0]?.id);
+      findInRequests(receiver[0]?.id);
+      findInSentRequests(receiver[0]?.id);
+    }
   
     if (receiver.length === 0) {
         

@@ -98,6 +98,13 @@ const delRequest = async (userId,id) => {
   await deleteDoc(userDoc);
 };
 
+const cancelRequest = async (userId,id) =>{
+  const sentrequesterDoc = doc(firestore, `Accounts/${userId}/Sent Requests/${id}`);
+  await deleteDoc(sentrequesterDoc);
+  const userRequest= doc(firestore, `Accounts/${id}/Requests/${userId}`);
+  await deleteDoc(userRequest);
+};
+
 const confirmRequest = async (userId,id) => {
 
   const chatContainers = collection(firestore, `ChatContainers`);
@@ -109,6 +116,12 @@ const confirmRequest = async (userId,id) => {
       typing: false,
     },
     lastMessageId: "start",
+    receiver: userId,
+    sender: id,
+    readBy: {
+      [id] :false,
+      [userId] : true
+    }
   };
   const newDocContainer = await addDoc(chatContainers, docContainer); //Creating chat container
   const newContainerId = await newDocContainer["_key"]["path"]["segments"][1];
@@ -166,6 +179,7 @@ export {
   updateOnlineStatus,
   delRequest,
   confirmRequest,
+  cancelRequest,
   firebaseApp,
   firestore,
   auth,

@@ -62,7 +62,6 @@ const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,s
             );
             onSnapshot(notifyQuery,(notifySnapshot)=>{
                 setNotify(notifySnapshot.docs?.length>0?true:false);
-                console.log("Docs : ",notifySnapshot);
             });            
         }
     },[containerId]);

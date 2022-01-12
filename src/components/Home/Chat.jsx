@@ -12,7 +12,8 @@ import {
   collection,
   addDoc,
   updateDoc,
-  orderBy
+  orderBy,
+  where
 } from "@firebase/firestore";
 import Picker from "emoji-picker-react";
 import { CSSTransition } from "react-transition-group";
@@ -23,6 +24,8 @@ import { firestore } from "../../services/firebase";
 import InfoBubble from "./InfoBubble";
 import FriendInfo from "./FriendInfo";
 import ChatBubble from "./ChatBubble";
+import Unread from './Unread';
+
 import "../../css/Home/Chat.css";
 
 const Chat = ({
@@ -36,12 +39,14 @@ const Chat = ({
   const [input, setInput] = useState("");
   const { friendId, containerId } = useParams();
   const [friend, setFriend] = useState({});
-  // const [typing,setTyping] = useState(false);
   const [messages, setMessages] = useState([]);
   const [{ user }, dispatch] = useStateValue();
   const [chosenEmoji, setChosenEmoji] = useState(null);
   const [lastSeen, setLastSeen] = useState("");
   const [showInfo, setShowInfo] = useState(false);
+  const [unread,setUnread] = useState(false);
+  const [unreadCount,setUnreadCount] = useState(0);
+  const [unreadId,setUnreadId] = useState("");
   var pastmsg = "";
 
   const [showBottomArrow, setShowBottomArrow] = useState(true);
@@ -64,8 +69,21 @@ const Chat = ({
 
   useEffect(()=>{
     if(showBottomArrow) scrollToBottom();          
+    for(var i = 0;i<messages.length;i++){
+      const {id,data:{sender,readBy}} = messages[i];
+      
+      if(id!="start" && sender != user.uid  && !readBy[user.uid] && !unreadId){
+        console.log("Id : ",id);
+        setUnreadId(id);
+        break;
+      }      
+    }
+    // var i = messages.filter(msg => msg.id != "start" && !msg.data.readBy[user.uid]).length;
+    // console.log("length : ",i);
+    if(unreadCount<=0) setUnreadCount(messages.filter(msg => msg.id != "start" && !msg.data.readBy[user.uid]).length);
   }, [messages]);
 
+  
 
   useEffect(() => {
     setLastSeen(getLastSeen(friend?.lastSeen));
@@ -90,11 +108,11 @@ const Chat = ({
           setFriend(docData);
         }
       });
-      const chatQuery = query(
+      const readQuery = query(
         collection(firestore, `ChatContainers/${containerId}/messages`),
-        orderBy("timestamp")
+        orderBy("timestamp"),
       );
-      onSnapshot(chatQuery, (chatSnapshot) => {
+      onSnapshot(readQuery, (chatSnapshot) => {
         setMessages(
           chatSnapshot.docs.map((chat) => ({
             id: chat.id,
@@ -102,6 +120,18 @@ const Chat = ({
           }))
         );
       });
+      // const unreadQuery= query(collection(firestore,`ChatContainers/${containerId}/messages`),
+      //   orderBy("timestamp"),
+      //   where(`readBy.${user.uid}`,"==",false)
+      // );
+      // onSnapshot(unreadQuery,(unreadSnapshot)=>{
+      //   setUnreadMsgs(
+      //     unreadSnapshot.docs.map((unread)=>({
+      //       id: unread.id,
+      //       data: unread.data(),
+      //     }))
+      //   );
+      // });
     }
   }, [friendId, containerId]);
 
@@ -192,11 +222,23 @@ const Chat = ({
     return s;
   }
 
+  // function decideUnread(readBy,sender){
+  //   if(sender!=user.uid){
+  //     if(!readBy[user.uid]){
+  //       console.log("user read ",readBy[user.uid],unread);
+  //       if(!unread){
+  //         unread = true;
+  //         return true;
+  //       }
+  //     }
+  //   }
+  //   return false;
+  // }
+
   function getLastSeen(lastSeenStamp) {
     var day = "";
     const todaystamp = Math.round(new Date().getTime() / 1000);
     const exactTwelve = 86400*Math.trunc(todaystamp/86400);
-    console.log("Today : ",todaystamp,"Exact 12 : ",exactTwelve);
     const date = getObjectfromDate(new Date(lastSeenStamp?.toDate()));
     if(exactTwelve <= lastSeenStamp?.seconds){
       day = `today `;
@@ -263,24 +305,52 @@ const Chat = ({
                 />
               ))} */}
               {messages.map(({id,data})=>(
-                data.sender!="start"?(
-                <ChatBubble
+                data.sender!="start"?(                  
+                  <ChatBubble
+                    key={id}
+                    msgId = {id}
+                    fullClass={correctCss(data.sender, user.uid, pastmsg)}
+                    message={data.message}
+                    timestamp={getObjectfromDate(new Date(data.timestamp?.toDate()))}
+                    senderMe={data.sender == user.uid}
+                    reader={data.receiver}
+                    readBy={data.readBy}
+                    containerId={containerId}
+                    unreadId={unreadId}
+                    unread={unread}
+                    setUnreadId={setUnreadId}
+                    unreadCount={unreadCount}
+                  />                        
+                ):(
+                  <InfoBubble
                   key={id}
-                  fullClass={correctCss(data.sender, user.uid, pastmsg)}
+                  displayName={friend.displayName}
                   message={data.message}
-                  timestamp={getObjectfromDate(new Date(data.timestamp?.toDate()))}
                   senderMe={data.sender == user.uid}
                   reader={data.receiver}
                   readBy={data.readBy}
                   containerId={containerId}
                   msgDocId={id}
-                />):(
-                  <InfoBubble
-                  key={id}
-                  displayName={friend.displayName}
-                  message={data.message}/>
+                  />
                 )
               ))}
+              {/* {unread && <Unread count={unreadCount}/>}
+              {
+                unreadMsgs.map(({id,data})=>(                  
+                  <ChatBubble
+                    key={id}
+                    fullClass={correctCss(data.sender, user.uid, pastmsg)}
+                    message={data.message}
+                    timestamp={getObjectfromDate(new Date(data.timestamp?.toDate()))}
+                    senderMe={data.sender == user.uid}
+                    reader={data.receiver}
+                    readBy={data.readBy}
+                    containerId={containerId}
+                    msgDocId={id}
+                  />                                                  
+                ))
+              } */}
+
               <div ref={bottomRef}></div>
               {/* <div className="arrow_container">
 

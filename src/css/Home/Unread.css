@@ -1,0 +1,20 @@
+.unread{
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    display: grid;
+    place-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+}
+.unmsg{
+    margin: 4px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 20px;
+    font-size: small;
+    font-weight: 500;
+    background-color: white;
+}
