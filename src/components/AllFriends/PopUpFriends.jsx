@@ -30,7 +30,7 @@ const PopUpFriends = ({id,friendsCount,showDialog,setShowDialog}) => {
 
   function getList(){
     if(search !== ""){            
-        var list = friendsList.filter(friend => friend.name.trim().toLowerCase().includes(search.trim().toLowerCase()));
+        var list = friendsList.filter(friend => friend.name?.trim().toLowerCase().includes(search.trim().toLowerCase()));
         return list;
     }else{
         return friendsList;

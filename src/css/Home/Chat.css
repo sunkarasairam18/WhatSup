@@ -59,26 +59,40 @@
     font-size: small;
 }
 
-.chat_headerRight{
-    display: flex;
-    justify-content: space-between;
-    min-width: 100px;
-}
+
+
 
 .chat_body{
     flex: 1;
     background-image: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png");
     background-repeat: repeat;
     background-position: center;
-    padding-top: 10px;
     padding-bottom: 20px;
-    /* padding-right: 80px;
-    padding-left: 80px; */
-    overflow: scroll;
     
+   
+    display: flex;
+    flex-direction: column-reverse;
+    overflow: scroll;
 }
-.chat_inner_body{
-    background-color: aqua;
+
+.chatbody_in{
+    display: flex;
+    flex-direction: column-reverse;
+}
+.circular{
+    display: grid;
+    place-items: center;
+    left:0;
+    right:0;
+    z-index: 100;   
+}
+.incir{
+    background-color: white;
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+    display: grid;
+    place-items: center;
 }
 
 

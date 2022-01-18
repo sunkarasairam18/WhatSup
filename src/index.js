@@ -7,7 +7,6 @@ import reportWebVitals from './reportWebVitals';
 import { reducer,initalState } from './services/reducer';
 import {StateProvider} from './services/StateProvider';
 
-
 ReactDOM.render(
   <Router>
     <StateProvider initialState={initalState} reducer={reducer}>

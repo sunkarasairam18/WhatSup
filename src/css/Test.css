@@ -1,34 +1,39 @@
-/* .t{
-    display: flex;
-    flex-direction: column;
+.t{
+    display: grid;
+    place-items: center;
     width: 100vw;
     height: 100vh;
+  
     background-color: blueviolet;
-} */
-
-.timage{
-    width: 400px;
-    height: 400px;
+}
+.out_t{
+  position: relative;
+}
+.t_box{
+  width: 500px;
+  height: 450px;
+  background-color: aquamarine;
+  overflow: scroll;
+  margin-top: -10px;
+  display: flex;
+  flex-direction: column-reverse;
+  /*flex-direction: column-reverse; */
 }
 
-.cropper-crop-box, .cropper-view-box {
-    border-radius: 50%;
+.tcircular{
+  display: grid;
+  place-items: center;
+  margin-bottom: 10px;
+  left:0;
+  right:0;
+  position: absolute;
+  z-index: 100;
 }
-
-.cropper-view-box {
-    box-shadow: 0 0 0 1px #39f;
-    outline: 0;
+.tincir{
+  background-color: white;
+  height: 50px;
+  width: 50px;
+  border-radius: 25px;
+  display: grid;
+  place-items: center;
 }
-
-.cropper-face {
-  background-color:inherit !important;
-}
-
-.cropper-dashed, .cropper-point.point-se, .cropper-point.point-sw, .cropper-point.point-nw,   .cropper-point.point-ne, .cropper-line {
-  display:none !important;
-}
-
-.cropper-view-box {
-  outline:inherit !important;
-}
-

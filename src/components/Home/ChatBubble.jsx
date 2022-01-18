@@ -14,7 +14,6 @@ const ChatBubble = ({ fullClass, message, timestamp, senderMe, reader, readBy,un
 
   useEffect(()=>{
     if(!senderMe){
-      console.log("Status : ",user);
       if(reader && !readBy[reader] && bubbleVisible && user.onlineStatus){
         const db = doc(firestore, `ChatContainers/${containerId}/messages/${msgId}`);
         const tempRead = {

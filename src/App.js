@@ -15,7 +15,6 @@ import Friends from './components/main/Friends';
 import AllFriends from './components/main/AllFriends';
 import FRequests from './components/main/FRequests';
 import SentRequests from './components/main/SentRequests';
-import SentRequestDialog from './components/Home/SentRequestDialog';
 
 function App(props) {
   const [{user},dispatch] = useStateValue();

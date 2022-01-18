@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { IconButton } from "@material-ui/core";
-import { Link, Switch, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PeopleIcon from "@mui/icons-material/People";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";

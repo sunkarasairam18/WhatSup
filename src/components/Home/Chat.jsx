@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
+import produce from "immer";
 import { Avatar, IconButton } from "@mui/material";
-import { SearchOutlined } from "@mui/icons-material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import SendIcon from "@mui/icons-material/Send";
 import { useParams } from "react-router-dom";
+import CircularProgress from '@mui/material/CircularProgress';
 import {
   query,
   onSnapshot,
@@ -13,9 +13,9 @@ import {
   addDoc,
   updateDoc,
   orderBy,
-  where
+  startAt,
+  limit
 } from "@firebase/firestore";
-import Picker from "emoji-picker-react";
 import { CSSTransition } from "react-transition-group";
 import { KeyboardArrowDown } from "@mui/icons-material";
 
@@ -24,7 +24,6 @@ import { firestore } from "../../services/firebase";
 import InfoBubble from "./InfoBubble";
 import FriendInfo from "./FriendInfo";
 import ChatBubble from "./ChatBubble";
-import Unread from './Unread';
 
 import "../../css/Home/Chat.css";
 
@@ -40,16 +39,24 @@ const Chat = ({
   const { friendId, containerId } = useParams();
   const [friend, setFriend] = useState({});
   const [messages, setMessages] = useState([]);
+  const [renderMsgs,setRenderMsgs] = useState([]);
+  const [laststamp,setLastStamp] = useState();
   const [{ user }, dispatch] = useStateValue();
-  const [chosenEmoji, setChosenEmoji] = useState(null);
   const [lastSeen, setLastSeen] = useState("");
   const [showInfo, setShowInfo] = useState(false);
   const [unread,setUnread] = useState(false);
   const [unreadCount,setUnreadCount] = useState(0);
   const [unreadId,setUnreadId] = useState("");
+  const [canRender,setCanRender] = useState(true);
+  const [appMsgLoader,setAppMsgLoader] = useState(false);
+  const [showBottomArrow, setShowBottomArrow] = useState(true);
+
   var pastmsg = "";
 
-  const [showBottomArrow, setShowBottomArrow] = useState(true);
+
+  //to display arrow to scroll down quickly
+
+  const bottomRef = useRef(null);
 
   const observer = new IntersectionObserver(([entry]) =>
     setShowBottomArrow(entry.isIntersecting)
@@ -62,13 +69,12 @@ const Chat = ({
     };
   }, []);
 
-  const bottomRef = useRef(null);
   const scrollToBottom = () => {
     bottomRef.current.scrollIntoView({ behavior: "auto" });
   };
 
   useEffect(()=>{
-    if(showBottomArrow) scrollToBottom();          
+             
     for(var i = 0;i<messages.length;i++){
       const {id,data:{sender,readBy}} = messages[i];
       
@@ -83,15 +89,53 @@ const Chat = ({
     if(unreadCount<=0) setUnreadCount(messages.filter(msg => msg.id != "start" && !msg.data.readBy[user.uid]).length);
   }, [messages]);
 
-  
+
+  const fetchMore = ()=>{
+    if(laststamp){
+      const readQuery = query(
+          collection(firestore, `ChatContainers/${containerId}/messages`),
+          orderBy("timestamp","desc"),
+          startAt(laststamp),
+          limit(18)
+      );
+        
+      onSnapshot(readQuery, (chatSnapshot) => {
+          var newMsgs = chatSnapshot.docs.map((chat) => ({
+              id: chat.id,
+              data: chat.data(),
+          }));
+          console.log("New msgs : ",newMsgs);
+          newMsgs = messages.concat(newMsgs.slice(1));
+          setMessages(newMsgs);
+      });
+    }
+  };
+
+
+  const msgLoader = useRef();
+
+  const loaderObserver = new IntersectionObserver(([entry]) =>{
+    setAppMsgLoader(entry.isIntersecting);
+    console.log("Appearance : ",entry.isIntersecting);
+    }
+  );
+
+  useEffect(() => {        
+    loaderObserver.observe(msgLoader.current);
+      return () => {
+        loaderObserver.disconnect();
+      };
+  }, []);
+
+  useEffect(()=>{
+      if(appMsgLoader && canRender){
+          setTimeout(()=>fetchMore(),1000);
+      }
+  },[appMsgLoader]);    
 
   useEffect(() => {
     setLastSeen(getLastSeen(friend?.lastSeen));
   }, [friend]);
-
-  const onEmojiClick = (event, emojiObject) => {
-    setChosenEmoji(emojiObject);
-  };
 
   useEffect(() => {
     if (!selectId) setSelectId(friendId);
@@ -99,7 +143,7 @@ const Chat = ({
   }, [friendId]);
 
   useEffect(() => {
-    if (friendId && containerId) {
+    if (friendId) {
       const document = doc(firestore, `Accounts/${friendId}`);
       onSnapshot(document, (docUpdate) => {
         if (docUpdate.exists()) {
@@ -107,33 +151,47 @@ const Chat = ({
           // console.log(`Data : ${JSON.stringify(docData)}`);
           setFriend(docData);
         }
-      });
+      });      
+      
+    }
+  }, [friendId]);
+
+  useEffect(()=>{
+    if(containerId){
       const readQuery = query(
         collection(firestore, `ChatContainers/${containerId}/messages`),
-        orderBy("timestamp"),
+        orderBy("timestamp","desc"),
+        limit(18)
       );
+      
       onSnapshot(readQuery, (chatSnapshot) => {
-        setMessages(
-          chatSnapshot.docs.map((chat) => ({
-            id: chat.id,
-            data: chat.data(),
-          }))
-        );
-      });
-      // const unreadQuery= query(collection(firestore,`ChatContainers/${containerId}/messages`),
-      //   orderBy("timestamp"),
-      //   where(`readBy.${user.uid}`,"==",false)
-      // );
-      // onSnapshot(unreadQuery,(unreadSnapshot)=>{
-      //   setUnreadMsgs(
-      //     unreadSnapshot.docs.map((unread)=>({
-      //       id: unread.id,
-      //       data: unread.data(),
-      //     }))
-      //   );
-      // });
+          console.log(chatSnapshot.docs);
+            setMessages(
+            chatSnapshot.docs.map((chat) => ({
+                id: chat.id,
+                data: chat.data(),
+            }))
+            );
+        });
+      setCanRender(true);  
+    }      
+  },[containerId]);
+
+  useEffect(()=>{     //Storing reference of timestamp last rendered to paginate somemore chat 
+    if(messages && canRender){
+        setLastStamp(messages[messages.length-1]?.data?.timestamp);
+        if(messages[messages.length-1]?.id == "start"){
+            setCanRender(false);
+        }
+        console.log("Last documents : ",messages[messages.length-1],messages[messages.length-1]?.data?.timestamp);
+        const reverseMsgs = produce(messages, draft =>{
+            return draft.reverse();
+        });
+        setRenderMsgs(reverseMsgs);
     }
-  }, [friendId, containerId]);
+},[messages]);
+
+
 
   const handleChange = (value) =>{
     setInput(value);
@@ -206,14 +264,14 @@ const Chat = ({
       });
   }
 
-  function correctCss(sender, myId, pastSenderId) {
+  function correctCss(sender, myId) {
     var s = "nchat_message ";
     if (sender === myId) {
       s += "nchat_receiver ";
     }
-    if (!pastSenderId) {
+    if (!pastmsg) {
       s += sender === myId ? "chat_right_corner " : "chat_left_corner ";
-    } else if (pastSenderId === myId) {
+    } else if (pastmsg === myId) {
       s += sender === myId ? "" : "chat_left_corner ";
     } else {
       s += sender === myId ? "chat_right_corner " : "";
@@ -221,19 +279,6 @@ const Chat = ({
     pastmsg = sender;
     return s;
   }
-
-  // function decideUnread(readBy,sender){
-  //   if(sender!=user.uid){
-  //     if(!readBy[user.uid]){
-  //       console.log("user read ",readBy[user.uid],unread);
-  //       if(!unread){
-  //         unread = true;
-  //         return true;
-  //       }
-  //     }
-  //   }
-  //   return false;
-  // }
 
   function getLastSeen(lastSeenStamp) {
     var day = "";
@@ -262,6 +307,7 @@ const Chat = ({
   }
 
 
+
   return (
     <div className="chat_container">
       <div className="chat">
@@ -275,6 +321,7 @@ const Chat = ({
                 <Avatar src={friend.photoUrl} />
                 <div className="chat_headerInfo">
                   <h3>{friend.displayName}</h3>
+                  {/* <h3>{reachedTop?"Reached top":"Not reached top"}</h3> */}
                   <p>
                     {!chatTyping
                       ? friend?.onlineStatus
@@ -284,80 +331,57 @@ const Chat = ({
                   </p>
                 </div>
               </div>
-              <div className="chat_headerRight">
-                <IconButton>
-                  <SearchOutlined />
-                </IconButton>                
-                <IconButton>
-                  <MoreVertIcon />
-                </IconButton>
-              </div>
+              
             </div>
             <div className="chat_body">
-              {/* {messages.map(({ id, data }) => (
-                <ChatBubble
-                  key={id}
-                  fullClass={correctCss(data.sender, user.uid, pastmsg)}
-                  message={data.message}
-                  timestamp={getObjectfromDate(
-                    new Date(data.timestamp?.toDate())
-                  )}
-                />
-              ))} */}
-              {messages.map(({id,data})=>(
-                data.sender!="start"?(                  
-                  <ChatBubble
-                    key={id}
-                    msgId = {id}
-                    fullClass={correctCss(data.sender, user.uid, pastmsg)}
-                    message={data.message}
-                    timestamp={getObjectfromDate(new Date(data.timestamp?.toDate()))}
-                    senderMe={data.sender == user.uid}
-                    reader={data.receiver}
-                    readBy={data.readBy}
-                    containerId={containerId}
-                    unreadId={unreadId}
-                    unread={unread}
-                    setUnreadId={setUnreadId}
-                    unreadCount={unreadCount}
-                  />                        
-                ):(
-                  <InfoBubble
-                  key={id}
-                  displayName={friend.displayName}
-                  message={data.message}
-                  senderMe={data.sender == user.uid}
-                  reader={data.receiver}
-                  readBy={data.readBy}
-                  containerId={containerId}
-                  msgDocId={id}
-                  />
-                )
-              ))}
-              {/* {unread && <Unread count={unreadCount}/>}
-              {
-                unreadMsgs.map(({id,data})=>(                  
-                  <ChatBubble
-                    key={id}
-                    fullClass={correctCss(data.sender, user.uid, pastmsg)}
-                    message={data.message}
-                    timestamp={getObjectfromDate(new Date(data.timestamp?.toDate()))}
-                    senderMe={data.sender == user.uid}
-                    reader={data.receiver}
-                    readBy={data.readBy}
-                    containerId={containerId}
-                    msgDocId={id}
-                  />                                                  
-                ))
-              } */}
+              
+              
+              <div className="chatbody_in">
+                <div>
+                  {renderMsgs.map(({id,data})=>(
+                    data.sender!="start"?(                  
+                      <ChatBubble
+                        key={id}
+                        msgId = {id}
+                        fullClass={correctCss(data.sender, user.uid)}
+                        message={data.message}
+                        timestamp={getObjectfromDate(new Date(data.timestamp?.toDate()))}
+                        senderMe={data.sender == user.uid}
+                        reader={data.receiver}
+                        readBy={data.readBy}
+                        containerId={containerId}
+                        unreadId={unreadId}
+                        unread={unread}
+                        setUnreadId={setUnreadId}
+                        unreadCount={unreadCount}
+                      />                        
+                    ):(
+                      <InfoBubble
+                      key={id}
+                      displayName={friend.displayName}
+                      message={data.message}
+                      senderMe={data.sender == user.uid}
+                      reader={data.receiver}
+                      readBy={data.readBy}
+                      containerId={containerId}
+                      msgDocId={id}
+                      />
+                    )
+                  ))}
+                  <div ref={bottomRef}></div>
+                </div>
+                <div ref={msgLoader} style={{height:"1px",width:"1px",backgroundColor:"black"}}></div>
+              </div>
+              {appMsgLoader && canRender &&
+                <div className="circular">
+                  <div className="incir">
+                    <CircularProgress color="success" />
+                  </div>
+                </div>
+              }
+              
 
-              <div ref={bottomRef}></div>
-              {/* <div className="arrow_container">
-
-                    <div className="arrow_down">
-                        <KeyboardArrowDown style={{height:"30px",width:"30px",color:"grey"}}/>
-                    </div>
-                    </div> */}
+            
             </div>
             <div className="chat_footer">
               <IconButton>
@@ -420,7 +444,7 @@ export function getObjectfromDate(c) {
     1: "Monday",
     2: "Tuesday",
     3: "Wednesday",
-    4: "Thrusday",
+    4: "Thursday",
     5: "Friday",
     6: "Saturday",
   };
