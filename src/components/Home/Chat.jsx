@@ -52,7 +52,7 @@ const Chat = ({
   const [showBottomArrow, setShowBottomArrow] = useState(true);
 
   var pastmsg = "";
-
+  var statelessMsgs = [];
 
   //to display arrow to scroll down quickly
 
@@ -72,6 +72,10 @@ const Chat = ({
   const scrollToBottom = () => {
     bottomRef.current.scrollIntoView({ behavior: "auto" });
   };
+
+  useEffect(()=>{
+    scrollToBottom();
+  },[]);
 
   useEffect(()=>{
              
@@ -129,7 +133,7 @@ const Chat = ({
 
   useEffect(()=>{
       if(appMsgLoader && canRender){
-          setTimeout(()=>fetchMore(),1000);
+          setTimeout(()=>fetchMore(),1500);
       }
   },[appMsgLoader]);    
 
@@ -184,10 +188,14 @@ const Chat = ({
             setCanRender(false);
         }
         console.log("Last documents : ",messages[messages.length-1],messages[messages.length-1]?.data?.timestamp);
-        const reverseMsgs = produce(messages, draft =>{
-            return draft.reverse();
-        });
-        setRenderMsgs(reverseMsgs);
+       
+    }
+    if(messages){
+      const reverseMsgs = produce(messages, draft =>{
+        return draft.reverse();
+      });
+      statelessMsgs = reverseMsgs;
+      setRenderMsgs(reverseMsgs);
     }
 },[messages]);
 
@@ -219,6 +227,8 @@ const Chat = ({
 
   async function sendMessage(msg) {
     msg.preventDefault();
+    if(input.trim() === "") return;
+    // scrollToBottom();
     setSearch("");
     setSearchIcon(false);
     const chatCollection = collection(
@@ -333,11 +343,14 @@ const Chat = ({
               </div>
               
             </div>
-            <div className="chat_body">
-              
-              
+            <div className="chat_body">                            
+            
+
               <div className="chatbody_in">
-                <div>
+                <div ref={bottomRef}></div>
+                
+                <div className="cb_ii">
+                  
                   {renderMsgs.map(({id,data})=>(
                     data.sender!="start"?(                  
                       <ChatBubble
@@ -368,19 +381,20 @@ const Chat = ({
                       />
                     )
                   ))}
-                  <div ref={bottomRef}></div>
+                  
                 </div>
-                <div ref={msgLoader} style={{height:"1px",width:"1px",backgroundColor:"black"}}></div>
-              </div>
-              {appMsgLoader && canRender &&
-                <div className="circular">
-                  <div className="incir">
-                    <CircularProgress color="success" />
-                  </div>
-                </div>
-              }
-              
+                <div ref={msgLoader} ></div>
 
+
+              </div>
+              
+              {appMsgLoader && canRender &&
+                  <div className="circular">
+                    <div className="incir">
+                      <CircularProgress color="success" />
+                    </div>
+                  </div>
+                }
             
             </div>
             <div className="chat_footer">
@@ -398,7 +412,7 @@ const Chat = ({
                 />
                 <button onClick={sendMessage}>Send a message</button>
               </form>
-              <SendIcon style={{ height: "24px", width: "24px" }} />
+              <SendIcon style={{ height: "24px", width: "24px" }} style={{cursor:"pointer"}} onClick={sendMessage}/>
               <CSSTransition
                 in={!showBottomArrow}
                 timeout={600}

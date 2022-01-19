@@ -7,7 +7,7 @@ import Unread from './Unread';
 
 import "../../css/Home/ChatBubble.css";
 
-const ChatBubble = ({ fullClass, message, timestamp, senderMe, reader, readBy,unreadId,containerId,msgId,unreadCount }) => {
+const ChatBubble = ({ msgId,fullClass, message, timestamp, senderMe, reader, readBy,containerId,unreadId,unreadCount }) => {
   const [overflow, setOverflow] = useState(false);
   const [bubbleVisible,setBubbleVisible] = useState(false);
   const [{user},dispatch] = useStateValue();
@@ -53,7 +53,7 @@ const ChatBubble = ({ fullClass, message, timestamp, senderMe, reader, readBy,un
 
   return (
     <div>
-      {unreadId === msgId && <Unread count={unreadCount}/>}
+      {/* {unreadId === msgId && <Unread count={unreadCount}/>} */}
     <div
       className={`nchat_message ${fullClass}`}
       style={{ backgroundColor: senderMe ? "" : "white" }}

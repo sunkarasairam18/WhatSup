@@ -4,15 +4,16 @@
     padding: 8px;
     border-radius: 10px;
     width: fit-content;
-    margin-left: 80px;
+    margin-left: 100px;
     max-width: 60%;
     margin-bottom: 3px;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    
 }
 .nchat_receiver{
     /* background-color: #dcf8c6; */
     background-color: #dcf8c6;
-    margin-right: 80px;
+    margin-right: 100px;
     margin-left: auto;
 }
 

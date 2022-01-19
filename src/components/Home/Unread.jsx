@@ -5,11 +5,11 @@ import { useStateValue } from '../../services/StateProvider';
 const Unread = ({count}) => {
     const [appear,setAppear] = useState(true);
     const [{user},dispatch] = useStateValue();
-    useEffect(()=>{
-        if(user?.onlineStatus){
-            setTimeout(()=>setAppear(false),6000);
-        }
-    },[]);
+    // useEffect(()=>{
+    //     if(user?.onlineStatus){
+    //         setTimeout(()=>setAppear(false),6000);
+    //     }
+    // },[]);
     return ( 
         <div>
             {appear && 
