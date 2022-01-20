@@ -42,6 +42,7 @@ async function addAccount(name, email, uid) {
         onlineStatus: true,
         photoUrl: "",
         Requests: [],
+        Notifications: true,
         uid: uid,
       },
       { merge: true }
