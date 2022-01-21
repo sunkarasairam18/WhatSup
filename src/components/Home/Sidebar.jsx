@@ -33,7 +33,7 @@ const Sidebar = ({
                     setUploadFile,
                     showSkeleton,
                     setChatTyping,
-                    setShowNewRequestDialog
+                    setShowNewRequestDialog,
                     }) => {
     const [{user},dispatch] = useStateValue();
     const [show,setShow] = useState(false);
@@ -41,6 +41,15 @@ const Sidebar = ({
     const [about,SetAbout] = useState("");
     const [requestsCount,setRequestsCount] = useState(0);
     const chatTop = useRef(null);
+
+    const [notificationsAvail,setNotificationsAvail] = useState(false);              
+    useEffect(()=>{
+      if("Notification" in window){
+        setNotificationsAvail(true);   
+        
+      }
+    },[]);
+    
 
     const searchRef = React.createRef();
 
@@ -186,6 +195,7 @@ const Sidebar = ({
                         selectId={selectId}
                         onSelect={setSelectId}
                         setChatTyping={setChatTyping}
+                        notificationsAvail={notificationsAvail}
                         />                        
                     ))}    
                     {(!search && friendsList.length === 0) && <NoChats/>}

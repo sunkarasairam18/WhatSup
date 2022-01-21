@@ -1,11 +1,13 @@
 export const initalState = {
     user: JSON.parse(localStorage.getItem("WhatsUpToken")),
+    clearNotification: false,
 };
 
 export const actionTypes = {
     SET_USER: "SET_USER",
     UPDATE_USER: "UPDATE_USER",
     UPDATE_ONLINE: "ONLINE",
+    UPDATE_CLEAR_NOTIFICATIONS: "CLEAR_NOTIFICATION"
 };
 
 export const reducer = (state,action) =>{
@@ -29,7 +31,17 @@ export const reducer = (state,action) =>{
                     onlineStatus: action.user.onlineStatus
                 }
             }
-        default:
+        case actionTypes.UPDATE_CLEAR_NOTIFICATIONS:
+            console.log("Clear action :",action);
+            return{
+                ...state,
+                clearNotification: !action.clearNotification
+
+            }
+        default: 
+            return{
+                ...state
+            }
             return state;
     }
 };

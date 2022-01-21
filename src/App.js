@@ -19,29 +19,7 @@ import SentRequests from './components/main/SentRequests';
 function App(props) {
   const [{user},dispatch] = useStateValue();
   const [previewUrl,setPreviewUrl] = useState("");
-  const [notificationsAvail,setNotificationsAvail] = useState(false);
-  var notification;
 
-
-  function showNotification(){
-    var options = {
-      body: "This is the body of the Notification",
-      icon: "https://images.pexels.com/photos/853168/pexels-photo-853168.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-      dir: "ltr"
-    };
-    notification = new Notification("Notification Demo", options);
-  };
-
-  useEffect(()=>{
-    if("Notification" in window){
-      // setNotificationsAvail(true);
-      // var notification = new Notification("Hi there!");
-      showNotification();
-      showNotification();
-      showNotification();
-      
-    }
-  },[]);
 
   useEffect(()=>{
     if(user){
@@ -101,7 +79,7 @@ function App(props) {
             
           <Route path="/">
             {/* <SentRequestDialog/> */}
-            {/* {!user?(<Login/>):(<Home/>)}           */}
+            {!user?(<Login/>):(<Home/>)}          
             {/* <PopUpFriends/> */}
             {/* <Test/> */}
           </Route>

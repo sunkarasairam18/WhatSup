@@ -1,21 +1,82 @@
 import { Avatar } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
+import { Link } from "react-router-dom";
 import { doc,onSnapshot,getDoc,updateDoc,query,collection,orderBy,where,limit } from '@firebase/firestore';
 import {firestore} from '../../services/firebase';
+import { useStateValue } from '../../services/StateProvider';
 import '../../css/Home/SidebarChat.css';
 import {getObjectfromDate} from './Chat';
 import '../../css/common/StandardTransition.css';
 
-const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,setChatTyping}) => {
+const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,setChatTyping,notificationsAvail}) => {
     const [lastmessage,setLastmessage] = useState("");
+    const [{user,clearNotification},dispatch] = useStateValue();
     const [typing,setTyping] = useState(false);
     const [timeTag,setTimetag] = useState("");
     const [notify,setNotify] = useState();
     const [url,setUrl] = useState("");
+    const [first,setFirst] = useState(true);
+    const linkRef = useRef(null);
+    const [notification,setNotification] = useState();
+    
+    var pastmsgId = "";
 
     useEffect(()=>{
-        setTimetag(properTag(lastmessage?.timestamp));
+        if(notification){
+            notification.close();            
+        }
+    },[clearNotification]);   
+
+    function showNotification(msg,photo,name){
+        var options = {
+          body: msg,
+          icon: photo?photo:"https://scontent.fvga4-1.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=2skap-CRIy4AX-O19Y1&_nc_ht=scontent.fvga4-1.fna&oh=00_AT8idiBEEBZyWG1aoOkE6Z0EGCci7ADnoSLQzAKOOxoKCQ&oe=61FCCDF8",
+          dir: "ltr",
+          renotify: true,
+          tag: friendId
+        };
+        setNotification(new Notification(name, options));        
+    };
+
+    useEffect(()=>{
+        if(notification){
+            notification.onclick = function(event){
+                event.preventDefault();
+                window.focus();
+                linkRef.current.click();
+                notification.close();
+            }
+        }
+    },[notification]);
+
+    useEffect(()=>{
+        if(lastmessage){
+            const tag = properTag(lastmessage?.timestamp);
+            setTimetag(tag);
+            // console.log("Trying to show notification : ",friendName);
+            const {receiver,readBy} = lastmessage;
+
+            if(notificationsAvail && !first && receiver === userId ){
+                console.log("Trying to show notification : ",friendName);
+                if(readBy && !readBy[userId] ){
+                    if(user.onlineStatus){
+                        if(selectId !== friendId){
+                            console.log(notificationsAvail,!first,receiver,userId,readBy[userId],selectId,friendId,new Date());
+                            // showNotification(lastmessage.message+" - "+tag,url,friendName);
+                        }
+                    }else{
+                        showNotification(lastmessage.message+" - "+tag,url,friendName);
+                        
+                    }
+                }
+                //&& !first && lastmessage.receiver === userId &&
+                // if(first){
+                //     console.log("Trying to show notification : ",friendName);
+                //     showNotification(lastmessage.message,url,friendName);
+                // }
+            }
+            if(first) setFirst(false);
+        }
     },[lastmessage]);
 
     useEffect(()=>{
@@ -45,8 +106,15 @@ const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,s
             onSnapshot(container,(containerSnapshot)=>{
                 if(containerSnapshot.exists()){
                     const containerData = containerSnapshot.data();
-                    setTyping(containerData[friendId].typing);                    
-                    getLastMessage(containerId,containerData.lastMessageId);
+                    setTyping(containerData[friendId].typing);     
+                    const {lastMessageId} = containerData;      
+                    if(pastmsgId !== lastMessageId){
+                        
+                        console.log("Past msg id: ",pastmsgId,lastMessageId);
+                        getLastMessage(containerId,containerData.lastMessageId);
+                        pastmsgId = lastMessageId;
+                        
+                    }
                 }
             });   
             
@@ -99,7 +167,7 @@ const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,s
     }
 
     return (
-        <Link to={`/${friendId}/${containerId}`} onClick={()=>onSelect(friendId)}>
+        <Link to={`/${friendId}/${containerId}`} ref={linkRef} onClick={()=>onSelect(friendId)}>
             <div className={selectId === friendId?"sidebarChatSelected":"sidebarChat"}>
                 <Avatar src={`${url}`} style={{width:"50px",height:"50px"}}/>
                 <div className="sidebarChat_info">
