@@ -6,7 +6,7 @@ import { useStateValue } from '../../services/StateProvider';
 import { actionTypes } from '../../services/reducer';
 import { addAccount } from '../../services/firebase';
 
-import icon from '../chat-1.png';
+import icon from '../icon.png';
 import google from '../google.png';
 
 const Login = () => {

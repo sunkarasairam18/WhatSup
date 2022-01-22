@@ -9,7 +9,7 @@ import { onSnapshot, query, collection } from "firebase/firestore";
 
 import FRSidebarCard from "./FRSidebarCard";
 import "../../css/common/CommonSidebar.css";
-import icon from "../chat-1.png";
+import icon from "../icon.png";
 import { useStateValue } from "../../services/StateProvider";
 import { firestore } from "../../services/firebase";
 

@@ -16,7 +16,7 @@ import SidebarChat from './SidebarChat';
 import { firestore } from '../../services/firebase';
 import { useStateValue } from '../../services/StateProvider';
 import { actionTypes } from '../../services/reducer';
-
+import More from '../common/More';
 
 const Sidebar = ({
                     selectId,
@@ -40,9 +40,26 @@ const Sidebar = ({
     const [friendsList,setFriendsList] = useState([]);
     const [about,SetAbout] = useState("");
     const [requestsCount,setRequestsCount] = useState(0);
+    const [showMore,setShowMore] = useState(false);
     const chatTop = useRef(null);
+    const moreRef = useRef(null);
 
-    const [notificationsAvail,setNotificationsAvail] = useState(false);              
+    const [notificationsAvail,setNotificationsAvail] = useState(false);      
+    
+    
+    const handleDown = (e) => {
+        if (moreRef.current && !moreRef.current.contains(e.target)) {
+            setShowMore(false);
+            return;
+        }
+    };
+    
+    useEffect(() => {
+        document.addEventListener("click", handleDown);
+    }, [moreRef]);
+
+
+
     useEffect(()=>{
       if("Notification" in window){
         setNotificationsAvail(true);   
@@ -144,10 +161,11 @@ const Sidebar = ({
                                 </Badge>
                             </IconButton>                            
                         </Link>                        
-                        <IconButton>
+                        <IconButton onClick={()=>setShowMore(!showMore)} ref={moreRef}>
                             <MoreVertIcon style={{height:"26px",width:"26px"}}/>
                         </IconButton>
                     </div>
+                    <More show={showMore}/>
                 </div>
                 <div className={`sidebar_search ${searchIcon?`sidebar_Search_focus`:`sidebar_Search_blur`}`}>
                     <div className="sidebar_searchContainer">

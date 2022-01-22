@@ -7,7 +7,8 @@ export const actionTypes = {
     SET_USER: "SET_USER",
     UPDATE_USER: "UPDATE_USER",
     UPDATE_ONLINE: "ONLINE",
-    UPDATE_CLEAR_NOTIFICATIONS: "CLEAR_NOTIFICATION"
+    UPDATE_CLEAR_NOTIFICATIONS: "CLEAR_NOTIFICATION",
+    CLEAR_USER: "CLEAR_USER"
 };
 
 export const reducer = (state,action) =>{
@@ -37,6 +38,11 @@ export const reducer = (state,action) =>{
                 ...state,
                 clearNotification: !action.clearNotification
 
+            }
+        case actionTypes.CLEAR_USER:
+            return{
+                ...state,
+                user: undefined,                
             }
         default: 
             return{

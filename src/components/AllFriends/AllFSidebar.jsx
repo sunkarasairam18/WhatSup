@@ -8,7 +8,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { onSnapshot, query, collection } from "firebase/firestore";
 
 import "../../css/common/CommonSidebar.css";
-import icon from "../chat-1.png";
+import icon from "../icon.png";
 import { useStateValue } from "../../services/StateProvider";
 import AllFSidebarCard from "./AllFSidebarCard";
 import { firestore } from "../../services/firebase";

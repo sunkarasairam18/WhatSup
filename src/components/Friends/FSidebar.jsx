@@ -10,7 +10,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 import "../../css/Friends/FSidebar.css";
-import icon from "../chat-1.png";
+import icon from "../icon.png";
 import FSidebarBox from "./FSidebarBox";
 
 const FSidebar = () => {

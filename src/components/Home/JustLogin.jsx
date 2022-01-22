@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
-import ForumIcon from '@mui/icons-material/Forum';
+import React from 'react';
 
 import '../../css/Home/JustLogin.css';
 
-import icon from '../chat-1.png';
+import icon from "../icon.png";
 
 const JustLogin = () => {
     return ( 

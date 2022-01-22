@@ -91,7 +91,8 @@ const Profile = ({
   };
 
   useEffect(() => {
-    document.addEventListener("click", handleDown);
+    document.addEventListener("mousedown", handleDown);
+    
   }, [changePicRef]);
 
   const click = () => {
@@ -130,6 +131,7 @@ const Profile = ({
           className="profile_pic_box"
           ref={changePicRef}
           onClick={() => setChangeShow(!changeShow)}
+          
         >
           {showSkeleton ? (
             <Skeleton

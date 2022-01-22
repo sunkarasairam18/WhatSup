@@ -6,6 +6,7 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { reducer,initalState } from './services/reducer';
 import {StateProvider} from './services/StateProvider';
+import Test from './components/Test';
 
 ReactDOM.render(
   <Router>

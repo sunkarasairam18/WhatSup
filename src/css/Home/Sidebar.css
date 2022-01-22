@@ -187,6 +187,7 @@
     align-items: center;
     /* flex: 0.08; */
     height: 60px;
+    position: relative;
     border-right: 1px solid lightgray;
     /* border-bottom: 1px solid lightgray; */
     /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
