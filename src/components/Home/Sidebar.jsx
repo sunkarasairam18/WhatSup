@@ -3,7 +3,7 @@ import { Avatar,IconButton } from '@material-ui/core';
 import PeopleIcon from '@mui/icons-material/People';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {doc,onSnapshot,query,collection,orderBy} from 'firebase/firestore';
+import {doc,onSnapshot,query,collection,orderBy,updateDoc} from 'firebase/firestore';
 import { SearchOutlined } from '@mui/icons-material';
 import { CSSTransition } from 'react-transition-group';
 import { Link } from 'react-router-dom';
@@ -34,6 +34,10 @@ const Sidebar = ({
                     showSkeleton,
                     setChatTyping,
                     setShowNewRequestDialog,
+                    setOpenSnack,
+                    setSnackMessage,
+                    setSeverity,
+                    notificationsAvail,
                     }) => {
     const [{user},dispatch] = useStateValue();
     const [show,setShow] = useState(false);
@@ -44,7 +48,6 @@ const Sidebar = ({
     const chatTop = useRef(null);
     const moreRef = useRef(null);
 
-    const [notificationsAvail,setNotificationsAvail] = useState(false);      
     
     
     const handleDown = (e) => {
@@ -57,16 +60,6 @@ const Sidebar = ({
     useEffect(() => {
         document.addEventListener("click", handleDown);
     }, [moreRef]);
-
-
-
-    useEffect(()=>{
-      if("Notification" in window){
-        setNotificationsAvail(true);   
-        
-      }
-    },[]);
-    
 
     const searchRef = React.createRef();
 
@@ -87,7 +80,7 @@ const Sidebar = ({
                 dispatch({
                     type: actionTypes.SET_USER,
                     user: userData,
-                });
+                });               
             }
         });
     },[]);
@@ -148,6 +141,26 @@ const Sidebar = ({
         return "chats_tag_not_show";
     }
 
+    const toggleNotification = async () => {
+        if (user) {
+          const db = doc(firestore, `Accounts/${user.uid}`);
+          const pastTruth = notificationsAvail;
+          const NotificationsUpdate = {
+            Notifications: !notificationsAvail,
+          };
+          updateDoc(db, NotificationsUpdate);
+          if(!pastTruth){
+            setSnackMessage("Notifications Turned On");
+            setSeverity("OnNoti");
+          }
+          else{
+            setSnackMessage("Notifications Turned Off");
+            setSeverity("OffNoti");
+          }
+          setOpenSnack(true);
+        }
+    };
+
     return ( 
         <div className="sidebar">
             <div className="sidebarcontent">
@@ -165,7 +178,12 @@ const Sidebar = ({
                             <MoreVertIcon style={{height:"26px",width:"26px"}}/>
                         </IconButton>
                     </div>
-                    <More show={showMore}/>
+                    <More 
+                    show={showMore}
+                    notificationsAvail={notificationsAvail}
+                    toggleNotification={toggleNotification}
+                    showNoti={true}
+                    />
                 </div>
                 <div className={`sidebar_search ${searchIcon?`sidebar_Search_focus`:`sidebar_Search_blur`}`}>
                     <div className="sidebar_searchContainer">

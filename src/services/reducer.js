@@ -44,10 +44,7 @@ export const reducer = (state,action) =>{
                 ...state,
                 user: undefined,                
             }
-        default: 
-            return{
-                ...state
-            }
+        default:             
             return state;
     }
 };

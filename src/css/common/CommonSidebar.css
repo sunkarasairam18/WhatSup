@@ -22,6 +22,7 @@
     padding-right: 15px;
     align-items: center;
     border-bottom: 1px solid lightgray;
+    position: relative;
   }
   
   .CS_headerRight {

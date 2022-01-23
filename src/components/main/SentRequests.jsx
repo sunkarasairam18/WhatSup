@@ -7,13 +7,13 @@ import SRSidebar from '../SentRequests/SRSidebar';
 import NoPreview from '../common/NoPreview';
 import Preview from '../common/Preview';
 
-const SentRequests = ({ setPreviewUrl }) => {
+const SentRequests = ({ setPreviewUrl,notificationsAvail }) => {
     const [selectedId, setSelectedId] = useState();
 
     return (
         <div className="container">
             <div className="container_app">
-                <SRSidebar selectedId={selectedId} setSelectedId={setSelectedId}/>
+                <SRSidebar selectedId={selectedId} setSelectedId={setSelectedId} notificationsAvail={notificationsAvail}/>
                 <Switch>
                 <Route path="/sentrequests/list/:previewId">
                     <Preview

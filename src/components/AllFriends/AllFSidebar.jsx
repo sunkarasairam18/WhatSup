@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { IconButton } from "@material-ui/core";
 import { Link, Switch, Route } from "react-router-dom";
 import PeopleIcon from "@mui/icons-material/People";
@@ -12,11 +12,28 @@ import icon from "../icon.png";
 import { useStateValue } from "../../services/StateProvider";
 import AllFSidebarCard from "./AllFSidebarCard";
 import { firestore } from "../../services/firebase";
+import More from "../common/More";
 
-const AllFSidebar = ({selectedId,setSelectedId}) => {
+const AllFSidebar = ({selectedId,setSelectedId,notificationsAvail}) => {
   const [friendsList, setFriendsList] = useState([]);
   const [search, setSearch] = useState("");
   const [{ user }, dispatch] = useStateValue();
+
+  const [showMore,setShowMore] = useState(false);
+
+  const moreRef = useRef(null);    
+    
+  const handleDown = (e) => {
+      if (moreRef.current && !moreRef.current.contains(e.target)) {
+        setShowMore(false);
+        return;
+      }
+  };
+  
+  useEffect(() => {
+      document.addEventListener("click", handleDown);
+  }, [moreRef]);
+
 
   useEffect(() => {
     const friendQuery = query(
@@ -59,10 +76,15 @@ const AllFSidebar = ({selectedId,setSelectedId}) => {
                 <PeopleIcon style={{ height: "30px", width: "30px" }} />
               </IconButton>
             </Link>
-            <IconButton>
+            <IconButton onClick={()=>setShowMore(!showMore)} ref={moreRef}>
               <MoreVertIcon style={{ height: "26px", width: "26px" }} />
             </IconButton>
           </div>
+          <More 
+            show={showMore}
+            notificationsAvail={notificationsAvail}
+            showNoti={false}
+          />
         </div>
         <div className="CS_content">
           <div className="CSC_search">

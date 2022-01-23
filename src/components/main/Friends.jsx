@@ -5,11 +5,11 @@ import "../../css/common/Container.css";
 
 import FSidebar from '../Friends/FSidebar';
 
-const Friends = () => {
+const Friends = ({notificationsAvail}) => {
     return (
         <div className="container">
             <div className="container_app">
-                <FSidebar/>
+                <FSidebar notificationsAvail={notificationsAvail}/>
                 <FRequestsCards/>
             </div>
         </div>

@@ -7,6 +7,8 @@ import { actionTypes } from './services/reducer';
 import {updateLastSeen,updateOnlineStatus} from './services/firebase';
 import { useStateValue } from "./services/StateProvider";
 import FullPhoto from './components/AllFriends/FullPhoto';
+import { firestore } from './services/firebase';
+import { doc,onSnapshot } from 'firebase/firestore';
 
 import './App.css';
 import Home from './components/main/Home';
@@ -19,6 +21,23 @@ import SentRequests from './components/main/SentRequests';
 function App(props) {
   const [{user},dispatch] = useStateValue();
   const [previewUrl,setPreviewUrl] = useState("");
+  const [notificationsAvail,setNotificationsAvail] = useState();      
+
+  useEffect(()=>{
+    if(user){
+      const userDoc = doc(firestore,`Accounts/${user.uid}`);
+      console.log("User id",user.uid);
+      onSnapshot(userDoc,userUpdate=>{
+          if(userUpdate.exists()){
+              const userData = userUpdate.data();   
+              if("Notification" in window){
+                  setNotificationsAvail(userData.Notifications);                       
+              }
+          }
+      });
+    }
+  },[]);
+
 
 
   useEffect(()=>{
@@ -61,25 +80,25 @@ function App(props) {
             <FullPhoto previewUrl={previewUrl}/>
           </Route>
           <Route path="/requests/list">
-            <FRequests setPreviewUrl={setPreviewUrl}/>
+            <FRequests setPreviewUrl={setPreviewUrl} notificationsAvail={notificationsAvail}/>
           </Route>
           <Route path="/sentrequests/list">
-            <SentRequests setPreviewUrl={setPreviewUrl}/>
+            <SentRequests setPreviewUrl={setPreviewUrl} notificationsAvail={notificationsAvail}/>
           </Route>
 
           <Route path="/friends/list">
-            <AllFriends setPreviewUrl={setPreviewUrl}/>
+            <AllFriends setPreviewUrl={setPreviewUrl} notificationsAvail={notificationsAvail}/>
           </Route>
           
           <Route path="/friends">
-            <Friends/>
+            <Friends notificationsAvail={notificationsAvail}/>
           </Route>   
 
           
             
           <Route path="/">
             {/* <SentRequestDialog/> */}
-            {!user?(<Login/>):(<Home/>)}          
+            {!user?(<Login/>):(<Home notificationsAvail={notificationsAvail} />)}          
             {/* <PopUpFriends/> */}
             {/* <Test/> */}
           </Route>

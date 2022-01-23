@@ -9,6 +9,8 @@ import Alert from '@mui/material/Alert';
 
 import { useStateValue } from "../../services/StateProvider";
 import { firestore } from "../../services/firebase";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
 
 import "../../css/maincss/Home.css";
 import SentRequestDialog from "../Home/SentRequestDialog";
@@ -19,7 +21,7 @@ import Chat from "../Home/Chat";
 import FullPhoto from "../AllFriends/FullPhoto";
 import { actionTypes } from "../../services/reducer";
 
-const Home = () => {
+const Home = ({notificationsAvail}) => {
   const [{ user,clearNotification }, dispatch] = useStateValue();
   const [showUpload, setShowUpload] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
@@ -34,6 +36,7 @@ const Home = () => {
   const [openSnack,setOpenSnack] = useState(false);
   const [snackMessage,setSnackMessage] = useState();
   const [severity,setSeverity] = useState();
+
 
   const home = useRef(null);
 
@@ -52,11 +55,14 @@ const Home = () => {
     }
   };
 
+
+  
+
   useEffect(() => {
     document.addEventListener("click", handleDown);
   }, [home]);
 
-
+  
   
   const uploadImage = async (result) => {
     setShowSkeleton(true);
@@ -79,7 +85,6 @@ const Home = () => {
 
   const photoUrlDatabase = async (url) => {
     if (user) {
-      console.log("Photo User", user);
       const db = doc(firestore, `Accounts/${user.uid}`);
       const photoUpdate = {
         photoUrl: url,
@@ -88,6 +93,8 @@ const Home = () => {
       setShowSkeleton(false);
     }
   };
+
+  
 
   return (
     <div className="home" ref={home}>
@@ -128,10 +135,19 @@ const Home = () => {
         onClose={()=>setOpenSnack(false)}
         key={snackMessage}
         disableWindowBlurListener={true}        
-        sx={{ width: "350px" }}
+        sx={{ width: "350px" }}       
       >
         
-        <Alert onClose={()=>setOpenSnack(false)} variant="filled" color="success" severity={severity} sx={{ width: '100%' }} >
+        <Alert 
+        onClose={()=>setOpenSnack(false)} 
+        variant="filled" 
+        color="success" 
+        severity={severity} 
+        iconMapping={{
+          OnNoti: <NotificationsActiveIcon/>,
+          OffNoti: <NotificationsOffIcon/>
+        }}
+        sx={{ width: '100%' }} >
           {snackMessage}
         </Alert>
         
@@ -153,6 +169,10 @@ const Home = () => {
           showSkeleton={showSkeleton}
           setChatTyping={setChatTyping}
           setShowNewRequestDialog={setShowNewRequestDialog}
+          setOpenSnack={setOpenSnack}
+          setSnackMessage={setSnackMessage}
+          setSeverity={setSeverity}
+          notificationsAvail={notificationsAvail}
         />
 
         <Switch>

@@ -7,15 +7,18 @@ import NoPreview from "../common/NoPreview";
 import Preview from "../common/Preview";
 
 
-const AllFriends = ({ setPreviewUrl }) => {
+const AllFriends = ({ setPreviewUrl,notificationsAvail }) => {
   const [selectedId, setSelectedId] = useState();
   
+
+
   return (
     <div className="container">
       <div className="container_app">
         <AllFSidebar 
           selectedId={selectedId} 
-          setSelectedId={setSelectedId}           
+          setSelectedId={setSelectedId}          
+          notificationsAvail={notificationsAvail} 
           />
         <Switch>
           <Route path="/friends/list/:previewId">

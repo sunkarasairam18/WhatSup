@@ -7,13 +7,13 @@ import NoPreview from '../common/NoPreview';
 import "../../css/common/Container.css";
 
 
-const FRequests = ({ setPreviewUrl }) => {
+const FRequests = ({ setPreviewUrl,notificationsAvail }) => {
     const [selectedId, setSelectedId] = useState();
 
     return ( 
         <div className="container">
             <div className="container_app">
-                <FRSidebar selectedId={selectedId} setSelectedId={setSelectedId}/>
+                <FRSidebar selectedId={selectedId} setSelectedId={setSelectedId} notificationsAvail={notificationsAvail}/>
                 <Switch>
                 <Route path="/requests/list/:previewId">
                     <Preview

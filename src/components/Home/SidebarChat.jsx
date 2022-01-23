@@ -62,7 +62,7 @@ const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,s
                     if(user.onlineStatus){
                         if(selectId !== friendId){
                             console.log(notificationsAvail,!first,receiver,userId,readBy[userId],selectId,friendId,new Date());
-                            // showNotification(lastmessage.message+" - "+tag,url,friendName);
+                            showNotification(lastmessage.message+" - "+tag,url,friendName);
                         }
                     }else{
                         showNotification(lastmessage.message+" - "+tag,url,friendName);
