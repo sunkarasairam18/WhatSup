@@ -55,7 +55,7 @@ const FRSidebarCard = ({id,name,to,selected,setSelectedId}) => {
     },[appearConfirm]);
 
     return (
-        <Link to={to}>
+        <Link to={to} className='alink'>
             <div className="FRSCard">
                 <div className={cardClass} 
                     onClick={()=>setSelectedId(id)} 

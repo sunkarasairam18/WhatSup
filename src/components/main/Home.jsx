@@ -94,8 +94,6 @@ const Home = ({notificationsAvail}) => {
     }
   };
 
-  
-
   return (
     <div className="home" ref={home}>
       <Backdrop

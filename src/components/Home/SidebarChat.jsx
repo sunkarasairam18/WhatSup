@@ -167,7 +167,7 @@ const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,s
     }
 
     return (
-        <Link to={`/${friendId}/${containerId}`} ref={linkRef} onClick={()=>onSelect(friendId)}>
+        <Link to={`/${friendId}/${containerId}`} ref={linkRef} className='alink' onClick={()=>onSelect(friendId)}>
             <div className={selectId === friendId?"sidebarChatSelected":"sidebarChat"}>
                 <Avatar src={`${url}`} style={{width:"50px",height:"50px"}}/>
                 <div className="sidebarChat_info">

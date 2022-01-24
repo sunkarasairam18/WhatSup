@@ -59,7 +59,7 @@ const SRCard = ({id,name,to,selected,setSelectedId}) => {
     
 
     return (
-        <Link to={to}>
+        <Link to={to} className='alink'>
             <div className="SRCard">
                 <div className={`SRCcontent ${selected?"SRCselect":rClass}`} 
                     onMouseEnter={()=>{
@@ -85,7 +85,7 @@ const SRCard = ({id,name,to,selected,setSelectedId}) => {
                         }
                     </div>
                     {!rDel &&
-                    <Link to={'/sentrequests/list'} className="SRCCcancel" onClick={()=>setRdel(true)}>
+                    <Link to={'/sentrequests/list'} className="SRCCcancel alink" onClick={()=>setRdel(true)}>
                     <div 
                         onMouseEnter={()=>{
                             if(!selected){

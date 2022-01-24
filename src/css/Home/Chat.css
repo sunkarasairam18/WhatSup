@@ -66,16 +66,13 @@
     background-position: center;    
     padding-top: 10px;
     overflow: scroll;
-    display: flex;
+    display: flex;    
     flex-direction: column-reverse;
     /* background-color: aqua; */
         
 }
 
-.chatbody_in{
-    display: flex;
-    flex-direction: column-reverse;
-}
+
 
 .circular{
     display: grid;

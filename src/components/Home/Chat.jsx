@@ -53,7 +53,7 @@ const Chat = ({
 
   var pastmsg = "";
   var statelessMsgs = [];
-
+  var unsubscribe;
   //to display arrow to scroll down quickly
 
   const bottomRef = useRef(null);
@@ -79,19 +79,19 @@ const Chat = ({
 
   useEffect(()=>{
              
-    for(var i = 0;i<messages.length;i++){
-      const {id,data:{sender,readBy}} = messages[i];
+    for(var i = 0;i<renderMsgs.length;i++){
+      const {id,data:{sender,readBy}} = renderMsgs[i];
       
-      if(id!="start" && sender != user.uid  && !readBy[user.uid] && !unreadId){
+      if(id!="start" && sender !== user.uid  && !readBy[user.uid] && !unreadId){
         console.log("Id : ",id);
         setUnreadId(id);
         break;
       }      
     }
-    // var i = messages.filter(msg => msg.id != "start" && !msg.data.readBy[user.uid]).length;
+    // var i = renderMsgs.filter(msg => msg.id != "start" && !msg.data.readBy[user.uid]).length;
     // console.log("length : ",i);
-    if(unreadCount<=0) setUnreadCount(messages.filter(msg => msg.id != "start" && !msg.data.readBy[user.uid]).length);
-  }, [messages]);
+    if(unreadCount<=0) setUnreadCount(renderMsgs.filter(msg => msg.id != "start" && !msg.data.readBy[user.uid]).length);
+  }, [renderMsgs]);
 
 
   const fetchMore = ()=>{
@@ -133,7 +133,7 @@ const Chat = ({
 
   useEffect(()=>{
       if(appMsgLoader && canRender){
-          setTimeout(()=>fetchMore(),1500);
+          setTimeout(()=>fetchMore(),800);
       }
   },[appMsgLoader]);    
 
@@ -144,6 +144,9 @@ const Chat = ({
   useEffect(() => {
     if (!selectId) setSelectId(friendId);
     setShowInfo(false);
+    setInput("");
+    setUnreadId("");
+    // if(unsubscribe) unsubscribe();
   }, [friendId]);
 
   useEffect(() => {
@@ -161,6 +164,7 @@ const Chat = ({
   }, [friendId]);
 
   useEffect(()=>{
+    if(unsubscribe) unsubscribe();
     if(containerId){
       const readQuery = query(
         collection(firestore, `ChatContainers/${containerId}/messages`),
@@ -168,7 +172,7 @@ const Chat = ({
         limit(18)
       );
       
-      onSnapshot(readQuery, (chatSnapshot) => {
+      unsubscribe = onSnapshot(readQuery, (chatSnapshot) => {
           console.log(chatSnapshot.docs);
             setMessages(
             chatSnapshot.docs.map((chat) => ({
@@ -228,7 +232,6 @@ const Chat = ({
   async function sendMessage(msg) {
     msg.preventDefault();
     if(input.trim() === "") return;
-    // scrollToBottom();
     setSearch("");
     setSearchIcon(false);
     const chatCollection = collection(
@@ -316,6 +319,7 @@ const Chat = ({
     return day;
   }
 
+  var urlRegex = /((?:(http|https|Http|Https|rtsp|Rtsp):\/\/(?:(?:[a-zA-Z0-9\$\-\_\.\+\!\*\'\(\)\,\;\?\&\=]|(?:\%[a-fA-F0-9]{2})){1,64}(?:\:(?:[a-zA-Z0-9\$\-\_\.\+\!\*\'\(\)\,\;\?\&\=]|(?:\%[a-fA-F0-9]{2})){1,25})?\@)?)?((?:(?:[a-zA-Z0-9][a-zA-Z0-9\-]{0,64}\.)+(?:(?:aero|arpa|asia|a[cdefgilmnoqrstuwxz])|(?:biz|b[abdefghijmnorstvwyz])|(?:cat|com|coop|c[acdfghiklmnoruvxyz])|d[ejkmoz]|(?:edu|e[cegrstu])|f[ijkmor]|(?:gov|g[abdefghilmnpqrstuwy])|h[kmnrtu]|(?:info|int|i[delmnoqrst])|(?:jobs|j[emop])|k[eghimnrwyz]|l[abcikrstuvy]|(?:mil|mobi|museum|m[acdghklmnopqrstuvwxyz])|(?:name|net|n[acefgilopruz])|(?:org|om)|(?:pro|p[aefghklmnrstwy])|qa|r[eouw]|s[abcdeghijklmnortuvyz]|(?:tel|travel|t[cdfghjklmnoprtvwz])|u[agkmsyz]|v[aceginu]|w[fs]|y[etu]|z[amw]))|(?:(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[0-9])))(?:\:\d{1,5})?)(\/(?:(?:[a-zA-Z0-9\;\/\?\:\@\&\=\#\~\-\.\+\!\*\'\(\)\,\_])|(?:\%[a-fA-F0-9]{2}))*)?(?:\b|$)/gi;
 
 
   return (
@@ -346,9 +350,9 @@ const Chat = ({
             <div className="chat_body">                            
             
 
-              <div className="chatbody_in">
-                <div ref={bottomRef}></div>
-                
+              <div className="chat_body_in">
+                <div ref={msgLoader} ></div>
+
                 <div className="cb_ii">
                   
                   {renderMsgs.map(({id,data})=>(
@@ -367,6 +371,7 @@ const Chat = ({
                         unread={unread}
                         setUnreadId={setUnreadId}
                         unreadCount={unreadCount}
+                        urlRegex={urlRegex}
                       />                        
                     ):(
                       <InfoBubble
@@ -383,7 +388,7 @@ const Chat = ({
                   ))}
                   
                 </div>
-                <div ref={msgLoader} ></div>
+                <div ref={bottomRef}></div>
 
 
               </div>
@@ -397,10 +402,7 @@ const Chat = ({
                 }
             
             </div>
-            <div className="chat_footer">
-              <IconButton>
-                <InsertEmoticonIcon />
-              </IconButton>
+            <div className="chat_footer">              
 
               <form>
                 <input

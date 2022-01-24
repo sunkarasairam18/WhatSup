@@ -7,7 +7,7 @@ import "../../css/Friends/FSidebarBox.css";
 
 const FSidebarBox = ({path,arrow,text,icon,hover}) => {
     return ( 
-        <Link to={path}>
+        <Link to={path} className='alink'>
             <div className={`FSidebarBox ${hover?"FSidebarBoxHover":"FSidebarBoxHoverfix"}`}>
                 <div className="FSidebarIcon">
                     {icon}
