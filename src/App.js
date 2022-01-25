@@ -26,7 +26,6 @@ function App(props) {
   useEffect(()=>{
     if(user){
       const userDoc = doc(firestore,`Accounts/${user.uid}`);
-      console.log("User id",user.uid);
       onSnapshot(userDoc,userUpdate=>{
           if(userUpdate.exists()){
               const userData = userUpdate.data();   
@@ -97,10 +96,7 @@ function App(props) {
           
             
           <Route path="/">
-            {/* <SentRequestDialog/> */}
-            {!user?(<Login/>):(<Home notificationsAvail={notificationsAvail} />)}          
-            {/* <PopUpFriends/> */}
-            {/* <Test/> */}
+            {!user?(<Login/>):(<Home setPreviewUrl={setPreviewUrl} notificationsAvail={notificationsAvail} />)}          
           </Route>
         </Switch>      
       </div>

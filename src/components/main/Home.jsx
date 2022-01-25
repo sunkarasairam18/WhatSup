@@ -1,4 +1,4 @@
-import React, { useState,useEffect,useRef } from "react";
+import React, { useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import Axios from "axios";
 import { doc, updateDoc } from "firebase/firestore";
@@ -19,10 +19,9 @@ import Upload from "../Home/Upload";
 import JustLogin from "../Home/JustLogin";
 import Chat from "../Home/Chat";
 import FullPhoto from "../AllFriends/FullPhoto";
-import { actionTypes } from "../../services/reducer";
 
-const Home = ({notificationsAvail}) => {
-  const [{ user,clearNotification }, dispatch] = useStateValue();
+const Home = ({setPreviewUrl,notificationsAvail}) => {
+  const [{ user }, dispatch] = useStateValue();
   const [showUpload, setShowUpload] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [profileUrl, setProfileUrl] = useState("");
@@ -36,33 +35,6 @@ const Home = ({notificationsAvail}) => {
   const [openSnack,setOpenSnack] = useState(false);
   const [snackMessage,setSnackMessage] = useState();
   const [severity,setSeverity] = useState();
-
-
-  const home = useRef(null);
-
-  const handleDown = (e) => {
-    if (home.current && home.current.contains(e.target)) {
-      console.log("Tapping outside");
-      dispatch({
-        type: actionTypes.UPDATE_CLEAR_NOTIFICATIONS,
-        user: {
-          ...user,         
-        },
-        clearNotification: clearNotification
-      });
-      
-      return;
-    }
-  };
-
-
-  
-
-  useEffect(() => {
-    document.addEventListener("click", handleDown);
-  }, [home]);
-
-  
   
   const uploadImage = async (result) => {
     setShowSkeleton(true);
@@ -95,7 +67,7 @@ const Home = ({notificationsAvail}) => {
   };
 
   return (
-    <div className="home" ref={home}>
+    <div className="home">
       <Backdrop
         sx={{ color: "#FFFFFF", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={showUpload}
@@ -171,6 +143,7 @@ const Home = ({notificationsAvail}) => {
           setSnackMessage={setSnackMessage}
           setSeverity={setSeverity}
           notificationsAvail={notificationsAvail}
+          
         />
 
         <Switch>
@@ -182,6 +155,9 @@ const Home = ({notificationsAvail}) => {
               setSelectId={setSelectId}
               chatTyping={chatTyping}
               setChatTyping={setChatTyping}
+              setPreviewUrl={setPreviewUrl}
+              setProfileUrl={setProfileUrl}
+              setShowProfile={setShowProfile}
             />
           </Route>
           <Route path="/">

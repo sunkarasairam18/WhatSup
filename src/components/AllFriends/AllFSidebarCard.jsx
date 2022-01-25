@@ -36,7 +36,6 @@ const AllFSidebarCard = ({id,name,to,selected,setSelectedId}) => {
         <Link to={to} className='alink'>
             <div className="AFSCard">
                 <div className={`ASFCcontent ${selected?"AFSCselect":""}`} onClick={()=>setSelectedId(id)}>
-                    {/* <img src={friend.photoUrl} style={{height:"50px",width:"50px",borderRadius:"25px"}} /> */}
                     <Avatar src={friend.photoUrl} style={{width:"50px",height:"50px"}}/>
                     <div className="ASFCCPname">
                         {friend.name}

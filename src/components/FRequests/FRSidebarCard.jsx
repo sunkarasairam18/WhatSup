@@ -70,7 +70,6 @@ const FRSidebarCard = ({id,name,to,selected,setSelectedId}) => {
                         }
                     }}
                     >
-                    {/* <img src={requester.photoUrl} style={{height:"50px",width:"50px",borderRadius:"25px"}} /> */}
                     <Avatar src={requester.photoUrl} style={{width:"50px",height:"50px"}}/>
                     <div className="FRSC_operations">                    
                         <div className="FRSCCPname">
@@ -78,7 +77,7 @@ const FRSidebarCard = ({id,name,to,selected,setSelectedId}) => {
                         </div>
                         <div className="FRSCC_buttons">
                             {!appearDelete && !appearConfirm && 
-                            <Link to={'/requests/list'}  className="FRSCCB_confirm">                            
+                            <Link to={'/requests/list'}  className="FRSCCB_confirm alink">                            
                                 <div 
                                     onMouseOver={()=>{
                                         if(!selected){
@@ -100,7 +99,7 @@ const FRSidebarCard = ({id,name,to,selected,setSelectedId}) => {
                             }
                             
                             {!appearDelete && !appearConfirm && 
-                            <Link to={'/requests/list'} className="FRSCCB_delete">
+                            <Link to={'/requests/list'} className="FRSCCB_delete alink">
                                 <div 
                                     onMouseOver={()=>{
                                         if(!selected){

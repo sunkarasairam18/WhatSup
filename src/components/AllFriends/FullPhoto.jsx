@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { useHistory } from "react-router-dom";
@@ -18,7 +18,7 @@ const FullPhoto = ({previewUrl,crossClick}) => {
                 <CloseIcon style={{cursor:"pointer",height:"30px",width:"30px"}} onClick={crossClick?()=>crossClick(false):goToPreviousPath}/>
             </div>
             <div className="FPpiccontainer">
-                <img src={previewUrl} className="FullPic"/>
+                <img src={previewUrl} className="FullPic" alt='pic'/>
             </div>
         </div>
     );

@@ -45,11 +45,14 @@
     place-items: center;
 }
 
-.infoimg>img{
+.infoimgin{
     width: 210px;
     height: 210px;
     border-radius: 105px;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
+
 .infoname{
     height: 20%;
     width: 100%;

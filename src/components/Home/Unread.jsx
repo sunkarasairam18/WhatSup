@@ -1,13 +1,9 @@
 import React ,{useState,useEffect,useRef} from 'react';
 import '../../css/Home/Unread.css';
-import { useStateValue } from '../../services/StateProvider';
 
 const Unread = ({count}) => {
     const [appear,setAppear] = useState(true);
-    const [{user},dispatch] = useStateValue();
-    const unread = useRef(null);
-
-    
+    const unread = useRef(null);    
 
     const handleDown = (e) => {
         if (unread.current && !unread.current.contains(e.target)) {
@@ -19,6 +15,10 @@ const Unread = ({count}) => {
     useEffect(() => {
         document.addEventListener("click", handleDown);
     }, [unread]);
+
+    useEffect(()=>{
+        unread.current.scrollIntoView({ behavior: "auto" });
+    },[]);
 
     return ( 
         <div>

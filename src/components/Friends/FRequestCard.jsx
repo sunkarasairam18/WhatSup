@@ -39,13 +39,13 @@ const FRequestCard = ({id}) => {
                 <div className="FRCard">
                     <Link to={`requests/list/${id}`}>
                         <div className="FRCImg">
-                            <img src={sender.photoUrl?sender.photoUrl:url} style={{height:"210px",width:"210px"}}/>
+                            <img src={sender.photoUrl?sender.photoUrl:url} style={{height:"210px",width:"210px"}} alt="pic"/>
                             
                         </div>                                    
                     </Link>
                     <div className="FRCContent">
                         <div className="FRCTitle">
-                            {sender.name}
+                            {sender.name.length>20?sender.name.substring(0,20)+"...":sender.name}
                         </div>
                         
                         <div className={appearConfirm?"FRCConfirm":"FRCConfirmAcc"}

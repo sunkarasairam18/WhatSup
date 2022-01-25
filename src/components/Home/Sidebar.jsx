@@ -37,7 +37,7 @@ const Sidebar = ({
                     setOpenSnack,
                     setSnackMessage,
                     setSeverity,
-                    notificationsAvail,
+                    notificationsAvail
                     }) => {
     const [{user},dispatch] = useStateValue();
     const [show,setShow] = useState(false);
@@ -71,7 +71,6 @@ const Sidebar = ({
 
     useEffect(()=>{
         const userDoc = doc(firestore,`Accounts/${user.uid}`);
-        console.log("User id",user.uid);
         onSnapshot(userDoc,userUpdate=>{
             if(userUpdate.exists()){
                 const userData = userUpdate.data();   
@@ -232,6 +231,7 @@ const Sidebar = ({
                         onSelect={setSelectId}
                         setChatTyping={setChatTyping}
                         notificationsAvail={notificationsAvail}
+                        
                         />                        
                     ))}    
                     {(!search && friendsList.length === 0) && <NoChats/>}

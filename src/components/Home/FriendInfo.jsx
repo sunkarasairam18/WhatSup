@@ -2,10 +2,9 @@ import React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { Avatar } from '@mui/material';
 
-
 import '../../css/Home/FriendInfo.css';
 
-const FriendInfo = ({name,about,email,photo,onCross}) => {
+const FriendInfo = ({friendId,name,about,email,photo,onCross,setProfileUrl,setShowProfile}) => {
     return (
     <div className="infobar">
         <div className="infoheader">
@@ -17,8 +16,13 @@ const FriendInfo = ({name,about,email,photo,onCross}) => {
             </div>
         </div>
         <div className="infodisplay">
-            <div className="infoimg">
-                {photo && <img src={photo} alt=""/>}
+            <div className="infoimg">                
+                {photo && 
+                    <img src={photo} className='infoimgin' onClick={()=>{
+                        setProfileUrl(photo);
+                        setShowProfile(true);
+                    }} alt=""/>
+                }
                 {!photo && <Avatar style={{height:"210px",width:"210px"}}/>}
 
             </div>

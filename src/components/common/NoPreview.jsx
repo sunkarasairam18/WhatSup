@@ -8,7 +8,7 @@ const NoPreview = ({text,flex}) => {
     return ( 
         <div className="NoPreview" style={{flex:`${flex}`}}>
             <div className="NPcontent">
-                <img src={team} className="NPCimg"/>
+                <img src={team} className="NPCimg" alt="preview"/>
                 <div className="NPCtitle">
                     {text}
                 </div>

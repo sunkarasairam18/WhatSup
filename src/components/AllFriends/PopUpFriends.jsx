@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import { IconButton } from "@material-ui/core";
 import '../../css/AllFriends/PopUpFriends.css';

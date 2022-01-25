@@ -35,16 +35,16 @@ const SRCard = ({id,name,to,selected,setSelectedId}) => {
         }
     },[id]);
 
-    // useEffect(()=>{
-    //     if(requester.name){
-    //         const {name:rname} = requester;
-    //         console.log("name ",name,",Display : ",rname);
-    //         if(rname!==name){
-    //             updateFriendName(rname,id);
+    useEffect(()=>{
+        if(requester.name){
+            const {name:rname} = requester;
+            console.log("name ",name,",Display : ",rname);
+            if(rname!==name){
+                updateFriendName(rname,id);
 
-    //         }
-    //     }
-    // },[requester]);
+            }
+        }
+    },[requester]);
 
 
 

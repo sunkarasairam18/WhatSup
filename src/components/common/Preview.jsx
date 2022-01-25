@@ -23,7 +23,6 @@ const Preview = ({ selectedId, setSelectedId, setPreviewUrl }) => {
 
   useEffect(() => {
     if (!selectedId) {
-      console.log("Hope fully");
       setSelectedId(previewId);
     }
   }, [previewId]);
@@ -58,15 +57,14 @@ const Preview = ({ selectedId, setSelectedId, setPreviewUrl }) => {
         />
       </Backdrop>
       <div className="Pcontent">
-        {/* <div className="PSubcontent">
-                    
-            </div> */}
+        
         {friend.photoUrl && <Link to={`/${previewId}/display`}>
             
           <img
             src={friend.photoUrl}
             className="Ppic"
             onClick={() => setPreviewUrl(friend.photoUrl)}
+            alt="pic"
           />
         </Link>}
         {!friend.photoUrl && 

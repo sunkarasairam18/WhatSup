@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import produce from "immer";
-import { Avatar, IconButton } from "@mui/material";
-import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
+import { Avatar } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useParams } from "react-router-dom";
 import CircularProgress from '@mui/material/CircularProgress';
@@ -33,7 +32,10 @@ const Chat = ({
   selectId,
   setSelectId,
   chatTyping,
-  setChatTyping
+  setChatTyping,
+  setProfileUrl,
+  setShowProfile
+
 }) => {
   const [input, setInput] = useState("");
   const { friendId, containerId } = useParams();
@@ -44,16 +46,14 @@ const Chat = ({
   const [{ user }, dispatch] = useStateValue();
   const [lastSeen, setLastSeen] = useState("");
   const [showInfo, setShowInfo] = useState(false);
-  const [unread,setUnread] = useState(false);
   const [unreadCount,setUnreadCount] = useState(0);
   const [unreadId,setUnreadId] = useState("");
   const [canRender,setCanRender] = useState(true);
   const [appMsgLoader,setAppMsgLoader] = useState(false);
   const [showBottomArrow, setShowBottomArrow] = useState(true);
-
+  const [unsubFriend,setUnsubFriend] = useState();
+  const [unsubChat,setUnsubChat] = useState();
   var pastmsg = "";
-  var statelessMsgs = [];
-  var unsubscribe;
   //to display arrow to scroll down quickly
 
   const bottomRef = useRef(null);
@@ -79,19 +79,21 @@ const Chat = ({
 
   useEffect(()=>{
              
-    for(var i = 0;i<renderMsgs.length;i++){
-      const {id,data:{sender,readBy}} = renderMsgs[i];
+    for(var i = messages.length-1;i>-1;i--){
+      const {id,data:{sender,readBy}} = messages[i];
       
       if(id!="start" && sender !== user.uid  && !readBy[user.uid] && !unreadId){
-        console.log("Id : ",id);
+        console.log("Unread Id : ",id);
         setUnreadId(id);
         break;
       }      
     }
-    // var i = renderMsgs.filter(msg => msg.id != "start" && !msg.data.readBy[user.uid]).length;
-    // console.log("length : ",i);
-    if(unreadCount<=0) setUnreadCount(renderMsgs.filter(msg => msg.id != "start" && !msg.data.readBy[user.uid]).length);
-  }, [renderMsgs]);
+   
+    if(unreadCount<=0){
+      var count = messages.filter(msg => msg.id != "start" && !msg.data.readBy[user.uid]).length;
+      setUnreadCount(count);
+    }
+  }, [messages]);
 
 
   const fetchMore = ()=>{
@@ -100,7 +102,7 @@ const Chat = ({
           collection(firestore, `ChatContainers/${containerId}/messages`),
           orderBy("timestamp","desc"),
           startAt(laststamp),
-          limit(18)
+          limit(10)
       );
         
       onSnapshot(readQuery, (chatSnapshot) => {
@@ -108,7 +110,6 @@ const Chat = ({
               id: chat.id,
               data: chat.data(),
           }));
-          console.log("New msgs : ",newMsgs);
           newMsgs = messages.concat(newMsgs.slice(1));
           setMessages(newMsgs);
       });
@@ -120,7 +121,6 @@ const Chat = ({
 
   const loaderObserver = new IntersectionObserver(([entry]) =>{
     setAppMsgLoader(entry.isIntersecting);
-    console.log("Appearance : ",entry.isIntersecting);
     }
   );
 
@@ -146,42 +146,45 @@ const Chat = ({
     setShowInfo(false);
     setInput("");
     setUnreadId("");
-    // if(unsubscribe) unsubscribe();
   }, [friendId]);
 
+  
   useEffect(() => {
     if (friendId) {
+      if(unsubFriend) unsubFriend();
       const document = doc(firestore, `Accounts/${friendId}`);
-      onSnapshot(document, (docUpdate) => {
+      const unsub = onSnapshot(document, (docUpdate) => {
         if (docUpdate.exists()) {
           const docData = docUpdate.data();
-          // console.log(`Data : ${JSON.stringify(docData)}`);
           setFriend(docData);
         }
       });      
-      
+      setUnsubFriend(()=>unsub);
+      setUnreadCount(0);
     }
   }, [friendId]);
 
   useEffect(()=>{
-    if(unsubscribe) unsubscribe();
+    
     if(containerId){
+      if(unsubChat) unsubChat();
       const readQuery = query(
         collection(firestore, `ChatContainers/${containerId}/messages`),
         orderBy("timestamp","desc"),
-        limit(18)
+        limit(20)
       );
-      
-      unsubscribe = onSnapshot(readQuery, (chatSnapshot) => {
-          console.log(chatSnapshot.docs);
+      const unsubchat = onSnapshot(readQuery, (chatSnapshot) => {
             setMessages(
-            chatSnapshot.docs.map((chat) => ({
-                id: chat.id,
-                data: chat.data(),
-            }))
+              chatSnapshot.docs.map((chat) => ({
+                  id: chat.id,
+                  data: chat.data(),
+              }))
             );
+            
         });
-      setCanRender(true);  
+      setCanRender(true); 
+      setUnsubChat(()=>unsubchat); 
+      
     }      
   },[containerId]);
 
@@ -190,15 +193,12 @@ const Chat = ({
         setLastStamp(messages[messages.length-1]?.data?.timestamp);
         if(messages[messages.length-1]?.id == "start"){
             setCanRender(false);
-        }
-        console.log("Last documents : ",messages[messages.length-1],messages[messages.length-1]?.data?.timestamp);
-       
+        }       
     }
     if(messages){
       const reverseMsgs = produce(messages, draft =>{
         return draft.reverse();
       });
-      statelessMsgs = reverseMsgs;
       setRenderMsgs(reverseMsgs);
     }
 },[messages]);
@@ -233,6 +233,7 @@ const Chat = ({
     msg.preventDefault();
     if(input.trim() === "") return;
     setSearch("");
+    scrollToBottom();
     setSearchIcon(false);
     const chatCollection = collection(
       firestore,
@@ -368,8 +369,7 @@ const Chat = ({
                         readBy={data.readBy}
                         containerId={containerId}
                         unreadId={unreadId}
-                        unread={unread}
-                        setUnreadId={setUnreadId}
+                        
                         unreadCount={unreadCount}
                         urlRegex={urlRegex}
                       />                        
@@ -442,10 +442,13 @@ const Chat = ({
         >
           <FriendInfo
             onCross={setShowInfo}
+            friendId={friendId}
             name={friend.displayName}
             about={friend.About}
             photo={friend.photoUrl}
             email={friend.email}
+            setProfileUrl={setProfileUrl}
+            setShowProfile={setShowProfile}
           />
         </CSSTransition>
       </div>

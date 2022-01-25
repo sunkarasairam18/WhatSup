@@ -36,8 +36,6 @@ const ChatBubble = ({
 
   useEffect(() => {
     const urls = detectURLs(message);
-
-    console.log(urls);
     setLinks(urls?urls:[]);
   }, []);
 
@@ -53,7 +51,8 @@ const ChatBubble = ({
         const tempRead = {
           readBy: { ...readBy, [reader]: true },
         };
-        updateDoc(db, tempRead);
+        setTimeout(()=>updateDoc(db, tempRead),1000);
+        
       }
     }
   }, [bubbleVisible, user]);

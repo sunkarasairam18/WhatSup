@@ -9,7 +9,7 @@ const JustLogin = () => {
         <div className="justlogin">
             <div className="justlogincontent">
                 {/* <ForumIcon style={{height: "150px",width: "150px",color:"#32CD32"}}/>     */}
-                <img src={icon} style={{height: "150px",width: "150px"}}/>
+                <img src={icon} style={{height: "150px",width: "150px"}} alt="pic"/>
                 <div className="justloginwish">
                     WhatsUp
                 </div>

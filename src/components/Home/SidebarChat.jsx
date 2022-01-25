@@ -1,7 +1,7 @@
 import { Avatar } from '@mui/material';
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from "react-router-dom";
-import { doc,onSnapshot,getDoc,updateDoc,query,collection,orderBy,where,limit } from '@firebase/firestore';
+import { doc,onSnapshot,getDoc,updateDoc,query,collection,where,limit } from '@firebase/firestore';
 import {firestore} from '../../services/firebase';
 import { useStateValue } from '../../services/StateProvider';
 import '../../css/Home/SidebarChat.css';
@@ -10,22 +10,15 @@ import '../../css/common/StandardTransition.css';
 
 const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,setChatTyping,notificationsAvail}) => {
     const [lastmessage,setLastmessage] = useState("");
-    const [{user,clearNotification},dispatch] = useStateValue();
+    const [{user},dispatch] = useStateValue();
     const [typing,setTyping] = useState(false);
     const [timeTag,setTimetag] = useState("");
     const [notify,setNotify] = useState();
     const [url,setUrl] = useState("");
     const [first,setFirst] = useState(true);
-    const linkRef = useRef(null);
-    const [notification,setNotification] = useState();
+    const linkRef = useRef(null);    
     
-    var pastmsgId = "";
-
-    useEffect(()=>{
-        if(notification){
-            notification.close();            
-        }
-    },[clearNotification]);   
+    var pastmsgId = "";    
 
     function showNotification(msg,photo,name){
         var options = {
@@ -34,20 +27,10 @@ const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,s
           dir: "ltr",
           renotify: true,
           tag: friendId
-        };
-        setNotification(new Notification(name, options));        
+        };        
+        var notey = new Notification(name, options);
+        setTimeout(()=>notey.close(),4000);
     };
-
-    useEffect(()=>{
-        if(notification){
-            notification.onclick = function(event){
-                event.preventDefault();
-                window.focus();
-                linkRef.current.click();
-                notification.close();
-            }
-        }
-    },[notification]);
 
     useEffect(()=>{
         if(lastmessage){
@@ -110,7 +93,6 @@ const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,s
                     const {lastMessageId} = containerData;      
                     if(pastmsgId !== lastMessageId){
                         
-                        console.log("Past msg id: ",pastmsgId,lastMessageId);
                         getLastMessage(containerId,containerData.lastMessageId);
                         pastmsgId = lastMessageId;
                         
@@ -151,6 +133,9 @@ const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,s
         }        
     }
    
+    
+
+
     async function updateFriendName(name){
         const db = doc(firestore,`Accounts/${userId}/Friends/${friendId}}`);
         const displayName = {
