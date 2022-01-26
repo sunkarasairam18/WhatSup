@@ -14,7 +14,6 @@
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.23.0",
     "cloudinary-react": "^1.7.0",
-    "emoji-picker-react": "^3.4.8",
     "firebase": "^9.1.1",
     "immer": "^9.0.12",
     "joi-browser": "^13.4.0",
@@ -56,10 +55,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "autoprefixer": "^9.8.8",
-    "postcss": "^7.0.39",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
   }
 }
