@@ -83,7 +83,6 @@ const Chat = ({
       const {id,data:{sender,readBy}} = messages[i];
       
       if(id!="start" && sender !== user.uid  && !readBy[user.uid] && !unreadId){
-        console.log("Unread Id : ",id);
         setUnreadId(id);
         break;
       }      
@@ -110,7 +109,10 @@ const Chat = ({
               id: chat.id,
               data: chat.data(),
           }));
-          newMsgs = messages.concat(newMsgs.slice(1));
+          if(newMsgs[newMsgs.length-1]?.id === "start"){
+            setCanRender(false);            
+          }  
+          newMsgs = messages.concat(newMsgs.slice(1));          
           setMessages(newMsgs);
       });
     }
@@ -133,8 +135,10 @@ const Chat = ({
 
   useEffect(()=>{
       if(appMsgLoader && canRender){
-          setTimeout(()=>fetchMore(),800);
-      }
+          setTimeout(()=>{
+            fetchMore()
+          },800);
+      }      
   },[appMsgLoader]);    
 
   useEffect(() => {
@@ -173,16 +177,23 @@ const Chat = ({
         orderBy("timestamp","desc"),
         limit(20)
       );
+      setLastStamp();
+      setCanRender(true);
       const unsubchat = onSnapshot(readQuery, (chatSnapshot) => {
-            setMessages(
-              chatSnapshot.docs.map((chat) => ({
-                  id: chat.id,
-                  data: chat.data(),
-              }))
-            );
             
+              const l = chatSnapshot.docs.length;
+              if(chatSnapshot.docs[l-1]?.id.trim() === "start"){
+                setCanRender(false);
+               
+              }  
+              setMessages(
+                chatSnapshot.docs.map((chat) => ({
+                    id: chat.id,
+                    data: chat.data(),
+                }))
+              );            
         });
-      setCanRender(true); 
+       
       setUnsubChat(()=>unsubchat); 
       
     }      
@@ -191,9 +202,7 @@ const Chat = ({
   useEffect(()=>{     //Storing reference of timestamp last rendered to paginate somemore chat 
     if(messages && canRender){
         setLastStamp(messages[messages.length-1]?.data?.timestamp);
-        if(messages[messages.length-1]?.id == "start"){
-            setCanRender(false);
-        }       
+             
     }
     if(messages){
       const reverseMsgs = produce(messages, draft =>{
@@ -235,6 +244,7 @@ const Chat = ({
     setSearch("");
     scrollToBottom();
     setSearchIcon(false);
+    setCanRender(true);
     const chatCollection = collection(
       firestore,
       `ChatContainers/${containerId}/messages`
@@ -269,13 +279,7 @@ const Chat = ({
     };
     updateDoc(newLastMsg, newDoc);
     updateDoc(userDoc, sameUpdate, { merge: true });
-    updateDoc(friendDoc, sameUpdate, { merge: true })
-      .then((e) => {
-        console.log("Time updated ",e);
-      })
-      .catch((error) => {
-        console.log("Error : ", error);
-      });
+    updateDoc(friendDoc, sameUpdate, { merge: true })      
   }
 
   function correctCss(sender, myId) {
