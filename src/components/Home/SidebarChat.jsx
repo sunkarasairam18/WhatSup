@@ -36,11 +36,9 @@ const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,s
         if(lastmessage){
             const tag = properTag(lastmessage?.timestamp);
             setTimetag(tag);
-            // console.log("Trying to show notification : ",friendName);
             const {receiver,readBy} = lastmessage;
 
             if(notificationsAvail && !first && receiver === userId ){
-                console.log("Trying to show notification : ",friendName);
                 if(readBy && !readBy[userId] ){
                     if(user.onlineStatus){
                         if(selectId !== friendId){
@@ -51,12 +49,7 @@ const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,s
                         showNotification(lastmessage.message+" - "+tag,url,friendName);
                         
                     }
-                }
-                //&& !first && lastmessage.receiver === userId &&
-                // if(first){
-                //     console.log("Trying to show notification : ",friendName);
-                //     showNotification(lastmessage.message,url,friendName);
-                // }
+                }                
             }
             if(first) setFirst(false);
         }
@@ -73,6 +66,7 @@ const SidebarChat = ({userId,friendName,friendId,containerId,selectId,onSelect,s
                     
                 }
             });
+            
         }
     },[friendId]);
 

@@ -22,6 +22,7 @@ export const reducer = (state,action) =>{
                     },
             };   
         case actionTypes.UPDATE_ONLINE:
+            console.log("action : ",action.user);
             return{
                 ...state,
                 user: {

@@ -30,7 +30,17 @@ function App(props) {
           if(userUpdate.exists()){
               const userData = userUpdate.data();   
               if("Notification" in window){
-                  setNotificationsAvail(userData.Notifications);                       
+                                         
+                if(Notification.permission === "granted"){
+                  setNotificationsAvail(userData.Notifications);
+                }else if(Notification.permission !== "denied"){
+                  Notification.requestPermission().then(function (permission) {
+                    if (permission === "granted") {
+                      setNotificationsAvail(userData.Notifications);
+                    }
+                  });
+                }             
+                
               }
           }
       });
