@@ -14,7 +14,7 @@ const JustLogin = () => {
                     WhatsUp
                 </div>
                 <div className="justloginintro">
-                    Just Chit-Chat
+                    Have a nice time
                 </div>
             </div>
         </div>
